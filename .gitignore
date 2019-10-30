@@ -1,0 +1,44 @@
+# Numerous always-ignore extensions
+*.csv
+*.dat
+*.diff
+*.err
+*.gz
+*.log
+*.orig
+*.out
+*.pid
+*.rej
+*.seed
+*.swo
+*.swp
+*.vi
+
+*~
+*.sass-cache
+
+# OS or Editor folders
+.DS_Store
+.cache
+.project
+.settings
+.tmproj
+nbproject
+Thumbs.db
+
+# NPM packages folder.
+node_modules/
+npm-debug.log
+
+# Brunch folder for temporary files.
+tmp/
+
+lib-cov
+
+pids
+logs
+results
+
+test
+public
+docs

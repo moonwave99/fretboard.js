@@ -104,17 +104,23 @@ export default function renderFretboard ({
     if (i === 0) {
       draw
         .line(0, 1, 0, height - 1)
-        .stroke({ color: nutColor, width: nutWidth });
+        .stroke({
+          color: nutColor,
+          width: nutWidth
+        });
     } else {
       draw
         .line(`${x}%`, 1, `${x}%`, height - 1)
-        .stroke({ color: i === MIDDLE_FRET ? middleFretColor : fretColor, width: fretWidth });
+        .stroke({
+          color: i === MIDDLE_FRET ? middleFretColor : fretColor,
+          width: fretWidth
+        });
     }
   });
 
   dots.forEach((stringContent, stringIndex) => {
-    stringContent.forEach(({ fret, root }) => {
-      renderDot({ fret, string: stringIndex + 1, fill: root ? '#f55' : dotFill });
+    stringContent.forEach(({ fret, fill }) => {
+      renderDot({ fret, string: stringIndex + 1, fill });
     });
   });
 };

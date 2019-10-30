@@ -1,38 +1,7 @@
-import renderFretboard from './fretboard';
+import renderFretboard from './renderer';
+import { boxes } from './generator';
 
 document.addEventListener('DOMContentLoaded', (event) => {
-  const locrianBox = [
-    [
-      { fret: 2 },
-      { fret: 3, root: true },
-      { fret: 5 }
-    ],
-    [
-      { fret: 3 },
-      { fret: 5 }
-    ],
-    [
-      { fret: 2 },
-      { fret: 4 },
-      { fret: 5 }
-    ],
-    [
-      { fret: 2 },
-      { fret: 4 },
-      { fret: 5, root: true }
-    ],
-    [
-      { fret: 2 },
-      { fret: 3 },
-      { fret: 5 }
-    ],
-    [
-      { fret: 2 },
-      { fret: 3, root: true },
-      { fret: 5 }
-    ]
-  ];
-
   const connectedBox = [
     [
       { fret: 5 },
@@ -42,7 +11,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     [
       { fret: 5 },
       { fret: 7 },
-      { fret: 8, root: true }
+      { fret: 8, fill: '#f55' }
     ],
     [
       { fret: 4 },
@@ -52,7 +21,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     [
       { fret: 2 },
       { fret: 4 },
-      { fret: 5, root: true },
+      { fret: 5, fill: '#f55' },
       { fret: 7 }
     ],
     [
@@ -62,7 +31,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     ],
     [
       { fret: 2 },
-      { fret: 3, root: true },
+      { fret: 3, fill: '#f55' },
       { fret: 5 }
     ]
   ];
@@ -72,10 +41,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     height: 200,
     stringsWidth: 1.5,
     dotSize: 25,
-    fretsCount: 18,
+    fretCount: 22,
     fretsWidth: 1.2,
     scaleFrets: true,
-    dots: locrianBox
+    dots: boxes.locrian
   });
 
   renderFretboard({
@@ -83,10 +52,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
     height: 200,
     stringsWidth: 1.5,
     dotSize: 25,
-    fretsCount: 18,
+    fretCount: 22,
     fretsWidth: 1.2,
     scaleFrets: false,
-    dots: locrianBox
+    dots: boxes.locrian
   });
 
   renderFretboard({
@@ -94,9 +63,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
     height: 200,
     stringsWidth: 1.5,
     dotSize: 25,
-    fretsCount: 18,
+    fretCount: 18,
     fretsWidth: 1.2,
     scaleFrets: true,
     dots: connectedBox
-  });  
+  });
 });

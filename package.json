@@ -1,7 +1,7 @@
 {
   "name": "fretboard.js",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "Fretboard diagram generator",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,8 +9,8 @@
     "lint": "semistandard ./src/*.js",
     "build": "webpack"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": ["music", "guitar", "fretboard", "svg"],
+  "author": "Diego Caponera <hello@diegocaponera.com>",
   "license": "ISC",
   "devDependencies": {
     "semistandard": "^14.2.0",

@@ -113,8 +113,8 @@ export default function renderFretboard ({
   });
 
   dots.forEach((stringContent, stringIndex) => {
-    stringContent.forEach((x) => {
-      renderDot({ fret: x, string: stringIndex + 1 });
+    stringContent.forEach(({ fret, root }) => {
+      renderDot({ fret, string: stringIndex + 1, fill: root ? '#f55' : dotFill });
     });
   });
 };

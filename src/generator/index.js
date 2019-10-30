@@ -1,7 +1,7 @@
 const colors = {
-  root: '#f55',
-  M3: 'green',
-  P5: 'yellow'
+  root: '#F25116',
+  M3: '#F29727',
+  P5: '#F2E96B'
 };
 
 export const boxes = {

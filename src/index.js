@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     height: 200,
     stringsWidth: 1.5,
     dotSize: 25,
-    fretsCount: 15,
+    fretsCount: 18,
     fretsWidth: 1.2,
     scaleFrets: true,
     dots
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     height: 200,
     stringsWidth: 1.5,
     dotSize: 25,
-    fretsCount: 15,
+    fretsCount: 18,
     fretsWidth: 1.2,
     scaleFrets: false,
     dots

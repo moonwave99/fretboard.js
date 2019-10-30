@@ -1,19 +1,19 @@
 import { SVG } from '@svgdotjs/svg.js';
 
 const generateStrings = function generateStrings ({
-  stringsCount,
-  stringsWidth,
+  stringCount,
+  stringWidth,
   height
 }) {
   const strings = [];
 
-  for (let i = 0; i < stringsCount; i++) {
-    let y = (height / (stringsCount - 1)) * i;
+  for (let i = 0; i < stringCount; i++) {
+    let y = (height / (stringCount - 1)) * i;
     if (i === 0) {
-      y += stringsWidth;
+      y += stringWidth;
     }
-    if (i === stringsCount - 1) {
-      y -= stringsWidth;
+    if (i === stringCount - 1) {
+      y -= stringWidth;
     }
     strings.push(y);
   }
@@ -22,13 +22,13 @@ const generateStrings = function generateStrings ({
 
 const generateFrets = function generateFrets ({
   scaleFrets,
-  fretsCount
+  fretCount
 }) {
   const k = Math.pow(2, 1 / 12);
   const frets = [0];
 
-  for (let i = 1; i < fretsCount; i++) {
-    let x = (100 / fretsCount) * i;
+  for (let i = 1; i < fretCount; i++) {
+    let x = (100 / fretCount) * i;
     if (scaleFrets) {
       x = 100 - 100 / Math.pow(k, i);
     }
@@ -40,14 +40,21 @@ const generateFrets = function generateFrets ({
 export default function renderFretboard ({
   el,
   dots = [],
-  stringsCount = 6,
-  stringsWidth = 1,
-  fretsCount = 15,
-  fretsWidth = 1,
+  stringCount = 6,
+  stringWidth = 1,
+  stringColor = 'black',
+  fretCount = 15,
+  fretWidth = 1,
+  fretColor = 'black',
+  nutWidth = 5,
+  nutColor = 'black',
+  middleFretColor = 'red',
   scaleFrets = true,
   height = 150,
   width = 1200,
   dotSize = 20,
+  dotStroke = 'black',
+  dotFill = 'white',
   padding = 20,
 }) {
   const draw = SVG()
@@ -55,11 +62,16 @@ export default function renderFretboard ({
     .viewbox(-padding, -padding, width, height + 2 * padding)
     .size('100%', height);
 
-  const strings = generateStrings({ stringsCount, height, stringsWidth });
-  const frets = generateFrets({ fretsCount, scaleFrets });
+  const strings = generateStrings({ stringCount, height, stringWidth });
+  const frets = generateFrets({ fretCount, scaleFrets });
   const MIDDLE_FRET = 11;
 
-  function renderDot ({ fret = 0, string = 1 }) {
+  function renderDot ({
+    fret = 0,
+    string = 1,
+    fill = dotFill,
+    stroke = dotStroke
+  }) {
     let x = 0;
     if (fret === 0) {
       x = `${frets[0] / 2}%`;
@@ -73,18 +85,18 @@ export default function renderFretboard ({
       .cx(x)
       .cy(y)
       .stroke({
-        color: 'black',
+        color: dotStroke,
         width: 2
       })
-      .fill('white');
+      .fill(fill);
   }
 
   strings.forEach((y, i) => {
     draw
       .line(0, y, '100%', y)
       .stroke({
-        color: 'black',
-        width: stringsWidth
+        color: stringColor,
+        width: stringWidth
       });
   });
 
@@ -92,11 +104,11 @@ export default function renderFretboard ({
     if (i === 0) {
       draw
         .line(0, 1, 0, height - 1)
-        .stroke({ color: 'black', width: '5' });
+        .stroke({ color: nutColor, width: nutWidth });
     } else {
       draw
         .line(`${x}%`, 1, `${x}%`, height - 1)
-        .stroke({ color: i === MIDDLE_FRET ? 'red' : 'black', width: fretsWidth });
+        .stroke({ color: i === MIDDLE_FRET ? middleFretColor : fretColor, width: fretWidth });
     }
   });
 

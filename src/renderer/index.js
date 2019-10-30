@@ -46,7 +46,7 @@ export default function renderFretboard ({
   fretCount = 15,
   fretWidth = 1,
   fretColor = 'black',
-  nutWidth = 5,
+  nutWidth = 7,
   nutColor = 'black',
   middleFretColor = 'red',
   scaleFrets = true,
@@ -70,25 +70,32 @@ export default function renderFretboard ({
     fret = 0,
     string = 1,
     fill = dotFill,
-    stroke = dotStroke
+    stroke = dotStroke,
+    text
   }) {
     let x = 0;
     if (fret === 0) {
-      x = `${frets[0] / 2}%`;
+      x = frets[0] / 2;
     } else {
-      x = `${frets[fret] - (frets[fret] - frets[fret - 1]) / 2}%`;
+      x = frets[fret] - (frets[fret] - frets[fret - 1]) / 2;
     }
     const y = strings[string - 1];
 
     draw
       .circle(dotSize)
-      .cx(x)
+      .cx(`${x}%`)
       .cy(y)
       .stroke({
         color: dotStroke,
         width: 2
       })
       .fill(fill);
+
+    if (text) {
+      draw.text(text)
+        .cx(width / 100 * x)
+        .cy(y);
+    }
   }
 
   strings.forEach((y, i) => {
@@ -119,8 +126,8 @@ export default function renderFretboard ({
   });
 
   dots.forEach((stringContent, stringIndex) => {
-    stringContent.forEach(({ fret, fill }) => {
-      renderDot({ fret, string: stringIndex + 1, fill });
+    stringContent.forEach((x) => {
+      renderDot({ string: stringIndex + 1, ...x });
     });
   });
 };

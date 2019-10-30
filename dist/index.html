@@ -1,17 +1,27 @@
 <!doctype html>
 <html>
  <head>
-   <title>Fretboard.js</title>
+   <title>Fretboard.js demo</title>
+   <meta charset="utf-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1">
    <style type="text/css">
      html, body {
        font-family: 'Futura', 'Arial', sans-serif;
        font-size: 16px;
        background-color: #ccffff;
      }
+     html {
+       box-sizing: border-box;
+     }
+     *, *:before, *:after {
+       box-sizing: inherit;
+     }
      h1 {
+       font-size: 2rem;
        margin: 4rem 0 2rem 0;
      }
      h2 {
+       font-size: 1.5rem;
        margin: 4rem 0 2rem 0;
      }
      h1, h2 {
@@ -28,6 +38,23 @@
        padding: 4rem;
        text-align: center;
      }
+     @media (max-width: 767px) {
+       html {
+         font-size: 12px;
+       }
+       main, header, footer {
+         max-width: 100vw;
+         overflow-y: hidden;
+         padding: 1rem;
+       }
+       figure {
+         width: 100%;
+         overflow-y: hidden;
+       }
+       figure svg{
+         width: auto;
+       }
+     }
    </style>
  </head>
  <body>
@@ -43,7 +70,7 @@
      <figure id="connected-boxes"></figure>
    </main>
    <footer>
-     <p>&copy; 2019 mwlabs.</p>
+     <p>&copy; 2019 mwlabs. | <a href="https://github.com/moonwave99/fretboard.js">github</a></p>
    </footer>
    <script src="main.js"></script>
  </body>

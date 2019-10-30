@@ -2,40 +2,6 @@ import renderFretboard from './renderer';
 import { boxes } from './generator';
 
 document.addEventListener('DOMContentLoaded', (event) => {
-  const connectedBox = [
-    [
-      { fret: 5 },
-      { fret: 7 },
-      { fret: 8 }
-    ],
-    [
-      { fret: 5 },
-      { fret: 7 },
-      { fret: 8, fill: '#f55' }
-    ],
-    [
-      { fret: 4 },
-      { fret: 5 },
-      { fret: 7 }
-    ],
-    [
-      { fret: 2 },
-      { fret: 4 },
-      { fret: 5, fill: '#f55' },
-      { fret: 7 }
-    ],
-    [
-      { fret: 2 },
-      { fret: 3 },
-      { fret: 5 }
-    ],
-    [
-      { fret: 2 },
-      { fret: 3, fill: '#f55' },
-      { fret: 5 }
-    ]
-  ];
-
   renderFretboard({
     el: '#fretboard',
     height: 200,
@@ -66,6 +32,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
     fretCount: 18,
     fretsWidth: 1.2,
     scaleFrets: true,
-    dots: connectedBox
+    dots: boxes.connected
   });
 });

@@ -9,7 +9,12 @@
     "lint": "semistandard ./src/*.js",
     "build": "webpack"
   },
-  "keywords": ["music", "guitar", "fretboard", "svg"],
+  "keywords": [
+    "music",
+    "guitar",
+    "fretboard",
+    "svg"
+  ],
   "author": "Diego Caponera <hello@diegocaponera.com>",
   "license": "ISC",
   "devDependencies": {
@@ -19,6 +24,8 @@
     "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
-    "@svgdotjs/svg.js": "^3.0.13"
+    "@svgdotjs/svg.js": "^3.0.13",
+    "@tonaljs/scale": "^3.2.3",
+    "@tonaljs/tonal": "^3.2.2"
   }
 }

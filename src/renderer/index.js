@@ -55,8 +55,9 @@ export default function renderFretboard ({
   width = 1200,
   dotSize = 20,
   dotStroke = 'black',
-  dotFill = 'white',
+  dotFill = () => 'white',
   padding = 20,
+  renderText = () => {},
 }) {
   const draw = SVG()
     .addTo(el)
@@ -70,9 +71,8 @@ export default function renderFretboard ({
   function renderDot ({
     fret = 0,
     string = 1,
-    fill = dotFill,
     stroke = dotStroke,
-    text
+    ...opts
   }) {
     let x = 0;
     if (fret === 0) {
@@ -90,8 +90,9 @@ export default function renderFretboard ({
         color: dotStroke,
         width: 2
       })
-      .fill(fill);
+      .fill(dotFill(opts));
 
+    const text = renderText(opts);
     if (text) {
       draw.text(text)
         .cx(width / 100 * x)
@@ -126,5 +127,5 @@ export default function renderFretboard ({
     }
   });
 
-  dots.forEach(x => renderDot(x));
+  dots.forEach(renderDot);
 };

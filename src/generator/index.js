@@ -1,48 +1,143 @@
-const colors = {
-  root: '#F25116',
-  M3: '#F29727',
-  P5: '#F2E96B'
+import { distance, interval } from '@tonaljs/tonal';
+import { scale } from '@tonaljs/scale';
+
+const mod = function mod(n, m) {
+  return ((n % m) + m) % m;
 };
 
-export const boxes = {
-  locrian: [
-    { string: 1, fret: 2 },
-    { string: 1, fret: 3, fill: colors.root, text: 'G' },
-    { string: 1, fret: 5 },
-    { string: 2, fret: 3, fill: colors.P5, text: 'D' },
-    { string: 2, fret: 5 },
-    { string: 3, fret: 2 },
-    { string: 3, fret: 4, fill: colors.M3, text: 'B' },
-    { string: 3, fret: 5 },
-    { string: 4, fret: 2 },
-    { string: 4, fret: 4 },
-    { string: 4, fret: 5, fill: colors.root, text: 'G' },
-    { string: 5, fret: 2, fill: colors.M3, text: 'B' },
-    { string: 5, fret: 3 },
-    { string: 5, fret: 5, fill: colors.P5, text: 'D' },
-    { string: 6, fret: 2 },
-    { string: 6, fret: 3, fill: colors.root, text: 'G' },
-    { string: 6, fret: 5 }
-  ],
-  connected: [
-    { string: 1, fret: 5 },
-    { string: 1, fret: 7, fill: colors.M3, text: 'B' },
-    { string: 1, fret: 8 },
-    { string: 2, fret: 5 },
-    { string: 2, fret: 7 },
-    { string: 2, fret: 8, fill: colors.root, text: 'G' },
-    { string: 3, fret: 4, fill: colors.M3, text: 'B' },
-    { string: 3, fret: 5 },
-    { string: 3, fret: 7, fill: colors.P5, text: 'D' },
-    { string: 4, fret: 2 },
-    { string: 4, fret: 4 },
-    { string: 4, fret: 5, fill: colors.root, text: 'G' },
-    { string: 4, fret: 7 },
-    { string: 5, fret: 2, fill: colors.M3, text: 'B' },
-    { string: 5, fret: 3 },
-    { string: 5, fret: 5, fill: colors.P5, text: 'D' },
-    { string: 6, fret: 2 },
-    { string: 6, fret: 3, fill: colors.root, text: 'G' },
-    { string: 6, fret: 5 }
-  ]
-};
+const CAGEDPatterns = [
+  {
+    name: 'E',
+    patternRoot: 'E2',
+    pattern: [
+      { string: 6, fret: -1 },
+      { string: 6, fret: 0, root: true },
+      { string: 6, fret: 2 },
+      { string: 5, fret: -1 },
+      { string: 5, fret: 0 },
+      { string: 5, fret: 2 },
+      { string: 4, fret: -1 },
+      { string: 4, fret: 1 },
+      { string: 4, fret: 2 },
+      { string: 3, fret: -1 },
+      { string: 3, fret: 1 },
+      { string: 3, fret: 2 },
+      { string: 2, fret: 0 },
+      { string: 2, fret: 2 },
+      { string: 1, fret: -1 },
+      { string: 1, fret: 0 },
+      { string: 1, fret: 2 }
+    ]
+  },
+  {
+    name: 'D',
+    patternRoot: 'D3',
+    pattern: [
+      { string: 6, fret: 0 },
+      { string: 6, fret: 2 },
+      { string: 6, fret: 3 },
+      { string: 5, fret: 0 },
+      { string: 5, fret: 2 },
+      { string: 4, fret: -1 },
+      { string: 4, fret: 0, root: true },
+      { string: 4, fret: 2 },
+      { string: 3, fret: -1 },
+      { string: 3, fret: 0 },
+      { string: 3, fret: 2 },
+      { string: 2, fret: 0 },
+      { string: 2, fret: 2 },
+      { string: 2, fret: 3 },
+      { string: 1, fret: 0 },
+      { string: 1, fret: 2 },
+      { string: 1, fret: 3 }
+    ]
+  },
+  {
+    name: 'C',
+    patternRoot: 'C3',
+    pattern: [
+      { string: 6, fret: 0 },
+      { string: 6, fret: 1 },
+      { string: 6, fret: 3 },
+      { string: 5, fret: 0 },
+      { string: 5, fret: 2 },
+      { string: 5, fret: 3, root: true },
+      { string: 4, fret: 0 },
+      { string: 4, fret: 2 },
+      { string: 4, fret: 3 },
+      { string: 3, fret: 0 },
+      { string: 3, fret: 2 },
+      { string: 2, fret: 0 },
+      { string: 2, fret: 1 },
+      { string: 2, fret: 3 },
+      { string: 1, fret: 0 },
+      { string: 1, fret: 1 },
+      { string: 1, fret: 3 }
+    ]
+  },
+  {
+    name: 'A',
+    patternRoot: 'A2',
+    pattern: [
+      { string: 6, fret: -2 },
+      { string: 6, fret: 0 },
+      { string: 6, fret: 2 },
+      { string: 5, fret: -1 },
+      { string: 5, fret: 0, root: true },
+      { string: 5, fret: 2 },
+      { string: 4, fret: -1 },
+      { string: 4, fret: 0 },
+      { string: 4, fret: 2 },
+      { string: 3, fret: -1 },
+      { string: 3, fret: 1 },
+      { string: 3, fret: 2 },
+      { string: 2, fret: 0 },
+      { string: 2, fret: 2 },
+      { string: 2, fret: 3 },
+      { string: 1, fret: 0 },
+      { string: 1, fret: 2 },
+    ]
+  },
+  {
+    name: 'G',
+    patternRoot: 'G3',
+    pattern: [
+      { string: 6, fret: 0 },
+      { string: 6, fret: 2 },
+      { string: 6, fret: 3, root: true },
+      { string: 5, fret: 0 },
+      { string: 5, fret: 2 },
+      { string: 5, fret: 3 },
+      { string: 4, fret: 0 },
+      { string: 4, fret: 2 },
+      { string: 4, fret: 4 },
+      { string: 3, fret: 0 },
+      { string: 3, fret: 2 },
+      { string: 2, fret: 0 },
+      { string: 2, fret: 1 },
+      { string: 2, fret: 3 },
+      { string: 1, fret: 0 },
+      { string: 1, fret: 2 },
+      { string: 1, fret: 3 }
+    ]
+  },
+];
+
+export const CAGED = CAGEDPatterns.reduce((accumulator, { name, patternRoot, pattern }) => {
+  accumulator[name] = ({ root = 'C3' }) => {
+    const { semitones } = interval(distance(patternRoot, root));
+    const { intervals, notes } = scale(`${root} major`);
+    const rootIndex = pattern.findIndex(({ root }) => root === true);
+    return pattern.map(({ string, fret }, i) => {
+      const index = mod(i - rootIndex, notes.length);
+      return {
+        string,
+        fret: fret + semitones,
+        note: notes[index].substring(0, notes[index].length - 1),
+        interval: intervals[index],
+        position: index + 1
+      };
+    });
+  };
+  return accumulator;
+}, {});

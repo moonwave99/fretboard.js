@@ -1,11 +1,8 @@
 import { distance, interval } from '@tonaljs/tonal';
 import { scale } from '@tonaljs/scale';
+import { mod } from '../utils';
 
-const mod = function mod(n, m) {
-  return ((n % m) + m) % m;
-};
-
-const CAGEDPatterns = [
+const patterns = [
   {
     name: 'E',
     patternRoot: 'E2',
@@ -123,7 +120,7 @@ const CAGEDPatterns = [
   },
 ];
 
-export const CAGED = CAGEDPatterns.reduce((accumulator, { name, patternRoot, pattern }) => {
+export const CAGED = patterns.reduce((accumulator, { name, patternRoot, pattern }) => {
   accumulator[name] = ({ root = 'C3' }) => {
     const { semitones } = interval(distance(patternRoot, root));
     const { intervals, notes } = scale(`${root} major`);
@@ -135,7 +132,7 @@ export const CAGED = CAGEDPatterns.reduce((accumulator, { name, patternRoot, pat
         fret: fret + semitones,
         note: notes[index].substring(0, notes[index].length - 1),
         interval: intervals[index],
-        position: index + 1
+        position: +intervals[index][0]
       };
     });
   };

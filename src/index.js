@@ -1,5 +1,6 @@
-import renderFretboard from './renderer';
-import { CAGED } from './generator';
+import renderFretboard from './renderer.js';
+import { CAGED } from './scales/CAGED';
+import { major } from './scales/pentatonic';
 
 document.addEventListener('DOMContentLoaded', (event) => {
   const colors = {
@@ -31,6 +32,31 @@ document.addEventListener('DOMContentLoaded', (event) => {
         }
       },
       dotFill: ({ interval }) => colors[interval] || colors.default
+    });
+  });
+
+  [
+    { pattern: 1, root: 'G2' },
+    { pattern: 2, root: 'G3' },
+    { pattern: 3, root: 'G3' },
+    { pattern: 4, root: 'G3' },
+    { pattern: 5, root: 'G3' }
+  ].forEach(({ pattern, root }, i) => {
+    renderFretboard({
+      el: `#fretboard-pentatonic-${pattern}`,
+      height: 200,
+      stringsWidth: 1.5,
+      dotSize: 25,
+      fretCount: 18,
+      fretsWidth: 1.2,
+      scaleFrets: true,
+      dots: major[pattern - 1]({ root }),
+      renderText: ({ note, position }) => {
+        if ([1].indexOf(position) > -1) {
+          return note;
+        }
+      },
+      dotFill: ({ interval }) => interval === '1P' ? colors[interval] : colors.default
     });
   });
 });

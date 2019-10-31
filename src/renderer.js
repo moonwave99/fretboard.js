@@ -57,7 +57,7 @@ export default function renderFretboard ({
   dotStroke = 'black',
   dotFill = () => 'white',
   padding = 20,
-  renderText = () => {},
+  renderText = () => {}
 }) {
   const draw = SVG()
     .addTo(el)
@@ -128,4 +128,4 @@ export default function renderFretboard ({
   });
 
   dots.forEach(renderDot);
-};
+}

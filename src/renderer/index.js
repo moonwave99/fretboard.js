@@ -49,6 +49,7 @@ export default function renderFretboard ({
   nutWidth = 7,
   nutColor = 'black',
   middleFretColor = 'red',
+  middleFretWidth = 2,
   scaleFrets = true,
   height = 150,
   width = 1200,
@@ -120,14 +121,10 @@ export default function renderFretboard ({
         .line(`${x}%`, 1, `${x}%`, height - 1)
         .stroke({
           color: i === MIDDLE_FRET ? middleFretColor : fretColor,
-          width: fretWidth
+          width: middleFretWidth
         });
     }
   });
 
-  dots.forEach((stringContent, stringIndex) => {
-    stringContent.forEach((x) => {
-      renderDot({ string: stringIndex + 1, ...x });
-    });
-  });
+  dots.forEach(x => renderDot(x));
 };

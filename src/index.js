@@ -1,4 +1,4 @@
-import renderFretboard from './renderer.js';
+import Fretboard from './Fretboard';
 import { CAGED } from './scales/CAGED';
 import { major } from './scales/pentatonic';
 
@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     { pattern: 'A', root: 'G3' },
     { pattern: 'G', root: 'G4' }
   ].forEach(({ pattern, root }, i) => {
-    renderFretboard({
+    const fretBoard = new Fretboard({
       el: `#fretboard-caged-${pattern.toLowerCase()}`,
       height: 200,
       stringsWidth: 1.5,
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       fretsWidth: 1.2,
       scaleFrets: true,
       dots: CAGED[pattern]({ root }),
-      renderText: ({ note, position }) => {
+      renderDotText: ({ note, position }) => {
         if ([1, 3, 5].indexOf(position) > -1) {
           return note;
         }
@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       dotFill: ({ interval }) => colors[interval] || colors.default,
       font: 'Futura'
     });
+    fretBoard.render();
   });
 
   [
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     { pattern: 4, root: 'G3' },
     { pattern: 5, root: 'G3' }
   ].forEach(({ pattern, root }, i) => {
-    renderFretboard({
+    const fretBoard = new Fretboard({
       el: `#fretboard-pentatonic-${pattern}`,
       height: 200,
       stringsWidth: 1.5,
@@ -52,7 +53,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       fretsWidth: 1.2,
       scaleFrets: true,
       dots: major[pattern - 1]({ root }),
-      renderText: ({ note, position }) => {
+      renderDotText: ({ note, position }) => {
         if ([1].indexOf(position) > -1) {
           return note;
         }
@@ -60,5 +61,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
       dotFill: ({ interval }) => interval === '1P' ? colors[interval] : colors.default,
       font: 'Futura'
     });
+    fretBoard.render();
   });
 });

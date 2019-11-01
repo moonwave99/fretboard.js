@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "webpack-dev-server",
     "lint": "semistandard ./src/*.js",
+    "fix": "semistandard --fix ./src/*.js",
     "build": "webpack"
   },
   "keywords": [

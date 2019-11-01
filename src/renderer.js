@@ -49,7 +49,7 @@ export default function renderFretboard ({
   nutWidth = 7,
   nutColor = 'black',
   middleFretColor = 'red',
-  middleFretWidth = 2,
+  middleFretWidth = 3,
   scaleFrets = true,
   height = 150,
   width = 1200,
@@ -57,12 +57,16 @@ export default function renderFretboard ({
   dotStroke = 'black',
   dotFill = () => 'white',
   padding = 20,
-  renderText = () => {}
+  renderText = () => {},
+  showFretsNumber = true,
+  fretsNumberHeight = 80,
+  font = 'Arial'
 }) {
+  const totalHeight = showFretsNumber ? height + fretsNumberHeight : height;
   const draw = SVG()
     .addTo(el)
-    .viewbox(-padding, -padding, width, height + 2 * padding)
-    .size('100%', height);
+    .viewbox(-padding, -padding, width, totalHeight + 2 * padding)
+    .size('100%', totalHeight);
 
   const strings = generateStrings({ stringCount, height, stringWidth });
   const frets = generateFrets({ fretCount, scaleFrets });
@@ -94,7 +98,11 @@ export default function renderFretboard ({
 
     const text = renderText(opts);
     if (text) {
-      draw.text(text)
+      draw
+        .text(text)
+        .font({
+          family: font
+        })
         .cx(width / 100 * x)
         .cy(y);
     }
@@ -122,8 +130,19 @@ export default function renderFretboard ({
         .line(`${x}%`, 1, `${x}%`, height - 1)
         .stroke({
           color: i === MIDDLE_FRET ? middleFretColor : fretColor,
-          width: middleFretWidth
+          width: i === MIDDLE_FRET ? middleFretWidth : fretWidth
         });
+      if (showFretsNumber) {
+        const middlePosition = frets[i] - (frets[i] - frets[i - 1]) / 2;
+        draw
+          .text(`${i}`)
+          .font({
+            family: font
+          })
+          .stroke(i === MIDDLE_FRET + 1 ? middleFretColor : fretColor)
+          .cx(width / 100 * middlePosition)
+          .cy(height + fretsNumberHeight / 2);
+      }
     }
   });
 

@@ -31,7 +31,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
           return note;
         }
       },
-      dotFill: ({ interval }) => colors[interval] || colors.default
+      dotFill: ({ interval }) => colors[interval] || colors.default,
+      font: 'Futura'
     });
   });
 
@@ -56,7 +57,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
           return note;
         }
       },
-      dotFill: ({ interval }) => interval === '1P' ? colors[interval] : colors.default
+      dotFill: ({ interval }) => interval === '1P' ? colors[interval] : colors.default,
+      font: 'Futura'
     });
   });
 });

@@ -175,33 +175,27 @@ export default class D3Test {
           stroke: nutColor,
           strokeWidth: nutWidth
         });
-      } else {
-        append(fretsGroup, 'line', {
-          x1: `${x}%`,
-          y1: 1,
-          x2: `${x}%`,
-          y2: height - 1,
-          stroke: i === MIDDLE_FRET ? middleFretColor : fretColor,
-          strokeWidth: i === MIDDLE_FRET ? middleFretWidth : fretWidth
-        });
-        if (showFretsNumber) {
-          const middlePosition = frets[i] - (frets[i] - frets[i - 1]) / 2;
-          append(fretNumbersGroup, 'text', {
-            fill: i === MIDDLE_FRET + 1 ? middleFretColor : fretColor,
-            fontFamily: font,
-            textAnchor: 'middle',
-            x: width / 100 * middlePosition,
-            y: height + fretsNumberHeight / 2
-          }).text(`${i}`);
-        }
+        return;
+      }
+      append(fretsGroup, 'line', {
+        x1: `${x}%`,
+        y1: 1,
+        x2: `${x}%`,
+        y2: height - 1,
+        stroke: i === MIDDLE_FRET ? middleFretColor : fretColor,
+        strokeWidth: i === MIDDLE_FRET ? middleFretWidth : fretWidth
+      });
+      if (showFretsNumber) {
+        const middlePosition = frets[i] - (frets[i] - frets[i - 1]) / 2;
+        append(fretNumbersGroup, 'text', {
+          fill: i === MIDDLE_FRET + 1 ? middleFretColor : fretColor,
+          fontFamily: font,
+          textAnchor: 'middle',
+          x: width / 100 * middlePosition,
+          y: height + fretsNumberHeight / 2
+        }).text(`${i}`);
       }
     });
-
-    const dotGroup = svg.append('g')
-      .attr('class', 'dots');
-
-    const dotsNodes = dotGroup.selectAll('g')
-      .data(dots);
 
     function getDotCoords ({ fret, string }) {
       let x = 0;
@@ -213,9 +207,17 @@ export default class D3Test {
       return [x, strings[string - 1]];
     }
 
-    const gs = dotsNodes.enter().append('g');
+    const dotGroup = svg
+      .append('g')
+      .attr('class', 'dots');
 
-    gs.append('circle')
+    const dotsNodes = dotGroup.selectAll('g')
+      .data(dots)
+      .enter()
+      .append('g')
+      .attr('class', 'dot');
+
+    dotsNodes.append('circle')
       .attr('cx', d => `${getDotCoords(d)[0]}%`)
       .attr('cy', d => getDotCoords(d)[1])
       .attr('r', dotSize * 0.5)
@@ -224,7 +226,7 @@ export default class D3Test {
       .attr('stroke-width', dotStrokeWidth)
       .attr('fill', dotFill);
 
-    gs.append('text')
+    dotsNodes.append('text')
       .attr('x', d => `${getDotCoords(d)[0]}%`)
       .attr('y', d => getDotCoords(d)[1])
       .attr('class', ({ interval }) => `dot-text dot-text-${interval}`)

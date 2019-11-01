@@ -1,4 +1,5 @@
-import { SVG } from '@svgdotjs/svg.js';
+import { select } from 'd3-selection';
+import decamelize from 'decamelize';
 
 const generateStrings = function generateStrings ({
   stringCount,
@@ -27,7 +28,7 @@ const generateFrets = function generateFrets ({
   const fretRatio = Math.pow(2, 1 / 12);
   const frets = [0];
 
-  for (let i = 1; i < fretCount; i++) {
+  for (let i = 1; i <= fretCount; i++) {
     let x = (100 / fretCount) * i;
     if (scaleFrets) {
       x = 100 - 100 / Math.pow(fretRatio, i);
@@ -37,9 +38,20 @@ const generateFrets = function generateFrets ({
   return frets.map((x, i) => x / frets[frets.length - 1] * 100);
 };
 
+const append = function append (el = null, tagName = 'g', opts = {}) {
+  if (!el) {
+    return;
+  }
+  const tag = el.append(tagName);
+  Object.keys(opts).forEach((key) =>
+    tag.attr(decamelize(key, '-'), opts[key])
+  );
+  return tag;
+};
+
 const MIDDLE_FRET = 11;
 
-export default class Fretboard {
+export default class D3Test {
   constructor (options) {
     const defaultOptions = {
       el: null,
@@ -55,12 +67,14 @@ export default class Fretboard {
       middleFretColor: 'red',
       middleFretWidth: 3,
       scaleFrets: true,
+      topPadding: 20,
       height: 150,
       width: 1200,
       dotSize: 20,
-      dotStroke: 'black',
+      dotStrokeColor: 'black',
+      dotStrokeWidth: 2,
+      dotTextSize: 12,
       dotFill: () => 'white',
-      padding: 20,
       renderDotText: () => {},
       showFretsNumber: true,
       fretsNumberHeight: 80,
@@ -69,7 +83,7 @@ export default class Fretboard {
     this.options = Object.assign(defaultOptions, options);
     const {
       el,
-      padding,
+      topPadding,
       width,
       height,
       stringCount,
@@ -80,19 +94,27 @@ export default class Fretboard {
       fretsNumberHeight
     } = this.options;
 
-    const totalHeight = showFretsNumber ? height + fretsNumberHeight : height;
-    this.draw = SVG()
-      .addTo(el)
-      .viewbox(-padding, -padding, width, totalHeight + 2 * padding)
-      .size('100%', totalHeight);
+    let totalHeight = height + topPadding;
+
+    if (showFretsNumber) {
+      totalHeight += fretsNumberHeight;
+    }
 
     this.strings = generateStrings({ stringCount, height, stringWidth });
     this.frets = generateFrets({ fretCount, scaleFrets });
+
+    this.svg = select(el)
+      .append('svg')
+      .attr('width', width)
+      .attr('height', totalHeight)
+      .append('g')
+      .attr('class', 'fretboard-wrapper')
+      .attr('transform', `translate(0, ${topPadding})`);
   }
 
   render () {
     const {
-      draw,
+      svg,
       frets,
       strings
     } = this;
@@ -112,86 +134,104 @@ export default class Fretboard {
       showFretsNumber,
       fretsNumberHeight,
       dots,
-      dotStroke,
+      dotStrokeColor,
+      dotStrokeWidth,
       dotFill,
       dotSize,
-      renderDotText
+      renderDotText,
+      dotTextSize
     } = this.options;
 
+    const stringGroup = svg
+      .append('g')
+      .attr('class', 'strings');
+
     strings.forEach((y, i) => {
-      draw
-        .line(0, y, '100%', y)
-        .stroke({
-          color: stringColor,
-          width: stringWidth
-        });
+      append(stringGroup, 'line', {
+        x1: 0,
+        y1: y,
+        x2: '100%',
+        y2: y,
+        stroke: stringColor,
+        strokeWidth: stringWidth
+      });
     });
+
+    const fretsGroup = svg
+      .append('g')
+      .attr('class', 'frets');
+
+    const fretNumbersGroup = svg
+      .append('g')
+      .attr('class', 'fret-numbers');
 
     frets.forEach((x, i) => {
       if (i === 0) {
-        draw
-          .line(0, 1, 0, height - 1)
-          .stroke({
-            color: nutColor,
-            width: nutWidth
-          });
+        append(fretsGroup, 'line', {
+          x1: 0,
+          y1: 1,
+          x2: 0,
+          y2: height - 1,
+          stroke: nutColor,
+          strokeWidth: nutWidth
+        });
       } else {
-        draw
-          .line(`${x}%`, 1, `${x}%`, height - 1)
-          .stroke({
-            color: i === MIDDLE_FRET ? middleFretColor : fretColor,
-            width: i === MIDDLE_FRET ? middleFretWidth : fretWidth
-          });
+        append(fretsGroup, 'line', {
+          x1: `${x}%`,
+          y1: 1,
+          x2: `${x}%`,
+          y2: height - 1,
+          stroke: i === MIDDLE_FRET ? middleFretColor : fretColor,
+          strokeWidth: i === MIDDLE_FRET ? middleFretWidth : fretWidth
+        });
         if (showFretsNumber) {
           const middlePosition = frets[i] - (frets[i] - frets[i - 1]) / 2;
-          draw
-            .text(`${i}`)
-            .font({
-              family: font
-            })
-            .stroke(i === MIDDLE_FRET + 1 ? middleFretColor : fretColor)
-            .cx(width / 100 * middlePosition)
-            .cy(height + fretsNumberHeight / 2);
+          append(fretNumbersGroup, 'text', {
+            fill: i === MIDDLE_FRET + 1 ? middleFretColor : fretColor,
+            fontFamily: font,
+            textAnchor: 'middle',
+            x: width / 100 * middlePosition,
+            y: height + fretsNumberHeight / 2
+          }).text(`${i}`);
         }
       }
     });
 
-    function renderDot ({
-      fret = 0,
-      string = 1,
-      stroke = dotStroke,
-      ...opts
-    }) {
+    const dotGroup = svg.append('g')
+      .attr('class', 'dots');
+
+    const dotsNodes = dotGroup.selectAll('g')
+      .data(dots);
+
+    function getDotCoords ({ fret, string }) {
       let x = 0;
       if (fret === 0) {
         x = frets[0] / 2;
       } else {
         x = frets[fret] - (frets[fret] - frets[fret - 1]) / 2;
       }
-      const y = strings[string - 1];
-
-      draw
-        .circle(dotSize)
-        .cx(`${x}%`)
-        .cy(y)
-        .stroke({
-          color: dotStroke,
-          width: 2
-        })
-        .fill(dotFill(opts));
-
-      const text = renderDotText(opts);
-      if (text) {
-        draw
-          .text(text)
-          .font({
-            family: font
-          })
-          .cx(width / 100 * x)
-          .cy(y);
-      }
+      return [x, strings[string - 1]];
     }
 
-    dots.forEach(renderDot);
+    const gs = dotsNodes.enter().append('g');
+
+    gs.append('circle')
+      .attr('cx', d => `${getDotCoords(d)[0]}%`)
+      .attr('cy', d => getDotCoords(d)[1])
+      .attr('r', dotSize * 0.5)
+      .attr('class', ({ interval }) => `dot dot-${interval}`)
+      .attr('stroke', dotStrokeColor)
+      .attr('stroke-width', dotStrokeWidth)
+      .attr('fill', dotFill);
+
+    gs.append('text')
+      .attr('x', d => `${getDotCoords(d)[0]}%`)
+      .attr('y', d => getDotCoords(d)[1])
+      .attr('class', ({ interval }) => `dot-text dot-text-${interval}`)
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'central')
+      .attr('font-family', font)
+      .attr('font-size', dotTextSize)
+      .text(renderDotText);
   }
 }

@@ -25,8 +25,9 @@
     "webpack-dev-server": "^3.9.0"
   },
   "dependencies": {
-    "@svgdotjs/svg.js": "^3.0.13",
     "@tonaljs/scale": "^3.2.3",
-    "@tonaljs/tonal": "^3.2.2"
+    "@tonaljs/tonal": "^3.2.2",
+    "d3-selection": "^1.4.0",
+    "decamelize": "^3.2.0"
   }
 }

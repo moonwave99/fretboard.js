@@ -1,86 +1,140 @@
 <!doctype html>
 <html>
- <head>
-   <title>Fretboard.js demo</title>
-   <meta charset="utf-8">
-   <meta name="viewport" content="width=device-width, initial-scale=1">
-   <style type="text/css">
-     html, body {
-       font-family: 'Futura', 'Arial', sans-serif;
-       font-size: 16px;
-       background-color: #ccffff;
-       margin: 0;
-       padding: 0;
-     }
-     html {
-       box-sizing: border-box;
-     }
-     *, *:before, *:after {
-       box-sizing: inherit;
-     }
-     h1 {
-       font-size: 2rem;
-       margin: 4rem 0 2rem 0;
-     }
-     h2 {
-       font-size: 1.5rem;
-       margin: 4rem 0 2rem 0;
-     }
-     h1, h2 {
-       color: #6c06dc;
-     }
-     main, header, footer {
-       width: 1200px;
-       margin: 0 auto;
-     }
-     figure {
-       margin: 0;
-     }
-     footer {
-       padding: 4rem;
-       text-align: center;
-     }
-     @media (max-width: 768px) {
-       html {
-         font-size: 12px;
-         width: 100vw;
-       }
-       main, header, footer {
-         width: 100vw;
-         overflow-y: hidden;
-         padding: 1rem;
-       }
-       figure {
-         width: 100%;
-         overflow-y: hidden;
-       }
-       figure svg{
-         width: auto;
-       }
-     }
-   </style>
- </head>
- <body>
-   <header>
-     <h1>Fretboard.js demo</h1>
-   </header>
-   <main>
-     <h2>CAGED System</h2>
-     <figure id="fretboard-caged-e"></figure>
-     <figure id="fretboard-caged-d"></figure>
-     <figure id="fretboard-caged-c"></figure>
-     <figure id="fretboard-caged-a"></figure>
-     <figure id="fretboard-caged-g"></figure>
-     <h2>Pentatonic Boxes</h2>
-     <figure id="fretboard-pentatonic-1"></figure>
-     <figure id="fretboard-pentatonic-2"></figure>
-     <figure id="fretboard-pentatonic-3"></figure>
-     <figure id="fretboard-pentatonic-4"></figure>
-     <figure id="fretboard-pentatonic-5"></figure>
-   </main>
-   <footer>
-     <p>&copy; 2019 mwlabs. | <a href="https://github.com/moonwave99/fretboard.js">github</a></p>
-   </footer>
-   <script src="main.js"></script>
- </body>
+
+<head>
+	<title>Fretboard.js demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport"
+	  content="width=device-width, initial-scale=1">
+	<style type="text/css">
+		html,
+		body {
+			font-family: 'Futura', 'Arial', sans-serif;
+			font-size: 16px;
+			background-color: #ccffff;
+			margin: 0;
+			padding: 0;
+		}
+
+		html {
+			box-sizing: border-box;
+		}
+
+		*,
+		*:before,
+		*:after {
+			box-sizing: inherit;
+		}
+
+		h1 {
+			font-size: 2rem;
+			margin: 4rem 0 2rem 0;
+		}
+
+		h2 {
+			font-size: 1.5rem;
+			margin: 4rem 0 2rem 0;
+		}
+
+		h1,
+		h2 {
+			color: #6c06dc;
+		}
+
+		main,
+		header,
+		footer {
+			width: 1200px;
+			margin: 0 auto;
+		}
+
+		figure {
+			margin: 0;
+		}
+
+		footer {
+			padding: 4rem;
+			text-align: center;
+		}
+
+		.api-actions {
+			padding: 0;
+			margin: 0 0 2rem 0;
+		}
+
+		.api-actions li {
+			list-style: none;
+			display: inline-block;
+			padding-right: 1rem;
+		}
+
+		.api-actions li button {
+			height: 2rem;
+			border-radius: .25rem;
+		}
+
+		@media (max-width: 768px) {
+			html {
+				font-size: 12px;
+				width: 100vw;
+			}
+
+			main,
+			header,
+			footer {
+				width: 100vw;
+				overflow-y: hidden;
+				padding: 1rem;
+			}
+
+			figure {
+				width: 100%;
+				overflow-y: hidden;
+			}
+
+			figure svg {
+				width: auto;
+			}
+		}
+	</style>
+</head>
+
+<body>
+	<header>
+		<h1>Fretboard.js demo</h1>
+	</header>
+	<main>
+		<section>
+			<h2>Dots API</h2>
+			<ul class="api-actions">
+				<li><button data-action="show-notes">Show Notes</button></li>
+				<li><button data-action="show-intervals">Show Intervals</button></li>
+				<li><button data-action="highlight-triad">Highlight C Major triad</button></li>
+				<li><button data-action="clear">Clear</button></li>
+			</ul>
+			<figure id="fretboard-api"></figure>
+		</section>
+		<section>
+			<h2>CAGED System</h2>
+			<figure id="fretboard-caged-e"></figure>
+			<figure id="fretboard-caged-d"></figure>
+			<figure id="fretboard-caged-c"></figure>
+			<figure id="fretboard-caged-a"></figure>
+			<figure id="fretboard-caged-g"></figure>
+		</section>
+		<section>
+			<h2>Pentatonic Boxes</h2>
+			<figure id="fretboard-pentatonic-1"></figure>
+			<figure id="fretboard-pentatonic-2"></figure>
+			<figure id="fretboard-pentatonic-3"></figure>
+			<figure id="fretboard-pentatonic-4"></figure>
+			<figure id="fretboard-pentatonic-5"></figure>
+		</section>
+	</main>
+	<footer>
+		<p>&copy; 2019 mwlabs. | <a href="https://github.com/moonwave99/fretboard.js">github</a></p>
+	</footer>
+	<script src="main.js"></script>
+</body>
+
 </html>

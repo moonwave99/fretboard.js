@@ -10,6 +10,50 @@ document.addEventListener('DOMContentLoaded', (event) => {
     '5P': '#F2E96B'
   };
 
+  const apiFretboard = new Fretboard({
+    el: '#fretboard-api',
+    dots: CAGED.C({ root: 'C3' }),
+    height: 200,
+    stringsWidth: 1.5,
+    dotSize: 25,
+    fretCount: 15,
+    fretsWidth: 1.2,
+    font: 'Futura'
+  });
+
+  apiFretboard.render();
+
+  document.querySelectorAll('.api-actions button')
+    .forEach((button) => {
+      button.addEventListener('click', ({ currentTarget }) => {
+        switch (currentTarget.dataset.action) {
+          case 'show-notes':
+            apiFretboard.dots({
+              text: ({ note }) => note
+            });
+            break;
+          case 'show-intervals':
+            apiFretboard.dots({
+              text: ({ interval }) => interval
+            });
+            break;
+          case 'highlight-triad':
+            apiFretboard.dots({
+              filter: ({ position }) => [1, 3, 5].indexOf(position) > -1,
+              stroke: 'red'
+            });
+            break;
+          default:
+            apiFretboard.dots({
+              text: () => null,
+              fill: colors.default,
+              stroke: 'black'
+            });
+            break;
+        }
+      });
+    });
+
   [
     { pattern: 'E', root: 'G2' },
     { pattern: 'D', root: 'G3' },
@@ -24,9 +68,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
       dotSize: 25,
       fretCount: 18,
       fretsWidth: 1.2,
-      scaleFrets: true,
       dots: CAGED[pattern]({ root }),
-      renderDotText: ({ note, position }) => {
+      dotText: ({ note, position }) => {
         if ([1, 3, 5].indexOf(position) > -1) {
           return note;
         }
@@ -51,9 +94,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
       dotSize: 25,
       fretCount: 18,
       fretsWidth: 1.2,
-      scaleFrets: true,
       dots: major[pattern - 1]({ root }),
-      renderDotText: ({ note, position }) => {
+      dotText: ({ note, position }) => {
         if ([1].indexOf(position) > -1) {
           return note;
         }

@@ -5,14 +5,17 @@ import { major } from './scales/pentatonic';
 document.addEventListener('DOMContentLoaded', (event) => {
   const colors = {
     default: 'white',
-    '1P': '#F25116',
-    '3M': '#F29727',
-    '5P': '#F2E96B'
+    intervals: {
+      '1P': '#F25116',
+      '3M': '#F29727',
+      '5P': '#F2E96B'
+    },
+    octaves: [null, null, 'red', 'orange', 'yellow', 'green']
   };
 
   const apiFretboard = new Fretboard({
     el: '#fretboard-api',
-    dots: CAGED.C({ root: 'C3' }),
+    dots: CAGED.C(),
     height: 200,
     stringsWidth: 1.5,
     dotSize: 25,
@@ -29,12 +32,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
         switch (currentTarget.dataset.action) {
           case 'show-notes':
             apiFretboard.dots({
-              text: ({ note }) => note
+              text: ({ note, octave }) => note,
+              fill: colors.default
+            });
+            break;
+          case 'show-notes-with-octave':
+            apiFretboard.dots({
+              text: ({ note, octave }) => note + octave,
+              fill: ({ octave }) => colors.octaves[octave]
             });
             break;
           case 'show-intervals':
             apiFretboard.dots({
-              text: ({ interval }) => interval
+              text: ({ interval }) => interval,
+              fill: colors.default
             });
             break;
           case 'highlight-triad':
@@ -70,11 +81,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
       fretsWidth: 1.2,
       dots: CAGED[pattern]({ root }),
       dotText: ({ note, position }) => {
-        if ([1, 3, 5].indexOf(position) > -1) {
+        if ([1].indexOf(position) > -1) {
           return note;
         }
       },
-      dotFill: ({ interval }) => colors[interval] || colors.default,
+      dotFill: ({ interval }) => interval === '1P' ? colors.intervals[interval] : colors.default,
       font: 'Futura'
     });
     fretBoard.render();
@@ -100,7 +111,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           return note;
         }
       },
-      dotFill: ({ interval }) => interval === '1P' ? colors[interval] : colors.default,
+      dotFill: ({ interval }) => interval === '1P' ? colors.intervals[interval] : colors.default,
       font: 'Futura'
     });
     fretBoard.render();

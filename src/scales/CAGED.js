@@ -1,6 +1,4 @@
-import { distance, interval } from '@tonaljs/tonal';
-import { scale } from '@tonaljs/scale';
-import { mod } from '../utils';
+import { generateBox } from './generator';
 
 const patterns = [
   {
@@ -121,20 +119,7 @@ const patterns = [
 ];
 
 export const CAGED = patterns.reduce((accumulator, { name, patternRoot, pattern }) => {
-  accumulator[name] = ({ root = 'C3' }) => {
-    const { semitones } = interval(distance(patternRoot, root));
-    const { intervals, notes } = scale(`${root} major`);
-    const rootIndex = pattern.findIndex(({ root }) => root === true);
-    return pattern.map(({ string, fret }, i) => {
-      const index = mod(i - rootIndex, notes.length);
-      return {
-        string,
-        fret: fret + semitones,
-        note: notes[index].substring(0, notes[index].length - 1),
-        interval: intervals[index],
-        position: +intervals[index][0]
-      };
-    });
-  };
+  const scaleTitle = (root) => `${root} major`;
+  accumulator[name] = generateBox({ name, patternRoot, pattern, scaleTitle });
   return accumulator;
 }, {});

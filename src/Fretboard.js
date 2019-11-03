@@ -51,7 +51,7 @@ const append = function append (el = null, tagName = 'g', opts = {}) {
 
 const MIDDLE_FRET = 11;
 
-export default class Fretboard {
+export class Fretboard {
   constructor (options) {
     const defaultOptions = {
       el: null,

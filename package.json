@@ -2,13 +2,17 @@
   "name": "fretboard.js",
   "version": "0.0.1",
   "description": "Fretboard diagram generator",
-  "main": "index.js",
+  "main": "dist/fretboard.cjs.js",
+  "module": "dist/fretboard.esm.js",
+  "browser": "dist/fretboard.umd.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start:dev": "webpack-dev-server",
     "lint": "semistandard ./src/*.js",
     "fix": "semistandard --fix ./src/*.js",
-    "build": "webpack"
+    "start:dev": "rollup -c -w",
+    "build:prod": "rollup -c",
+    "demo:dev": "webpack-dev-server",
+    "demo:prod": "webpack"
   },
   "keywords": [
     "music",
@@ -19,6 +23,9 @@
   "author": "Diego Caponera <hello@diegocaponera.com>",
   "license": "ISC",
   "devDependencies": {
+    "rollup": "^1.26.3",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "semistandard": "^14.2.0",
     "webpack": "^4.41.2",
     "webpack-cli": "^3.3.9",

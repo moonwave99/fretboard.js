@@ -1,6 +1,8 @@
-import Fretboard from './Fretboard';
-import { CAGED } from './scales/CAGED';
-import { major } from './scales/pentatonic';
+import {
+  Fretboard,
+  CAGED,
+  major
+} from '../dist/fretboard.esm.js';
 
 document.addEventListener('DOMContentLoaded', (event) => {
   const colors = {

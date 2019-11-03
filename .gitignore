@@ -30,8 +30,8 @@ Thumbs.db
 node_modules/
 npm-debug.log
 
-# Brunch folder for temporary files.
-tmp/
+dist/
+demo/demo.js
 
 lib-cov
 

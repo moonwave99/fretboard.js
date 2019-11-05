@@ -1,6 +1,6 @@
 import { generateBox } from './generator';
 
-const patterns = {
+const boxes = {
   E: {
     modes: {
       major: {
@@ -158,9 +158,18 @@ const patterns = {
   },
 };
 
-export const CAGED = Object.keys(patterns).reduce((accumulator, name) => {
-  const scaleTitle = (root) => `${root} major`;
-  const { pattern, modes } = patterns[name];
-  accumulator[name] = generateBox({ name, pattern, modes, scaleTitle, mode: 'major' });
-  return accumulator;
-}, {});
+const DEFAULT_ROOT_NOTE = 'C3';
+const DEFAULT_MODE = 'major';
+const DEFAULT_BOX = 'C';
+
+export function CAGED ({ mode = DEFAULT_MODE, root = DEFAULT_ROOT_NOTE, box = DEFAULT_BOX } = {}) {
+  const { pattern, modes } = boxes[box];
+  const modeSchema = modes[mode];
+  return generateBox({
+    name: `CAGED ${box} box - ${root }${mode}`,
+    scaleTitle: `${root} ${mode}`,
+    pattern,
+    root,
+    modeSchema
+  });
+}

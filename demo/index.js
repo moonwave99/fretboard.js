@@ -17,7 +17,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
   const apiFretboard = new Fretboard({
     el: '#fretboard-api',
-    dots: CAGED.C(),
+    dots: CAGED({
+      mode: 'major',
+      root: 'C3',
+      box: 'C'
+    }),
     height: 200,
     stringsWidth: 1.5,
     dotSize: 25,
@@ -68,20 +72,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 
   [
-    { pattern: 'E', root: 'G2' },
-    { pattern: 'D', root: 'G3' },
-    { pattern: 'C', root: 'G3' },
-    { pattern: 'A', root: 'G3' },
-    { pattern: 'G', root: 'G3' }
-  ].forEach(({ pattern, root }, i) => {
+    { box: 'E', root: 'G2' },
+    { box: 'D', root: 'G3' },
+    { box: 'C', root: 'G3' },
+    { box: 'A', root: 'G3' },
+    { box: 'G', root: 'G3' }
+  ].forEach(({ box, root }, i) => {
     const fretBoard = new Fretboard({
-      el: `#fretboard-caged-${pattern.toLowerCase()}`,
+      el: `#fretboard-caged-${box.toLowerCase()}`,
       height: 200,
       stringsWidth: 1.5,
       dotSize: 25,
       fretCount: 18,
       fretsWidth: 1.2,
-      dots: CAGED[pattern]({ root }),
+      dots: CAGED({ box, root }),
       dotText: ({ note, position }) => {
         if ([1].indexOf(position) > -1) {
           return note;
@@ -94,20 +98,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
   });
 
   [
-    { pattern: 1, root: 'G2' },
-    { pattern: 2, root: 'G3' },
-    { pattern: 3, root: 'G3' },
-    { pattern: 4, root: 'G3' },
-    { pattern: 5, root: 'G3' }
-  ].forEach(({ pattern, root }, i) => {
+    { box: 1, root: 'G2' },
+    { box: 2, root: 'G3' },
+    { box: 3, root: 'G3' },
+    { box: 4, root: 'G3' },
+    { box: 5, root: 'G3' }
+  ].forEach(({ box, root }, i) => {
     const fretBoard = new Fretboard({
-      el: `#fretboard-pentatonic-${pattern}`,
+      el: `#fretboard-pentatonic-${box}`,
       height: 200,
       stringsWidth: 1.5,
       dotSize: 25,
       fretCount: 18,
       fretsWidth: 1.2,
-      dots: pentatonic.major[pattern - 1]({ root }),
+      dots: pentatonic({ box, root, mode: 'major' }),
       dotText: ({ note, position }) => {
         if ([1].indexOf(position) > -1) {
           return note;

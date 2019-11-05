@@ -133,14 +133,18 @@ const boxes = [
   }
 ];
 
-const output = {};
+const DEFAULT_ROOT_NOTE = 'C3';
+const DEFAULT_MODE = 'major';
+const DEFAULT_BOX = 1;
 
-['major', 'minor'].forEach((mode) => {
-  output[mode] = boxes.map(({ pattern, modes }, boxIndex) => {
-    const scaleTitle = (root) => `${root} ${mode} pentatonic`;
-    const name = `Pentatonic ${mode} box ${boxIndex + 1}`;
-    return generateBox({ name, pattern, modes, scaleTitle, mode });
+export function pentatonic ({ mode = DEFAULT_MODE, root = DEFAULT_ROOT_NOTE, box } = {}) {
+  const { pattern, modes } = boxes[box - 1];
+  const modeSchema = modes[mode];
+  return generateBox({
+    name: `Pentatonic ${mode} box ${box}`,
+    scaleTitle: `${root} ${mode} pentatonic`,
+    pattern,
+    root,
+    modeSchema
   });
-});
-
-export const pentatonic = output;
+}

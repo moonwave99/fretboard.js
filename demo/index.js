@@ -1,7 +1,7 @@
 import {
   Fretboard,
   CAGED,
-  major
+  pentatonic,
 } from '../dist/fretboard.esm.js';
 
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       '3M': '#F29727',
       '5P': '#F2E96B'
     },
-    octaves: [null, null, 'red', 'orange', 'yellow', 'green']
+    octaves: [null, 'magenta', 'red', 'orange', 'yellow', 'green']
   };
 
   const apiFretboard = new Fretboard({
@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
     { pattern: 'D', root: 'G3' },
     { pattern: 'C', root: 'G3' },
     { pattern: 'A', root: 'G3' },
-    { pattern: 'G', root: 'G4' }
+    { pattern: 'G', root: 'G3' }
   ].forEach(({ pattern, root }, i) => {
     const fretBoard = new Fretboard({
       el: `#fretboard-caged-${pattern.toLowerCase()}`,
@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       dotSize: 25,
       fretCount: 18,
       fretsWidth: 1.2,
-      dots: major[pattern - 1]({ root }),
+      dots: pentatonic.major[pattern - 1]({ root }),
       dotText: ({ note, position }) => {
         if ([1].indexOf(position) > -1) {
           return note;

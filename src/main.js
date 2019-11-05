@@ -1,3 +1,3 @@
 export { Fretboard } from './Fretboard';
 export { CAGED } from './scales/CAGED';
-export { major } from './scales/pentatonic';
+export { pentatonic } from './scales/pentatonic';

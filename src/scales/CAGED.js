@@ -1,12 +1,20 @@
 import { generateBox } from './generator';
 
-const patterns = [
-  {
-    name: 'E',
-    patternRoot: 'E2',
+const patterns = {
+  E: {
+    modes: {
+      major: {
+        root: 'E2',
+        index: 1
+      },
+      minor: {
+        root: 'C#2',
+        index: 6
+      }
+    },
     pattern: [
       { string: 6, fret: -1 },
-      { string: 6, fret: 0, root: true },
+      { string: 6, fret: 0 },
       { string: 6, fret: 2 },
       { string: 5, fret: -1 },
       { string: 5, fret: 0 },
@@ -24,9 +32,17 @@ const patterns = [
       { string: 1, fret: 2 }
     ]
   },
-  {
-    name: 'D',
-    patternRoot: 'D3',
+  D: {
+    modes: {
+      major: {
+        root: 'D3',
+        index: 6
+      },
+      minor: {
+        root: 'B2',
+        index: 4
+      }
+    },
     pattern: [
       { string: 6, fret: 0 },
       { string: 6, fret: 2 },
@@ -34,7 +50,7 @@ const patterns = [
       { string: 5, fret: 0 },
       { string: 5, fret: 2 },
       { string: 4, fret: -1 },
-      { string: 4, fret: 0, root: true },
+      { string: 4, fret: 0 },
       { string: 4, fret: 2 },
       { string: 3, fret: -1 },
       { string: 3, fret: 0 },
@@ -47,16 +63,24 @@ const patterns = [
       { string: 1, fret: 3 }
     ]
   },
-  {
-    name: 'C',
-    patternRoot: 'C3',
+  C: {
+    modes: {
+      major: {
+        root: 'C3',
+        index: 5
+      },
+      minor: {
+        root: 'A2',
+        index: 3
+      }
+    },
     pattern: [
       { string: 6, fret: 0 },
       { string: 6, fret: 1 },
       { string: 6, fret: 3 },
       { string: 5, fret: 0 },
       { string: 5, fret: 2 },
-      { string: 5, fret: 3, root: true },
+      { string: 5, fret: 3 },
       { string: 4, fret: 0 },
       { string: 4, fret: 2 },
       { string: 4, fret: 3 },
@@ -70,15 +94,23 @@ const patterns = [
       { string: 1, fret: 3 }
     ]
   },
-  {
-    name: 'A',
-    patternRoot: 'A2',
+  A: {
+    modes: {
+      major: {
+        root: 'A2',
+        index: 4
+      },
+      minor: {
+        root: 'F#2',
+        index: 2
+      }
+    },
     pattern: [
       { string: 6, fret: -2 },
       { string: 6, fret: 0 },
       { string: 6, fret: 2 },
       { string: 5, fret: -1 },
-      { string: 5, fret: 0, root: true },
+      { string: 5, fret: 0 },
       { string: 5, fret: 2 },
       { string: 4, fret: -1 },
       { string: 4, fret: 0 },
@@ -93,13 +125,21 @@ const patterns = [
       { string: 1, fret: 2 },
     ]
   },
-  {
-    name: 'G',
-    patternRoot: 'G3',
+  G: {
+    modes: {
+      major: {
+        root: 'G2',
+        index: 2
+      },
+      minor: {
+        root: 'E2',
+        index: 0
+      }
+    },
     pattern: [
       { string: 6, fret: 0 },
       { string: 6, fret: 2 },
-      { string: 6, fret: 3, root: true },
+      { string: 6, fret: 3 },
       { string: 5, fret: 0 },
       { string: 5, fret: 2 },
       { string: 5, fret: 3 },
@@ -116,10 +156,11 @@ const patterns = [
       { string: 1, fret: 3 }
     ]
   },
-];
+};
 
-export const CAGED = patterns.reduce((accumulator, { name, patternRoot, pattern }) => {
+export const CAGED = Object.keys(patterns).reduce((accumulator, name) => {
   const scaleTitle = (root) => `${root} major`;
-  accumulator[name] = generateBox({ name, patternRoot, pattern, scaleTitle });
+  const { pattern, modes } = patterns[name];
+  accumulator[name] = generateBox({ name, pattern, modes, scaleTitle, mode: 'major' });
   return accumulator;
 }, {});

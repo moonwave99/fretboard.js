@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       '3M': '#F29727',
       '5P': '#F2E96B'
     },
-    octaves: [null, 'magenta', 'red', 'orange', 'yellow', 'green']
+    octaves: ['blue', 'magenta', 'red', 'orange', 'yellow', 'green']
   };
 
   const apiFretboard = new Fretboard({
@@ -38,13 +38,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
         switch (currentTarget.dataset.action) {
           case 'show-notes':
             apiFretboard.dots({
-              text: ({ note, octave }) => note,
+              text: ({ note }) => note,
               fill: colors.default
             });
             break;
           case 'show-notes-with-octave':
             apiFretboard.dots({
-              text: ({ note, octave }) => note + octave,
+              text: ({ noteWithOctave }) => noteWithOctave,
               fill: ({ octave }) => colors.octaves[octave]
             });
             break;

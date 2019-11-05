@@ -138,7 +138,11 @@ const DEFAULT_MODE = 'major';
 const DEFAULT_BOX = 1;
 
 export function pentatonic ({ mode = DEFAULT_MODE, root = DEFAULT_ROOT_NOTE, box } = {}) {
-  const { pattern, modes } = boxes[box - 1];
+  const _box = boxes[box - 1];
+  if (!_box) {
+    throw new Error(`Cannot find box ${box} in the pentatonic scale`);
+  }
+  const { pattern, modes } = _box;
   const modeSchema = modes[mode];
   return generateBox({
     name: `Pentatonic ${mode} box ${box}`,

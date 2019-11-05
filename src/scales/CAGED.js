@@ -163,7 +163,11 @@ const DEFAULT_MODE = 'major';
 const DEFAULT_BOX = 'C';
 
 export function CAGED ({ mode = DEFAULT_MODE, root = DEFAULT_ROOT_NOTE, box = DEFAULT_BOX } = {}) {
-  const { pattern, modes } = boxes[box];
+  const _box = boxes[box];
+  if (!_box) {
+    throw new Error(`Cannot find box ${box} in the CAGED system`);
+  }
+  const { pattern, modes } = _box;
   const modeSchema = modes[mode];
   return generateBox({
     name: `CAGED ${box} box - ${root }${mode}`,

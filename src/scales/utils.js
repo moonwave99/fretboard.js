@@ -1,6 +1,9 @@
 import { distance, interval } from '@tonaljs/tonal';
 import { scale } from '@tonaljs/scale';
-import { mod } from '../utils';
+
+export function mod (n, m) {
+  return ((n % m) + m) % m;
+};
 
 export function generateBox({ name, scaleTitle, pattern, root, modeSchema }) {
   const rootIndex = modeSchema.index;

@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
   const apiFretboard = new Fretboard({
     el: '#fretboard-api',
     dots: CAGED({
-      mode: 'lydian',
+      mode: 'major',
       root: 'C3',
-      box: 'G'
+      box: 'C'
     }),
     height: 200,
     stringsWidth: 1.5,
@@ -87,11 +87,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       fretCount: 18,
       fretsWidth: 1.2,
       dots: CAGED({ box, root }),
-      dotText: ({ note, position }) => {
-        if ([1].indexOf(position) > -1) {
-          return note;
-        }
-      },
+      dotText: ({ note, interval }) => interval === '1P' ? note : null,
       dotFill: ({ interval }) => interval === '1P' ? colors.intervals[interval] : colors.default,
       font: 'Futura'
     });
@@ -113,11 +109,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       fretCount: 18,
       fretsWidth: 1.2,
       dots: pentatonic({ box, root, mode: 'major' }),
-      dotText: ({ note, position }) => {
-        if ([1].indexOf(position) > -1) {
-          return note;
-        }
-      },
+      dotText: ({ note, interval }) => interval === '1P' ? note : interval,
       dotFill: ({ interval }) => interval === '1P' ? colors.intervals[interval] : colors.default,
       font: 'Futura'
     });

@@ -1,14 +1,10 @@
 import { findMode, generateBox } from './utils';
 import { boxes } from './boxes/pentatonic';
 
-const DEFAULT_ROOT_NOTE = 'C3';
-const DEFAULT_MODE = 'major';
-const DEFAULT_BOX = 1;
-
 export function pentatonic ({
-  mode = DEFAULT_MODE,
-  root = DEFAULT_ROOT_NOTE,
-  box = DEFAULT_BOX
+  mode = 'major',
+  root = 'C3',
+  box = 1
 } = {}){
   const _box = boxes[box - 1];
   if (!_box) {

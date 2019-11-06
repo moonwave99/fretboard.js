@@ -266,11 +266,16 @@ export class Fretboard {
   dots ({
     filter = () => true,
     text,
+    fontSize,
     ...opts
   }) {
     const {
       svg
     } = this;
+
+    const {
+      dotTextSize
+    } = this.options;
 
     const dots = svg.selectAll('.dot-circle')
       .filter(filter);
@@ -282,7 +287,8 @@ export class Fretboard {
     if (text) {
       svg.selectAll('.dot-text')
         .filter(filter)
-        .text(text);
+        .text(text)
+        .attr('font-size', fontSize || dotTextSize);
     }
 
     return this;

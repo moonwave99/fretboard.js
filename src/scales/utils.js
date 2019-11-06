@@ -2,7 +2,7 @@ import { distance, interval } from '@tonaljs/tonal';
 import { scale } from '@tonaljs/scale';
 import { mod } from '../utils';
 
-export const generateBox = function({ name, scaleTitle, pattern, root, modeSchema }) {
+export function generateBox({ name, scaleTitle, pattern, root, modeSchema }) {
   const rootIndex = modeSchema.index;
   const patternRoot = modeSchema.root;
   const { semitones } = interval(distance(patternRoot, root));
@@ -32,3 +32,14 @@ export const generateBox = function({ name, scaleTitle, pattern, root, modeSchem
     }
   });
 }
+
+
+export function findMode({ modes, modeName }) {
+  const found = modes.find(({ name, aliases = [] }) =>
+    name === modeName || aliases.indexOf(modeName) > -1
+  );
+  if (!found) {
+    return false;
+  }
+  return found;
+};

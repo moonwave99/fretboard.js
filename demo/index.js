@@ -18,9 +18,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
   const apiFretboard = new Fretboard({
     el: '#fretboard-api',
     dots: CAGED({
-      mode: 'major',
+      mode: 'lydian',
       root: 'C3',
-      box: 'C'
+      box: 'G'
     }),
     height: 200,
     stringsWidth: 1.5,
@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           case 'show-notes-with-octave':
             apiFretboard.dots({
               text: ({ noteWithOctave }) => noteWithOctave,
+              fontSize: 10,
               fill: ({ octave }) => colors.octaves[octave]
             });
             break;

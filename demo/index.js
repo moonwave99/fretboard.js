@@ -2,19 +2,33 @@ import {
   Fretboard,
   CAGED,
   pentatonic,
+  disableStrings
 } from '../dist/fretboard.esm.js';
 
-document.addEventListener('DOMContentLoaded', (event) => {
-  const colors = {
-    default: 'white',
-    intervals: {
-      '1P': '#F25116',
-      '3M': '#F29727',
-      '5P': '#F2E96B'
-    },
-    octaves: ['blue', 'magenta', 'red', 'orange', 'yellow', 'green']
-  };
+import { isEqual, uniqWith } from 'lodash';
 
+const fretboardConfiguration = {
+  height: 200,
+  stringsWidth: 1.5,
+  dotSize: 25,
+  fretCount: 16,
+  fretsWidth: 1.2,
+  font: 'Futura'
+};
+
+const colors = {
+  defaultFill: 'white',
+  defaultStroke: 'black',
+  disabled: '#aaa',
+  intervals: {
+    '1P': '#F25116',
+    '3M': '#F29727',
+    '5P': '#F2E96B'
+  },
+  octaves: ['blue', 'magenta', 'red', 'orange', 'yellow', 'green']
+};
+
+document.addEventListener('DOMContentLoaded', () => {
   const apiFretboard = new Fretboard({
     el: '#fretboard-api',
     dots: CAGED({
@@ -22,15 +36,45 @@ document.addEventListener('DOMContentLoaded', (event) => {
       root: 'C3',
       box: 'C'
     }),
-    height: 200,
-    stringsWidth: 1.5,
-    dotSize: 25,
-    fretCount: 15,
-    fretsWidth: 1.2,
-    font: 'Futura'
+    ...fretboardConfiguration
   });
 
   apiFretboard.render();
+
+  const connectedDots = uniqWith([
+    disableStrings({
+      dots: pentatonic({ box: 1, root: 'G2' }),
+      strings: [3, 2, 1]
+    }),
+    disableStrings({
+      dots: pentatonic({ box: 2, root: 'G3' }),
+      strings: [6, 5]
+    })
+  ].flat(), (dot1, dot2) => {
+    return isEqual({
+      fret: dot1.fret,
+      string: dot1.string
+    } ,{
+      fret: dot2.fret,
+      string: dot2.string
+    });
+  });
+
+  const connectedFretboard = new Fretboard({
+    el: '#fretboard-connected',
+    dots: connectedDots,
+    dotText: ({ note, interval, disabled }) => !disabled && interval === '1P' ? note : '',
+    dotFill: ({ interval, disabled }) => {
+      if (disabled) {
+        return colors.disabled;
+      }
+      return interval === '1P' ? colors.intervals[interval] : colors.defaultFill
+    },
+    dotStrokeColor: ({ disabled }) => disabled ? colors.disabled : colors.defaultStroke,
+    ...fretboardConfiguration
+  });
+
+  connectedFretboard.render();
 
   document.querySelectorAll('.api-actions button')
     .forEach((button) => {
@@ -39,7 +83,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           case 'show-notes':
             apiFretboard.dots({
               text: ({ note }) => note,
-              fill: colors.default
+              fill: colors.defaultFill
             });
             break;
           case 'show-notes-with-octave':
@@ -52,7 +96,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           case 'show-intervals':
             apiFretboard.dots({
               text: ({ interval }) => interval,
-              fill: colors.default
+              fill: colors.defaultFill
             });
             break;
           case 'highlight-triad':
@@ -64,7 +108,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           default:
             apiFretboard.dots({
               text: () => null,
-              fill: colors.default,
+              fill: colors.defaultFill,
               stroke: 'black'
             });
             break;
@@ -81,15 +125,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
   ].forEach(({ box, root }, i) => {
     const fretBoard = new Fretboard({
       el: `#fretboard-caged-${box.toLowerCase()}`,
-      height: 200,
-      stringsWidth: 1.5,
-      dotSize: 25,
-      fretCount: 18,
-      fretsWidth: 1.2,
       dots: CAGED({ box, root }),
       dotText: ({ note, interval }) => interval === '1P' ? note : null,
-      dotFill: ({ interval }) => interval === '1P' ? colors.intervals[interval] : colors.default,
-      font: 'Futura'
+      dotFill: ({ interval }) => interval === '1P' ? colors.intervals[interval] : colors.defaultFill,
+      ...fretboardConfiguration
     });
     fretBoard.render();
   });
@@ -103,15 +142,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
   ].forEach(({ box, root }, i) => {
     const fretBoard = new Fretboard({
       el: `#fretboard-pentatonic-${box}`,
-      height: 200,
-      stringsWidth: 1.5,
-      dotSize: 25,
-      fretCount: 18,
-      fretsWidth: 1.2,
       dots: pentatonic({ box, root, mode: 'major' }),
       dotText: ({ note, interval }) => interval === '1P' ? note : interval,
-      dotFill: ({ interval }) => interval === '1P' ? colors.intervals[interval] : colors.default,
-      font: 'Futura'
+      dotFill: ({ interval }) => interval === '1P' ? colors.intervals[interval] : colors.defaultFill,
+      ...fretboardConfiguration
     });
     fretBoard.render();
   });

@@ -33,6 +33,7 @@
 	"devDependencies": {
 		"ava": "^2.4.0",
 		"esm": "^3.2.25",
+		"lodash": "^4.17.15",
 		"rollup": "^1.26.3",
 		"rollup-plugin-commonjs": "^10.1.0",
 		"rollup-plugin-node-resolve": "^5.2.0",

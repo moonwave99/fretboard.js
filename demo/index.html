@@ -70,9 +70,11 @@
 		.api-actions li button {
 			height: 2rem;
 			border-radius: .25rem;
+			background: white;
+			border: 1px solid #ddd;
 		}
 
-		@media (max-width: 768px) {
+		@media screen and (max-width: 768px) {
 			html {
 				font-size: 12px;
 				width: 100vw;
@@ -91,8 +93,19 @@
 				overflow-y: hidden;
 			}
 
+			.api-actions li {
+				display: block;
+				margin-bottom: 1rem;
+			}
+
+			.api-actions li button {
+				width: 100%;
+			}
+		}
+
+		@media screen and (max-width: 768px) and (orientation: portrait) {
 			figure svg {
-				width: auto;
+				width: 200%;
 			}
 		}
 	</style>

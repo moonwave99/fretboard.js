@@ -97,7 +97,7 @@ function connectedExample({
     }),
     disableDots({
       box: box2,
-      to: { string: 3, fret: 3}
+      to: { string: 4, fret: 5 }
     })
   ].flat(), (dot1, dot2) => {
     return isEqual({

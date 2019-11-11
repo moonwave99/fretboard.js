@@ -127,8 +127,7 @@ export class Fretboard {
 
     this.svg = select(el)
       .append('svg')
-      .attr('width', totalWidth)
-      .attr('height', totalHeight)
+      .attr('viewBox', `0 0 ${totalWidth} ${totalHeight}`)
       .append('g')
       .attr('class', 'fretboard-wrapper')
       .attr('transform', `translate(${leftPadding}, ${topPadding}) scale(${width / totalWidth})`);

@@ -12,7 +12,7 @@
 		body {
 			font-family: 'Futura', 'Arial', sans-serif;
 			font-size: 16px;
-			background-color: #ccffff;
+			background-color: #22D0B218;
 			margin: 0;
 			padding: 0;
 		}
@@ -29,7 +29,7 @@
 
 		h1 {
 			font-size: 2rem;
-			margin: 4rem 0 2rem 0;
+			margin: 0 0 2rem 0;
 		}
 
 		h2 {
@@ -39,7 +39,7 @@
 
 		h1,
 		h2 {
-			color: #6c06dc;
+			color: #22D0B2;
 			font-weight: bold;
 		}
 
@@ -48,6 +48,10 @@
 		footer {
 			width: 1200px;
 			margin: 0 auto;
+		}
+
+		header {
+			padding-top: 4rem;
 		}
 
 		figure {
@@ -69,8 +73,11 @@
 			margin: .25rem 0;
 		}
 
-		aside p{
-			margin-top: 1rem;
+		.aside {
+			display: flex;
+			align-items: center;
+			padding-top: 1.9rem;
+			padding-bottom: 4.75rem;
 		}
 
 		@media screen and (max-width: 768px) {
@@ -124,7 +131,7 @@
 					<li><button class="button is-small is-fullwidth" data-action="show-notes-with-octave">Show Notes with octave</button></li>
 					<li><button class="button is-small is-fullwidth" data-action="show-intervals">Show Intervals</button></li>
 					<li><button class="button is-small is-fullwidth" data-action="highlight-triad">Highlight root triad</button></li>
-					<li><button class="button is-small is-fullwidth" data-action="clear">Clear</button></li>
+					<li><button class="button is-small is-primary is-fullwidth" data-action="clear">Clear</button></li>
 				</ul>
 			</div>
 		</section>
@@ -132,7 +139,7 @@
 			<h2>Connected Boxes</h2>
 			<div class="columns">
 				<figure class="column is-three-quarters" id="fretboard-connected"></figure>
-				<aside class="column">
+				<aside class="column aside">
 					<p>This example shows the connection between the <strong>C-shaped box</strong> and the <strong>A-shaped box</strong> of the D major scale.</p>
 				</aside>
 			</div>
@@ -141,7 +148,7 @@
 			<h2>CAGED System</h2>
 			<div class="columns">
 				<figure class="column is-three-quarters" id="fretboard-caged-e"></figure>
-				<aside class="column">
+				<aside class="column aside">
 					<p>The G major scale in all five CAGED boxes. See how they share fret positions vertically!</p>
 				</aside>
 			</div>
@@ -162,7 +169,7 @@
 			<h2>Pentatonic Boxes</h2>
 			<div class="columns">
 				<figure class="column is-three-quarters" id="fretboard-pentatonic-1"></figure>
-				<aside class="column">
+				<aside class="column aside">
 					<p>Same as above, but with the G major pentatonic.</p>
 				</aside>
 			</div>

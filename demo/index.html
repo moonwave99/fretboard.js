@@ -6,6 +6,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport"
 	  content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css">
 	<style type="text/css">
 		html,
 		body {
@@ -39,6 +40,7 @@
 		h1,
 		h2 {
 			color: #6c06dc;
+			font-weight: bold;
 		}
 
 		main,
@@ -57,21 +59,18 @@
 		}
 
 		.api-actions {
-			padding: 0;
-			margin: 0 0 2rem 0;
+			margin: 0;
+			padding-top: 1.75rem;
 		}
 
 		.api-actions li {
 			list-style: none;
-			display: inline-block;
-			padding-right: 1rem;
+			display: block;
+			margin: .25rem 0;
 		}
 
-		.api-actions li button {
-			height: 2rem;
-			border-radius: .25rem;
-			background: white;
-			border: 1px solid #ddd;
+		aside p{
+			margin-top: 1rem;
 		}
 
 		@media screen and (max-width: 768px) {
@@ -118,34 +117,67 @@
 	<main>
 		<section>
 			<h2>Dots API</h2>
-			<ul class="api-actions">
-				<li><button data-action="show-notes">Show Notes</button></li>
-				<li><button data-action="show-notes-with-octave">Show Notes with octave</button></li>
-				<li><button data-action="show-intervals">Show Intervals</button></li>
-				<li><button data-action="highlight-triad">Highlight root triad</button></li>
-				<li><button data-action="clear">Clear</button></li>
-			</ul>
-			<figure id="fretboard-api"></figure>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard-api"></figure>
+				<ul class="column api-actions">
+					<li><button class="button is-small is-fullwidth" data-action="show-notes">Show Notes</button></li>
+					<li><button class="button is-small is-fullwidth" data-action="show-notes-with-octave">Show Notes with octave</button></li>
+					<li><button class="button is-small is-fullwidth" data-action="show-intervals">Show Intervals</button></li>
+					<li><button class="button is-small is-fullwidth" data-action="highlight-triad">Highlight root triad</button></li>
+					<li><button class="button is-small is-fullwidth" data-action="clear">Clear</button></li>
+				</ul>
+			</div>
 		</section>
 		<section>
 			<h2>Connected Boxes</h2>
-			<figure id="fretboard-connected"></figure>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard-connected"></figure>
+				<aside class="column">
+					<p>This example shows the connection between the <strong>C-shaped box</strong> and the <strong>A-shaped box</strong> of the D major scale.</p>
+				</aside>
+			</div>
 		</section>
 		<section>
 			<h2>CAGED System</h2>
-			<figure id="fretboard-caged-e"></figure>
-			<figure id="fretboard-caged-d"></figure>
-			<figure id="fretboard-caged-c"></figure>
-			<figure id="fretboard-caged-a"></figure>
-			<figure id="fretboard-caged-g"></figure>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard-caged-e"></figure>
+				<aside class="column">
+					<p>The G major scale in all five CAGED boxes. See how they share fret positions vertically!</p>
+				</aside>
+			</div>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard-caged-d"></figure>
+			</div>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard-caged-c"></figure>
+			</div>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard-caged-a"></figure>
+			</div>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard-caged-g"></figure>
+			</div>
 		</section>
 		<section>
 			<h2>Pentatonic Boxes</h2>
-			<figure id="fretboard-pentatonic-1"></figure>
-			<figure id="fretboard-pentatonic-2"></figure>
-			<figure id="fretboard-pentatonic-3"></figure>
-			<figure id="fretboard-pentatonic-4"></figure>
-			<figure id="fretboard-pentatonic-5"></figure>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard-pentatonic-1"></figure>
+				<aside class="column">
+					<p>Same as above, but with the G major pentatonic.</p>
+				</aside>
+			</div>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard-pentatonic-2"></figure>
+			</div>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard-pentatonic-3"></figure>
+			</div>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard-pentatonic-4"></figure>
+			</div>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard-pentatonic-5"></figure>
+			</div>
 		</section>
 	</main>
 	<footer>

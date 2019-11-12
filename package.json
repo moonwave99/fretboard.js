@@ -12,7 +12,8 @@
 		"start:dev": "rollup -c -w",
 		"build:prod": "rollup -c",
 		"demo:dev": "webpack-dev-server",
-		"demo:prod": "webpack"
+		"demo:prod": "webpack",
+		"demo:deploy": "npm run build:prod && npm run demo:prod && netlify deploy --dir ./demo --prod"
 	},
 	"keywords": [
 		"music",

@@ -42,3 +42,6 @@ results
 test
 public
 docs
+
+# Local Netlify folder
+.netlify

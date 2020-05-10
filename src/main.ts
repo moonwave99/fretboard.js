@@ -1,6 +1,5 @@
 export { Fretboard } from './Fretboard';
-export { CAGED } from './scales/CAGED';
-export { pentatonic } from './scales/pentatonic';
+export { CAGED, pentatonic } from './scales/scales';
 export {
   disableStrings,
   disableDots,

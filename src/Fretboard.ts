@@ -1,11 +1,16 @@
-import { select } from 'd3-selection';
+import { select, Selection, ValueFn, BaseType } from 'd3-selection';
 import decamelize from 'decamelize';
+import { Dot } from './scales/scales';
 
-const generateStrings = function generateStrings ({
+const generateStrings = function generateStrings({
   stringCount,
   stringWidth,
   height
-}) {
+}: {
+  stringCount: number;
+  stringWidth: number;
+  height: number;
+}): number[] {
   const strings = [];
 
   for (let i = 0; i < stringCount; i++) {
@@ -24,7 +29,10 @@ const generateStrings = function generateStrings ({
 const generateFrets = function generateFrets ({
   scaleFrets,
   fretCount
-}) {
+}: {
+  scaleFrets: boolean;
+  fretCount: number;
+}): number[] {
   const fretRatio = Math.pow(2, 1 / 12);
   const frets = [0];
 
@@ -35,10 +43,14 @@ const generateFrets = function generateFrets ({
     }
     frets.push(x);
   }
-  return frets.map((x, i) => x / frets[frets.length - 1] * 100);
+  return frets.map(x => x / frets[frets.length - 1] * 100);
 };
 
-const append = function append (el = null, tagName = 'g', opts = {}) {
+const append = function append(
+  el: Selection<SVGElement, unknown, HTMLElement | SVGElement, unknown>,
+  tagName = 'g',
+  opts = {} as { [key:string]: string|number }
+) {
   if (!el) {
     return;
   }
@@ -52,8 +64,7 @@ const append = function append (el = null, tagName = 'g', opts = {}) {
 const MIDDLE_FRET = 11;
 
 const defaultOptions = {
-  el: null,
-  dots: [],
+  el: '',
   stringCount: 6,
   stringWidth: 1,
   stringColor: 'black',
@@ -85,12 +96,82 @@ const defaultOptions = {
   font: 'Arial'
 };
 
+function getDimensions ({
+  topPadding,
+  bottomPadding,
+  leftPadding,
+  rightPadding,
+  width,
+  height,
+  showFretsNumber,
+  fretsNumberHeight
+}: {
+  topPadding: number;
+  bottomPadding: number;
+  leftPadding: number;
+  rightPadding: number;
+  width: number;
+  height: number;
+  showFretsNumber: boolean;
+  fretsNumberHeight: number;
+}) {
+  const totalWidth = width + leftPadding + rightPadding;
+  let totalHeight = height + topPadding + bottomPadding;
+
+  if (showFretsNumber) {
+    totalHeight += fretsNumberHeight;
+  }
+  return { totalWidth, totalHeight };
+}
+
+type Options = {
+  el: string,
+  stringCount: number;
+  stringWidth: number;
+  stringColor: string;
+  fretCount: number;
+  fretWidth: number;
+  fretColor: string;
+  nutWidth: number;
+  nutColor: string;
+  middleFretColor: string;
+  middleFretWidth: number;
+  scaleFrets: boolean;
+  topPadding: number;
+  bottomPadding: number;
+  leftPadding: number;
+  rightPadding: number;
+  height: number;
+  width: number;
+  dotSize: number;
+  dotStrokeColor: string;
+  dotStrokeWidth: number;
+  dotTextSize: number;
+  dotFill: string;
+  dotText: string;
+  disabledOpacity: number;
+  showFretsNumber: boolean;
+  fretsNumberHeight: number;
+  fretNumbersMargin: number;
+  fretNumbersColor: string;
+  font: string;
+}
+
+type Point = {
+  x: number;
+  y: number;
+}
+
 export class Fretboard {
-  constructor (options) {
+  options: Options;
+  strings: number[];
+  frets: number[];
+  positions: Point[][];
+  svg: Selection<SVGElement, unknown, HTMLElement, unknown>;
+  constructor (options: object) {
     this.options = Object.assign(defaultOptions, options);
     const {
       el,
-      dots,
       height,
       width,
       leftPadding,
@@ -104,9 +185,15 @@ export class Fretboard {
     this.strings = generateStrings({ stringCount, height, stringWidth });
     this.frets = generateFrets({ fretCount, scaleFrets });
     const { frets, strings } = this;
-    const { totalWidth, totalHeight } = this.getDimensions();
+    const { totalWidth, totalHeight } = getDimensions(this.options);
 
-    function getDotCoords ({ fret, string }) {
+    function getDotCoords ({
+      fret,
+      string
+    }: {
+      fret: number;
+      string: number;
+    }): Point {
       let x = 0;
       if (fret === 0) {
         x = frets[0] / 2;
@@ -116,14 +203,25 @@ export class Fretboard {
       return { x, y: strings[string - 1] };
     }
 
-    this.options.dots = dots.map(({ fret, string, ...opts }) => {
-      return {
-        fret,
-        string,
-        coords: getDotCoords({ fret, string }),
-        ...opts
-      };
-    });
+    function generatePositions({
+      fretCount,
+      stringCount
+    }: {
+      fretCount: number;
+      stringCount: number;
+    }): Point[][] {
+      const positions = [];
+      for (let string = 1; string <= stringCount; string++) {
+        const currentString = [];
+        for (let fret = 0; fret < fretCount; fret++) {
+          currentString.push(getDotCoords({ fret, string }))
+        }
+        positions.push(currentString);
+      }
+      return positions;
+    }
+
+    this.positions = generatePositions(this.options);
 
     this.svg = select(el)
       .append('svg')
@@ -133,32 +231,12 @@ export class Fretboard {
       .attr('transform', `translate(${leftPadding}, ${topPadding}) scale(${width / totalWidth})`);
   }
 
-  getDimensions () {
-    const {
-      topPadding,
-      bottomPadding,
-      leftPadding,
-      rightPadding,
-      width,
-      height,
-      showFretsNumber,
-      fretsNumberHeight
-    } = this.options;
-
-    const totalWidth = width + leftPadding + rightPadding;
-    let totalHeight = height + topPadding + bottomPadding;
-
-    if (showFretsNumber) {
-      totalHeight += fretsNumberHeight;
-    }
-    return { totalWidth, totalHeight };
-  }
-
-  render () {
+  render (dots: Dot[]) {
     const {
       svg,
       frets,
-      strings
+      strings,
+      positions
     } = this;
 
     const {
@@ -176,7 +254,6 @@ export class Fretboard {
       fretNumbersMargin,
       fretNumbersColor,
       topPadding,
-      dots,
       dotStrokeColor,
       dotStrokeWidth,
       dotFill,
@@ -186,13 +263,13 @@ export class Fretboard {
       disabledOpacity
     } = this.options;
 
-    const { totalWidth } = this.getDimensions();
+    const { totalWidth } = getDimensions(this.options);
 
     const stringGroup = svg
       .append('g')
       .attr('class', 'strings');
 
-    strings.forEach((y, i) => {
+    strings.forEach(y => {
       append(stringGroup, 'line', {
         x1: 0,
         y1: y,
@@ -255,8 +332,8 @@ export class Fretboard {
       .attr('opacity', ({ disabled }) => disabled ? disabledOpacity : 1);
 
     dotsNodes.append('circle')
-      .attr('cx', ({ coords }) => `${coords.x}%`)
-      .attr('cy', ({ coords }) => coords.y)
+      .attr('cx', ({ string, fret }) => `${positions[string - 1][fret].x}%`)
+      .attr('cy', ({ string, fret }) => positions[string - 1][fret].y)
       .attr('r', dotSize * 0.5)
       .attr('class', ({ interval }) => `dot-circle dot-${interval}`)
       .attr('stroke', dotStrokeColor)
@@ -264,8 +341,8 @@ export class Fretboard {
       .attr('fill', dotFill);
 
     dotsNodes.append('text')
-      .attr('x', ({ coords }) => `${coords.x}%`)
-      .attr('y', ({ coords }) => coords.y)
+      .attr('x', ({ string, fret }) => `${positions[string - 1][fret].x}%`)
+      .attr('y', ({ string, fret }) => positions[string - 1][fret].y)
       .attr('class', ({ interval }) => `dot-text dot-text-${interval}`)
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'central')
@@ -281,13 +358,19 @@ export class Fretboard {
     text,
     fontSize,
     ...opts
+  }: {
+    filter: ValueFn<BaseType, unknown, boolean>;
+    text: ValueFn<BaseType, unknown, string>;
+    fontSize: number;
   }) {
     const { svg } = this;
     const { dotTextSize } = this.options;
     const dots = svg.selectAll('.dot-circle')
       .filter(filter);
 
-    Object.keys(opts).forEach(key => dots.attr(key, opts[key]));
+    Object.keys(opts).forEach(
+      key => dots.attr(key, (opts as { [key:string]: string })[key])
+    );
 
     if (text) {
       svg.selectAll('.dot-text')

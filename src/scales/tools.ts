@@ -1,6 +1,11 @@
+import { Dot } from './scales';
+
 export function disableStrings({
   box = [],
   strings = []
+}: {
+  box: Dot[];
+  strings: number[];
 }) {
   return box.map(({ string, ...dot }) => {
     return { string, disabled: strings.indexOf(string) > -1, ...dot};
@@ -8,11 +13,14 @@ export function disableStrings({
 }
 
 export function sliceBox({
-  box = [],
+  box = [] as Dot[],
   from = { string: 6, fret: 0 },
   to = { string: 1, fret: 100 }
 } = {}) {
-  function findIndex(key) {
+  function findIndex(key: {
+    string: number;
+    fret: number;
+  }) {
     return box.findIndex(({ string, fret }) =>
       string === key.string && fret === key.fret
     );
@@ -29,11 +37,11 @@ export function sliceBox({
 }
 
 export function disableDots({
-  box = [],
+  box = [] as Dot[],
   from = { string: 6, fret: 0 },
   to = { string: 1, fret: 100 }
 } = {}) {
-  const action = ({ ...dot }) => {
+  const action = (dot: Dot) => {
     return { disabled: true, ...dot };
   };
   return transform({ box, from, to, action });
@@ -43,9 +51,12 @@ function transform({
   box = [],
   from = { string: 6, fret: 0 },
   to = { string: 1, fret: 100 },
-  action = x => x
+  action = (x: Dot): Dot => x
 } = {}) {
-  function inSelection({ string, fret }) {
+  function inSelection({ string, fret }: {
+    string: number;
+    fret: number;
+  }) {
     if (string > from.string || string < to.string) {
       return false;
     }

@@ -31,10 +31,9 @@ const colors = {
 function apiExample(box = CAGED({ mode: 'major', root: 'C3', box: 'C'})) {
   const fretboard = new Fretboard({
     el: '#fretboard-api',
-    dots: box,
     ...fretboardConfiguration
   });
-  fretboard.render();
+  fretboard.render(box);
 
   document.querySelectorAll('.api-actions button')
     .forEach((button) => {
@@ -111,7 +110,6 @@ function connectedExample({
 
   const fretboard = new Fretboard({
     el: '#fretboard-connected',
-    dots: connectedDots,
     dotText: ({ note, interval, disabled }) => !disabled && interval === '1P' ? note : '',
     dotFill: ({ interval, disabled }) => {
       if (disabled) {
@@ -120,21 +118,24 @@ function connectedExample({
       return interval === '1P' ? colors.intervals[interval] : colors.defaultFill
     },
     dotStrokeColor: ({ disabled }) => disabled ? colors.disabled : colors.defaultStroke,
-    ...fretboardConfiguration
+    ...fretboardConfiguration,
+    fretCount: 18
   });
-  fretboard.render();
+  fretboard.render(connectedDots);
 }
 
 function cagedExample(boxes = []) {
   boxes.forEach(({ box, root }, i) => {
     const fretBoard = new Fretboard({
       el: `#fretboard-caged-${box.toLowerCase()}`,
-      dots: CAGED({ box, root }),
       dotText: ({ note, interval }) => interval === '1P' ? note : null,
       dotFill: ({ interval }) => interval === '1P' ? colors.intervals[interval] : colors.defaultFill,
-      ...fretboardConfiguration
+      ...fretboardConfiguration,
+      fretCount: 17
     });
-    fretBoard.render();
+    fretBoard.render(
+      CAGED({ box, root })
+    );
   });
 }
 
@@ -142,12 +143,13 @@ function pentatonicExample(boxes = []) {
   boxes.forEach(({ box, root }, i) => {
     const fretBoard = new Fretboard({
       el: `#fretboard-pentatonic-${box}`,
-      dots: pentatonic({ box, root, mode: 'major' }),
       dotText: ({ note, interval }) => interval === '1P' ? note : interval,
       dotFill: ({ interval }) => interval === '1P' ? colors.intervals[interval] : colors.defaultFill,
       ...fretboardConfiguration
     });
-    fretBoard.render();
+    fretBoard.render(
+      pentatonic({ box, root, mode: 'major' }),
+    );
   });
 }
 

@@ -3,7 +3,7 @@ import {
   sliceBox,
   disableDots
 } from './tools';
-import { CAGED } from './CAGED';
+import { CAGED } from './scales';
 
 const box = CAGED({
   mode: 'major',

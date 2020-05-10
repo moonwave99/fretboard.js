@@ -1,13 +1,30 @@
 import { distance, interval } from '@tonaljs/tonal';
 import { scale } from '@tonaljs/scale';
+import { Dot, Mode } from './scales';
 
-export function mod (n, m) {
+export function mod (n: number, m: number) {
   return ((n % m) + m) % m;
 };
 
-export function generateBox({ name, scaleTitle, pattern, root, modeSchema }) {
-  const rootIndex = modeSchema.index;
-  const patternRoot = modeSchema.root;
+export function generateBox({
+  scaleTitle,
+  pattern,
+  root,
+  modeSchema
+}: {
+  name: string;
+  scaleTitle: string;
+  pattern: {
+    string: number;
+    fret: number;
+  }[];
+  root: string;
+  modeSchema: Mode;
+}): Dot[] {
+  const {
+    index: rootIndex,
+    root: patternRoot
+  } = modeSchema;
   const { semitones } = interval(distance(patternRoot, root));
   const { intervals, notes } = scale(scaleTitle);
   const baseOctave = +root.substr(-1);
@@ -17,7 +34,7 @@ export function generateBox({ name, scaleTitle, pattern, root, modeSchema }) {
     octaveIncrement--;
   }
 
-  return pattern.map(({ string, fret }, i) => {
+  return pattern.map(({ string, fret }, i: number) => {
     const index = mod(i - rootIndex, notes.length);
     const note = notes[index].substring(0, notes[index].length - 1);
     const octave = +notes[index].substr(-1);
@@ -36,8 +53,13 @@ export function generateBox({ name, scaleTitle, pattern, root, modeSchema }) {
   });
 }
 
-
-export function findMode({ modes, modeName }) {
+export function findMode({
+  modes,
+  modeName
+}: {
+  modes: Mode[];
+  modeName: string
+}) {
   const found = modes.find(({ name, aliases = [] }) =>
     name === modeName || aliases.indexOf(modeName) > -1
   );

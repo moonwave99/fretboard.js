@@ -63,7 +63,7 @@ function append(
 
 const MIDDLE_FRET = 11;
 
-const defaultOptions = {
+export const defaultOptions = {
   el: '',
   stringCount: 6,
   stringWidth: 1,
@@ -322,6 +322,10 @@ export class Fretboard {
         }).text(`${i}`);
       }
     });
+
+    if (!dots.length) {
+      return this;
+    }
 
     const dotGroup = svg
       .append('g')

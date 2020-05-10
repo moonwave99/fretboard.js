@@ -1,5 +1,29 @@
 import { Dot } from './scales';
 
+function transform({
+  box = [] as Dot[],
+  from = { string: 6, fret: 0 },
+  to = { string: 1, fret: 100 },
+  action = (x: Dot): Dot => x
+} = {}): Dot[] {
+  function inSelection({ string, fret }: {
+    string: number;
+    fret: number;
+  }): boolean {
+    if (string > from.string || string < to.string) {
+      return false;
+    }
+    if (string === from.string && fret < from.fret) {
+      return false;
+    }
+    if (string === to.string && fret > to.fret) {
+      return false;
+    }
+    return true;
+  }
+  return box.map(x => inSelection(x) ? action(x) : x);
+}
+
 export function disableStrings({
   box = [],
   strings = []
@@ -37,31 +61,6 @@ export function sliceBox({
   }
   return box.slice(fromIndex, toIndex);
 }
-
-function transform({
-  box = [] as Dot[],
-  from = { string: 6, fret: 0 },
-  to = { string: 1, fret: 100 },
-  action = (x: Dot): Dot => x
-} = {}): Dot[] {
-  function inSelection({ string, fret }: {
-    string: number;
-    fret: number;
-  }): boolean {
-    if (string > from.string || string < to.string) {
-      return false;
-    }
-    if (string === from.string && fret < from.fret) {
-      return false;
-    }
-    if (string === to.string && fret > to.fret) {
-      return false;
-    }
-    return true;
-  }
-  return box.map(x => inSelection(x) ? action(x) : x);
-}
-
 
 export function disableDots({
   box = [] as Dot[],

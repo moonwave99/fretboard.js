@@ -32,7 +32,7 @@ export function pentatonic ({
   mode = 'major',
   root = 'C3',
   box = 1
-} = {}){
+} = {}): Dot[] {
   const _box = pentatonicBoxes[box - 1];
   if (!_box) {
     throw new Error(`Cannot find box ${box} in the pentatonic scale`);
@@ -55,8 +55,8 @@ export function CAGED ({
   mode = 'major',
   root = 'C3',
   box = 'C'
-} = {}){
-  const _box = (CAGEDBoxes as { [key:string]: BoxDefinition })[box];
+} = {}): Dot[] {
+  const _box = (CAGEDBoxes as { [key: string]: BoxDefinition })[box];
   if (!_box) {
     throw new Error(`Cannot find box ${box} in the CAGED system`);
   }

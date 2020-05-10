@@ -2,9 +2,9 @@ import { distance, interval } from '@tonaljs/tonal';
 import { scale } from '@tonaljs/scale';
 import { Dot, Mode } from './scales';
 
-export function mod (n: number, m: number) {
+export function mod (n: number, m: number): number {
   return ((n % m) + m) % m;
-};
+}
 
 export function generateBox({
   scaleTitle,
@@ -58,13 +58,13 @@ export function findMode({
   modeName
 }: {
   modes: Mode[];
-  modeName: string
-}) {
+  modeName: string;
+}): Mode {
   const found = modes.find(({ name, aliases = [] }) =>
     name === modeName || aliases.indexOf(modeName) > -1
   );
   if (!found) {
-    return false;
+    return null;
   }
   return found;
-};
+}

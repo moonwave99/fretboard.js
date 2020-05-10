@@ -2,7 +2,7 @@ import { select, Selection, ValueFn, BaseType } from 'd3-selection';
 import decamelize from 'decamelize';
 import { Dot } from './scales/scales';
 
-const generateStrings = function generateStrings({
+function generateStrings({
   stringCount,
   stringWidth,
   height
@@ -24,9 +24,9 @@ const generateStrings = function generateStrings({
     strings.push(y);
   }
   return strings;
-};
+}
 
-const generateFrets = function generateFrets ({
+function generateFrets ({
   scaleFrets,
   fretCount
 }: {
@@ -44,13 +44,13 @@ const generateFrets = function generateFrets ({
     frets.push(x);
   }
   return frets.map(x => x / frets[frets.length - 1] * 100);
-};
+}
 
-const append = function append(
-  el: Selection<SVGElement, unknown, HTMLElement | SVGElement, unknown>,
+function append(
+  el: Selection<BaseType, unknown, HTMLElement | SVGElement, unknown>,
   tagName = 'g',
-  opts = {} as { [key:string]: string|number }
-) {
+  opts = {} as { [key: string]: string|number }
+): Selection<BaseType, unknown, HTMLElement | SVGElement, unknown> {
   if (!el) {
     return;
   }
@@ -59,7 +59,7 @@ const append = function append(
     tag.attr(decamelize(key, '-'), opts[key])
   );
   return tag;
-};
+}
 
 const MIDDLE_FRET = 11;
 
@@ -114,7 +114,10 @@ function getDimensions ({
   height: number;
   showFretsNumber: boolean;
   fretsNumberHeight: number;
-}) {
+}): {
+  totalWidth: number;
+  totalHeight: number;
+} {
   const totalWidth = width + leftPadding + rightPadding;
   let totalHeight = height + topPadding + bottomPadding;
 
@@ -125,7 +128,7 @@ function getDimensions ({
 }
 
 type Options = {
-  el: string,
+  el: string;
   stringCount: number;
   stringWidth: number;
   stringColor: string;
@@ -167,7 +170,7 @@ export class Fretboard {
   strings: number[];
   frets: number[];
   positions: Point[][];
-  svg: Selection<SVGElement, unknown, HTMLElement, unknown>;
+  svg: Selection<BaseType, unknown, HTMLElement, unknown>;
   constructor (options: object) {
     this.options = Object.assign(defaultOptions, options);
     const {
@@ -231,7 +234,7 @@ export class Fretboard {
       .attr('transform', `translate(${leftPadding}, ${topPadding}) scale(${width / totalWidth})`);
   }
 
-  render (dots: Dot[]) {
+  render (dots: Dot[]): Fretboard {
     const {
       svg,
       frets,
@@ -354,7 +357,7 @@ export class Fretboard {
   }
 
   dots ({
-    filter = () => true,
+    filter = (): boolean => true,
     text,
     fontSize,
     ...opts
@@ -362,14 +365,14 @@ export class Fretboard {
     filter: ValueFn<BaseType, unknown, boolean>;
     text: ValueFn<BaseType, unknown, string>;
     fontSize: number;
-  }) {
+  }): Fretboard {
     const { svg } = this;
     const { dotTextSize } = this.options;
     const dots = svg.selectAll('.dot-circle')
       .filter(filter);
 
     Object.keys(opts).forEach(
-      key => dots.attr(key, (opts as { [key:string]: string })[key])
+      key => dots.attr(key, (opts as { [key: string]: string })[key])
     );
 
     if (text) {

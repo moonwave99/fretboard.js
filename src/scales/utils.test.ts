@@ -18,6 +18,11 @@ test('findMode', t => {
   t.deepEqual(modes[0], found);
 });
 
+test('findMode not found', t => {
+  const found = findMode({ modes, modeName: 'hawaiian' });
+  t.is(found, null);
+});
+
 test('findMode with alias', t => {
   const found = findMode({ modes, modeName: 'ionian' });
   const aliased = findMode({ modes, modeName: 'major' });

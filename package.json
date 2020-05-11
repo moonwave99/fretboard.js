@@ -1,7 +1,6 @@
 {
 	"name": "fretboard.js",
 	"version": "0.0.1",
-	"type": "module",
 	"description": "Fretboard diagram generator",
 	"main": "dist/fretboard.cjs.js",
 	"module": "dist/fretboard.esm.js",

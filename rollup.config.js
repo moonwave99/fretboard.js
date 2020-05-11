@@ -1,10 +1,9 @@
-import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import pkg from './package.json';
 
 export default [
 	{
-		input: 'src/main.ts',
+		input: 'src/index.ts',
 		output: {
 			name: 'fretboard',
 			file: pkg.browser,
@@ -16,13 +15,13 @@ export default [
 		]
 	},
 	{
-		input: 'src/main.ts',
+		input: 'src/index.ts',
 		plugins: [
 			typescript()
 		],
 		external: [
 			...Object.keys(pkg.dependencies || {}),
-	    ...Object.keys(pkg.peerDependencies || {})
+			...Object.keys(pkg.peerDependencies || {})
 		],
 		output: [
 			{ file: pkg.main, format: 'cjs', sourcemap: true },

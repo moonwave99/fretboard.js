@@ -9,7 +9,7 @@
 		"sourceMap": true,
 		"esModuleInterop": true,
 		"target": "es2017",
-		"types": ["node", "decamelize"]
+		"types": ["node"]
 	},
 	"include": [
 		"typings.d.ts",

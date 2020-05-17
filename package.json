@@ -50,9 +50,9 @@
 		"webpack-dev-server": "^3.11.0"
 	},
 	"dependencies": {
+		"@tonaljs/note": "^3.5.3",
 		"@tonaljs/scale": "^3.2.3",
 		"@tonaljs/tonal": "^3.2.2",
-		"d3-selection": "^1.4.1",
-		"decamelize": "^4.0.0"
+		"d3-selection": "^1.4.1"
 	}
 }

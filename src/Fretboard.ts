@@ -1,6 +1,13 @@
 import { select, Selection, ValueFn, BaseType } from 'd3-selection';
-import decamelize from 'decamelize';
 import { Dot } from './scales/scales';
+
+function dotClasses(dot: Dot, prefix: string): string {
+  return [
+    `dot-${prefix}`,
+      ...Object.entries(dot)
+        .map(([key, value]: [string, string]) => `dot-${prefix}-${key}-${value}`)
+  ].join(' ');
+}
 
 function generateStrings({
   stringCount,
@@ -44,21 +51,6 @@ function generateFrets ({
     frets.push(x);
   }
   return frets.map(x => x / frets[frets.length - 1] * 100);
-}
-
-function append(
-  el: Selection<BaseType, unknown, HTMLElement | SVGElement, unknown>,
-  tagName = 'g',
-  opts = {} as { [key: string]: string|number }
-): Selection<BaseType, unknown, HTMLElement | SVGElement, unknown> {
-  if (!el) {
-    return;
-  }
-  const tag = el.append(tagName);
-  Object.keys(opts).forEach((key) =>
-    tag.attr(decamelize(key, '-'), opts[key])
-  );
-  return tag;
 }
 
 const MIDDLE_FRET = 11;
@@ -171,6 +163,7 @@ export class Fretboard {
   frets: number[];
   positions: Point[][];
   svg: Selection<BaseType, unknown, HTMLElement, unknown>;
+  private baseRendered: boolean;
   constructor (options: object) {
     this.options = Object.assign(defaultOptions, options);
     const {
@@ -234,12 +227,15 @@ export class Fretboard {
       .attr('transform', `translate(${leftPadding}, ${topPadding}) scale(${width / totalWidth})`);
   }
 
-  render (dots: Dot[]): Fretboard {
+  _baseRender(): void {
+    if (this.baseRendered) {
+      return;
+    }
+
     const {
       svg,
       frets,
-      strings,
-      positions
+      strings
     } = this;
 
     const {
@@ -256,14 +252,7 @@ export class Fretboard {
       showFretsNumber,
       fretNumbersMargin,
       fretNumbersColor,
-      topPadding,
-      dotStrokeColor,
-      dotStrokeWidth,
-      dotFill,
-      dotSize,
-      dotText,
-      dotTextSize,
-      disabledOpacity
+      topPadding
     } = this.options;
 
     const { totalWidth } = getDimensions(this.options);
@@ -272,16 +261,17 @@ export class Fretboard {
       .append('g')
       .attr('class', 'strings');
 
-    strings.forEach(y => {
-      append(stringGroup, 'line', {
-        x1: 0,
-        y1: y,
-        x2: '100%',
-        y2: y,
-        stroke: stringColor,
-        strokeWidth: stringWidth
-      });
-    });
+    stringGroup
+      .selectAll('line')
+      .data(strings)
+      .enter()
+      .append('line')
+      .attr('x1', 0)
+      .attr('y1', d => d)
+      .attr('x2', '100%')
+      .attr('y2', d => d)
+      .attr('stroke', stringColor)
+      .attr('stroke-width', stringWidth);
 
     const fretsGroup = svg
       .append('g')
@@ -292,40 +282,76 @@ export class Fretboard {
       .attr('class', 'fret-numbers')
       .attr('transform', `translate(0 ${fretNumbersMargin + topPadding + strings[strings.length - 1]})`);
 
-    frets.forEach((x, i) => {
-      if (i === 0) {
-        append(fretsGroup, 'line', {
-          x1: 0,
-          y1: 1,
-          x2: 0,
-          y2: height - 1,
-          stroke: nutColor,
-          strokeWidth: nutWidth
-        });
-        return;
-      }
-      append(fretsGroup, 'line', {
-        x1: `${x}%`,
-        y1: 1,
-        x2: `${x}%`,
-        y2: height - 1,
-        stroke: i === MIDDLE_FRET ? middleFretColor : fretColor,
-        strokeWidth: i === MIDDLE_FRET ? middleFretWidth : fretWidth
+    fretsGroup
+      .selectAll('line')
+      .data(frets)
+      .enter()
+      .append('line')
+      .attr('x1', d => `${d}%`)
+      .attr('y1', 1)
+      .attr('x2', d => `${d}%`)
+      .attr('y2', height - 1)
+      .attr('stroke', (_d, i) => {
+        switch(i) {
+          case 0:
+            return nutColor;
+          case MIDDLE_FRET:
+            return middleFretColor;
+          default:
+            return fretColor;
+        }
+      })
+      .attr('stroke-width', (_d, i) => {
+        switch(i) {
+          case 0:
+            return nutWidth;
+          case MIDDLE_FRET:
+            return middleFretWidth;
+          default:
+            return fretWidth;
+        }
       });
-      if (showFretsNumber) {
-        const middlePosition = frets[i] - (frets[i] - frets[i - 1]) / 2;
-        append(fretNumbersGroup, 'text', {
-          fill: i === MIDDLE_FRET + 1 ? middleFretColor : fretNumbersColor,
-          fontFamily: font,
-          textAnchor: 'middle',
-          x: totalWidth / 100 * middlePosition
-        }).text(`${i}`);
-      }
-    });
+
+    if (showFretsNumber) {
+      fretNumbersGroup
+        .selectAll('text')
+        .data(frets.slice(1))
+        .enter()
+        .append('text')
+        .attr('x', (d, i) => totalWidth / 100 * (d - (d - frets[i]) / 2))
+        .attr('fill', (_d, i) => i === MIDDLE_FRET + 1 ? middleFretColor : fretNumbersColor)
+        .attr('font-family', font)
+        .attr('text-anchor', 'middle')
+        .text((_d, i) => `${i + 1}`)
+    }
+
+    this.baseRendered = true;
+  }
+
+  render (dots: Dot[]): Fretboard {
+    this._baseRender();
 
     if (!dots.length) {
       return this;
     }
+
+    const {
+      svg,
+      positions
+    } = this;
+
+    const {
+      font,
+      dotStrokeColor,
+      dotStrokeWidth,
+      dotFill,
+      dotSize,
+      dotText,
+      dotTextSize,
+      disabledOpacity
+    } = this.options;
+
+    svg.select('.dots').remove();
 
     const dotGroup = svg
       .append('g')
@@ -342,7 +368,7 @@ export class Fretboard {
       .attr('cx', ({ string, fret }) => `${positions[string - 1][fret].x}%`)
       .attr('cy', ({ string, fret }) => positions[string - 1][fret].y)
       .attr('r', dotSize * 0.5)
-      .attr('class', ({ interval }) => `dot-circle dot-${interval}`)
+      .attr('class', (dot: Dot) => dotClasses(dot, 'circle'))
       .attr('stroke', dotStrokeColor)
       .attr('stroke-width', dotStrokeWidth)
       .attr('fill', dotFill);
@@ -350,7 +376,7 @@ export class Fretboard {
     dotsNodes.append('text')
       .attr('x', ({ string, fret }) => `${positions[string - 1][fret].x}%`)
       .attr('y', ({ string, fret }) => positions[string - 1][fret].y)
-      .attr('class', ({ interval }) => `dot-text dot-text-${interval}`)
+      .attr('class', (dot: Dot) => dotClasses(dot, 'text'))
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'central')
       .attr('font-family', font)

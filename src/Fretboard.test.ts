@@ -59,3 +59,15 @@ test('Fretboard with dots', t => {
   t.is(svg.querySelectorAll('.fret-numbers text').length, fretCount);
   t.is(svg.querySelectorAll('.dots .dot').length, dots.length);
 });
+
+test('Fretboard render twice', t => {
+  const fretboard = new Fretboard({ el: '#el' });
+  const dots = pentatonic({ box: 1, root: 'G2' });
+  fretboard.render(dots);
+
+  const svg = document.querySelector('#el svg');
+  
+  t.is(svg.querySelectorAll('.dots .dot').length, dots.length);
+  fretboard.render(dots);
+  t.is(svg.querySelectorAll('.dots .dot').length, dots.length);
+});

@@ -319,7 +319,7 @@ export class Fretboard {
         .enter()
         .append('text')
         .attr('x', (d, i) => totalWidth / 100 * (d - (d - frets[i]) / 2))
-        .attr('fill', (_d, i) => i === MIDDLE_FRET + 1 ? middleFretColor : fretNumbersColor)
+        .attr('fill', (_d, i) => i === MIDDLE_FRET ? middleFretColor : fretNumbersColor)
         .attr('font-family', font)
         .attr('text-anchor', 'middle')
         .text((_d, i) => `${i + 1}`)

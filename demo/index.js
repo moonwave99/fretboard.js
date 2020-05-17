@@ -76,7 +76,7 @@ function apiExample(box = CAGED({ mode: 'major', root: 'C3', box: 'C'})) {
   });
 }
 
-function connectedExample({
+function connectedCagedExample({
   box1 = CAGED({ box: 'C', root: 'D3' }),
   box2 = CAGED({ box: 'A', root: 'D3' })
 } = {}) {
@@ -109,7 +109,7 @@ function connectedExample({
   }).map(enableCommonDots);
 
   const fretboard = new Fretboard({
-    el: '#fretboard-connected',
+    el: '#fretboard-connected-caged',
     dotText: ({ note, interval, disabled }) => !disabled && interval === '1P' ? note : '',
     dotFill: ({ interval, disabled }) => {
       if (disabled) {
@@ -122,6 +122,32 @@ function connectedExample({
     fretCount: 18
   });
   fretboard.render(connectedDots);
+}
+
+function connectedPentatonicExample({
+  box1 = pentatonic({ box: 4, root: 'E3', mode: 'minor' }),
+  box2 = pentatonic({ box: 5, root: 'E3', mode: 'minor' })
+} = {}) {
+  const commonDots = uniqWith([
+    ...box1,
+    ...box2
+  ].flat(), (dot1, dot2) => {
+    return isEqual({
+      fret: dot1.fret,
+      string: dot1.string
+    } ,{
+      fret: dot2.fret,
+      string: dot2.string
+    });
+  });
+
+  const fretboard = new Fretboard({
+    el: '#fretboard-connected-pentatonic',
+    dotText: ({ note }) => note,
+    ...fretboardConfiguration,
+    fretCount: 18
+  });
+  fretboard.render(commonDots);
 }
 
 function cagedExample(boxes = []) {
@@ -159,9 +185,13 @@ document.addEventListener('DOMContentLoaded', () => {
     root: 'C3',
     box: 'C'
   }));
-  connectedExample({
+  connectedCagedExample({
     box1: CAGED({ box: 'C', root: 'D3' }),
     box2: CAGED({ box: 'A', root: 'D3' })
+  });
+  connectedPentatonicExample({
+    box1: pentatonic({ box: 4, root: 'E3', mode: 'minor' }),
+    box2: pentatonic({ box: 5, root: 'E3', mode: 'minor' })
   });
   cagedExample([
     { box: 'E', root: 'G2' },

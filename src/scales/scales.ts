@@ -6,10 +6,10 @@ export type Dot = {
   string: number;
   fret: number;
   note: string;
-  noteWithOctave: string;
-  octave: number;
-  interval: string;
-  position: number;
+  interval?: string;
+  noteWithOctave?: string;
+  octave?: number;
+  position?: number;
   disabled?: boolean;
 }
 

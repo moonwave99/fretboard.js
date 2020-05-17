@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Fretboard.js demo</title>
+	<meta charset="utf-8">
+	<meta name="viewport"
+	  content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+	<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+	<header>
+		<h1>Fretboard.js demo | Tetrachords</h1>
+	</header>
+	<main>
+		<section>
+			<p class="description">An <a href="https://en.wikipedia.org/wiki/Heptatonic_scale" target="_blank">heptatonic scale</a> is made up of two adjacent <a href="https://en.wikipedia.org/wiki/Tetrachord">tetrachords</a>, a whole tone apart that is.</p>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard"></figure>
+				<form class="column api-actions">
+					<div class="field">
+					  <div class="control">
+					    <div class="select is-small">
+					      <select name="upperTetrachordType">
+									<option disabled selected>Select Upper Tetrachord...</option>
+									<optgroup label="Common tetrachords">
+						        <option value="Major">Major</option>
+						        <option value="Minor">Minor</option>
+						        <option value="Phrygian">Phrygian</option>
+									</optgroup>
+									<optgroup label="Exotic tetrachords">
+						        <option value="Harmonic">Harmonic</option>
+						        <option value="Lydian">Lydian</option>
+									</optgroup>
+					      </select>
+					    </div>
+					  </div>
+					</div>
+
+					<div class="field">
+					  <div class="control">
+					    <div class="select is-small">
+					      <select name="upperTetrachordLayout">
+									<option disabled selected>Select Upper Tetrachord Layout...</option>
+						      <option value="0">Linear</option>
+						      <option value="1">3 + 1</option>
+						      <option value="2">2 + 2</option>
+						      <option value="3">1 + 3</option>
+					      </select>
+					    </div>
+					  </div>
+					</div>
+
+					<div class="field">
+					  <div class="control">
+					    <div class="select is-small">
+					      <select name="lowerTetrachordType">
+									<option disabled selected>Select Lower Tetrachord...</option>
+									<optgroup label="Common tetrachords">
+						        <option value="Major">Major</option>
+						        <option value="Minor">Minor</option>
+						        <option value="Phrygian">Phrygian</option>
+									</optgroup>
+									<optgroup label="Exotic tetrachords">
+						        <option value="Harmonic">Harmonic</option>
+						        <option value="Lydian">Lydian</option>
+									</optgroup>
+					      </select>
+					    </div>
+					  </div>
+					</div>
+
+					<div class="field">
+					  <div class="control">
+					    <div class="select is-small">
+					      <select name="lowerTetrachordLayout">
+									<option disabled selected>Select Lower Tetrachord Layout...</option>
+						      <option value="0">Linear</option>
+						      <option value="1">3 + 1</option>
+						      <option value="2">2 + 2</option>
+						      <option value="3">1 + 3</option>
+					      </select>
+					    </div>
+					  </div>
+					</div>
+
+				</form>
+			</div>
+		</section>
+	</main>
+	<footer>
+		<p>&copy; 2019 mwlabs. | <a href="https://github.com/moonwave99/fretboard.js">github</a></p>
+	</footer>
+	<script src="tetrachords.js"></script>
+</body>
+
+</html>

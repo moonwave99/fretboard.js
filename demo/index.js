@@ -3,7 +3,7 @@ import {
   CAGED,
   pentatonic,
   disableDots
-} from '../dist/fretboard.esm.js';
+} from '../dist/fretboard.umd.js';
 
 import { isEqual, uniqWith } from 'lodash';
 

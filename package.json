@@ -1,6 +1,6 @@
 {
 	"name": "@moonwave99/fretboard.js",
-	"version": "0.1.0",
+	"version": "0.1.1",
 	"description": "Fretboard diagram generator",
 	"homepage": "https://fretboardjs.netlify.app/",
 	"main": "dist/fretboard.cjs.js",

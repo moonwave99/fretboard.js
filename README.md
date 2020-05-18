@@ -2,6 +2,8 @@
 
 Fretboard diagram generator.
 
+Demo: [https://fretboardjs.netlify.app/]
+
 ---
 
 ## [ISC License](https://spdx.org/licenses/ISC)

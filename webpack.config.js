@@ -1,9 +1,12 @@
 const path = require('path');
 
 module.exports = {
-  entry: './demo/index.js',
+  entry: {
+    index: './demo/index.js',
+    tetrachords: './demo/tetrachords.js'
+  },
   output: {
-    filename: 'demo.js',
+    filename: '[name]-bundle.js',
     path: path.resolve(__dirname, 'demo'),
   },
   devServer: {

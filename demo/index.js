@@ -31,10 +31,9 @@ const colors = {
 function apiExample(box = CAGED({ mode: 'major', root: 'C3', box: 'C'})) {
   const fretboard = new Fretboard({
     el: '#fretboard-api',
-    dots: box,
     ...fretboardConfiguration
   });
-  fretboard.render();
+  fretboard.render(box);
 
   document.querySelectorAll('.api-actions button')
     .forEach((button) => {
@@ -77,7 +76,7 @@ function apiExample(box = CAGED({ mode: 'major', root: 'C3', box: 'C'})) {
   });
 }
 
-function connectedExample({
+function connectedCagedExample({
   box1 = CAGED({ box: 'C', root: 'D3' }),
   box2 = CAGED({ box: 'A', root: 'D3' })
 } = {}) {
@@ -110,8 +109,7 @@ function connectedExample({
   }).map(enableCommonDots);
 
   const fretboard = new Fretboard({
-    el: '#fretboard-connected',
-    dots: connectedDots,
+    el: '#fretboard-connected-caged',
     dotText: ({ note, interval, disabled }) => !disabled && interval === '1P' ? note : '',
     dotFill: ({ interval, disabled }) => {
       if (disabled) {
@@ -120,21 +118,50 @@ function connectedExample({
       return interval === '1P' ? colors.intervals[interval] : colors.defaultFill
     },
     dotStrokeColor: ({ disabled }) => disabled ? colors.disabled : colors.defaultStroke,
-    ...fretboardConfiguration
+    ...fretboardConfiguration,
+    fretCount: 18
   });
-  fretboard.render();
+  fretboard.render(connectedDots);
+}
+
+function connectedPentatonicExample({
+  box1 = pentatonic({ box: 4, root: 'E3', mode: 'minor' }),
+  box2 = pentatonic({ box: 5, root: 'E3', mode: 'minor' })
+} = {}) {
+  const commonDots = uniqWith([
+    ...box1,
+    ...box2
+  ].flat(), (dot1, dot2) => {
+    return isEqual({
+      fret: dot1.fret,
+      string: dot1.string
+    } ,{
+      fret: dot2.fret,
+      string: dot2.string
+    });
+  });
+
+  const fretboard = new Fretboard({
+    el: '#fretboard-connected-pentatonic',
+    dotText: ({ note }) => note,
+    ...fretboardConfiguration,
+    fretCount: 18
+  });
+  fretboard.render(commonDots);
 }
 
 function cagedExample(boxes = []) {
   boxes.forEach(({ box, root }, i) => {
     const fretBoard = new Fretboard({
       el: `#fretboard-caged-${box.toLowerCase()}`,
-      dots: CAGED({ box, root }),
       dotText: ({ note, interval }) => interval === '1P' ? note : null,
       dotFill: ({ interval }) => interval === '1P' ? colors.intervals[interval] : colors.defaultFill,
-      ...fretboardConfiguration
+      ...fretboardConfiguration,
+      fretCount: 17
     });
-    fretBoard.render();
+    fretBoard.render(
+      CAGED({ box, root })
+    );
   });
 }
 
@@ -142,12 +169,13 @@ function pentatonicExample(boxes = []) {
   boxes.forEach(({ box, root }, i) => {
     const fretBoard = new Fretboard({
       el: `#fretboard-pentatonic-${box}`,
-      dots: pentatonic({ box, root, mode: 'major' }),
       dotText: ({ note, interval }) => interval === '1P' ? note : interval,
       dotFill: ({ interval }) => interval === '1P' ? colors.intervals[interval] : colors.defaultFill,
       ...fretboardConfiguration
     });
-    fretBoard.render();
+    fretBoard.render(
+      pentatonic({ box, root, mode: 'major' }),
+    );
   });
 }
 
@@ -157,9 +185,13 @@ document.addEventListener('DOMContentLoaded', () => {
     root: 'C3',
     box: 'C'
   }));
-  connectedExample({
+  connectedCagedExample({
     box1: CAGED({ box: 'C', root: 'D3' }),
     box2: CAGED({ box: 'A', root: 'D3' })
+  });
+  connectedPentatonicExample({
+    box1: pentatonic({ box: 4, root: 'E3', mode: 'minor' }),
+    box2: pentatonic({ box: 5, root: 'E3', mode: 'minor' })
   });
   cagedExample([
     { box: 'E', root: 'G2' },

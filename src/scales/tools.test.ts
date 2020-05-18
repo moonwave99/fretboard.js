@@ -1,14 +1,28 @@
 import test from 'ava';
 import {
   sliceBox,
-  disableDots
+  disableDots,
+  disableStrings
 } from './tools';
-import { CAGED } from './CAGED';
+import { CAGED } from './scales';
 
 const box = CAGED({
   mode: 'major',
   root: 'C3',
   box: 'C'
+});
+
+test('disableStrings', t => {
+  const output = disableStrings({
+    box,
+    strings: [1]
+  });
+  t.is(
+    output
+      .filter(({ string }) => string === 1)
+      .every(({ disabled }) => disabled),
+    true
+  );
 });
 
 test('sliceBox', t => {

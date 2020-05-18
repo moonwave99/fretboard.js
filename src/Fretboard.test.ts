@@ -50,7 +50,7 @@ test('Fretboard without fret numbers', t => {
     el: '#el',
     showFretsNumber: false
   });
-  fretboard.render([]);
+  fretboard.render();
 
   const svg = document.querySelector('#el svg');
 

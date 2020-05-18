@@ -328,7 +328,7 @@ export class Fretboard {
     this.baseRendered = true;
   }
 
-  render (dots: Dot[]): Fretboard {
+  render (dots: Dot[] = []): Fretboard {
     this._baseRender();
 
     if (!dots.length) {

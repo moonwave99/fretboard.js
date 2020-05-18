@@ -6,7 +6,7 @@ Fretboard diagram generator.
 
 ## [ISC License](https://spdx.org/licenses/ISC)
 
-Copyright (c) 2019, Diego Caponera <hello@diegocaponera.com>
+Copyright (c) 2020, Diego Caponera <hello@diegocaponera.com>
 
 Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
 

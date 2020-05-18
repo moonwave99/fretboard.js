@@ -3,7 +3,8 @@ const path = require('path');
 module.exports = {
   entry: {
     index: './demo/index.js',
-    tetrachords: './demo/tetrachords.js'
+    tetrachords: './demo/tetrachords.js',
+    playback: './demo/playback.js'
   },
   output: {
     filename: '[name]-bundle.js',

@@ -390,11 +390,13 @@ export class Fretboard {
     filter = (): boolean => true,
     text,
     fontSize,
+    fontFill,
     ...opts
   }: {
     filter?: ValueFn<BaseType, unknown, boolean>;
     text?: ValueFn<BaseType, unknown, string>;
     fontSize?: number;
+    fontFill?: string;
     [key: string]: string | number | Function;
   }): Fretboard {
     const { svg } = this;
@@ -410,7 +412,8 @@ export class Fretboard {
       svg.selectAll('.dot-text')
         .filter(filter)
         .text(text)
-        .attr('font-size', fontSize || dotTextSize);
+        .attr('font-size', fontSize || dotTextSize)
+        .attr('fill', fontFill || 'black');
     }
 
     return this;

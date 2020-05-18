@@ -31,7 +31,7 @@ node_modules/
 npm-debug.log
 
 dist/
-demo/demo.js
+demo/*-bundle.js
 
 lib-cov
 

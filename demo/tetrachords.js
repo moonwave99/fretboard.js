@@ -3,7 +3,7 @@ import {
   tetrachord,
   TetrachordTypes,
   TetrachordLayouts
-} from '../dist/fretboard.umd.js';
+} from '../dist/fretboard.esm.js';
 
 import { isEqual, uniqWith } from 'lodash';
 

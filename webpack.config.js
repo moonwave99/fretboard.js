@@ -6,7 +6,7 @@ module.exports = {
     tetrachords: './demo/tetrachords.js'
   },
   output: {
-    filename: '[name].js',
+    filename: '[name]-bundle.js',
     path: path.resolve(__dirname, 'demo'),
   },
   devServer: {

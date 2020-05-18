@@ -2,7 +2,7 @@
 
 Fretboard diagram generator.
 
-Demo: [https://fretboardjs.netlify.app/]
+Demo: https://fretboardjs.netlify.app/
 
 ---
 

@@ -144,6 +144,7 @@ function connectedPentatonicExample({
   const fretboard = new Fretboard({
     el: '#fretboard-connected-pentatonic',
     dotText: ({ note }) => note,
+    dotFill: ({ note }) => note === 'E' ? colors.intervals['1P'] : colors.defaultFill,
     ...fretboardConfiguration,
     fretCount: 18
   });

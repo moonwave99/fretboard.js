@@ -165,7 +165,7 @@ export class Fretboard {
   svg: Selection<BaseType, unknown, HTMLElement, unknown>;
   private baseRendered: boolean;
   constructor (options: object) {
-    this.options = Object.assign(defaultOptions, options);
+    this.options = Object.assign({}, defaultOptions, options);
     const {
       el,
       height,
@@ -277,11 +277,6 @@ export class Fretboard {
       .append('g')
       .attr('class', 'frets');
 
-    const fretNumbersGroup = svg
-      .append('g')
-      .attr('class', 'fret-numbers')
-      .attr('transform', `translate(0 ${fretNumbersMargin + topPadding + strings[strings.length - 1]})`);
-
     fretsGroup
       .selectAll('line')
       .data(frets)
@@ -313,6 +308,11 @@ export class Fretboard {
       });
 
     if (showFretsNumber) {
+      const fretNumbersGroup = svg
+        .append('g')
+        .attr('class', 'fret-numbers')
+        .attr('transform', `translate(0 ${fretNumbersMargin + topPadding + strings[strings.length - 1]})`);
+
       fretNumbersGroup
         .selectAll('text')
         .data(frets.slice(1))
@@ -392,9 +392,10 @@ export class Fretboard {
     fontSize,
     ...opts
   }: {
-    filter: ValueFn<BaseType, unknown, boolean>;
-    text: ValueFn<BaseType, unknown, string>;
-    fontSize: number;
+    filter?: ValueFn<BaseType, unknown, boolean>;
+    text?: ValueFn<BaseType, unknown, string>;
+    fontSize?: number;
+    [key: string]: string | number | Function;
   }): Fretboard {
     const { svg } = this;
     const { dotTextSize } = this.options;

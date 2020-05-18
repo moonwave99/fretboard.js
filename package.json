@@ -5,6 +5,9 @@
 	"main": "dist/fretboard.cjs.js",
 	"module": "dist/fretboard.esm.js",
 	"browser": "dist/fretboard.umd.js",
+	"files": [
+		"dist/fretboard.*.js"
+	],
 	"scripts": {
 		"test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' npx ava-ts",
 		"coverage": "nyc npm run test",

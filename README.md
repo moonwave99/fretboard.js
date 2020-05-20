@@ -1,8 +1,8 @@
 # Fretboard.js
 
-Fretboard diagram generator.
+https://fretboardjs.netlify.app/
 
-Demo: https://fretboardjs.netlify.app/
+Fretboard diagram generator.
 
 ---
 

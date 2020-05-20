@@ -2,7 +2,7 @@ html,
 body {
   font-family: 'Futura', 'Arial', sans-serif;
   font-size: 16px;
-  background-color: #22D0B218;
+  background-color: #DAF6F1;
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -21,7 +21,7 @@ html {
 
 h1 {
   font-size: 2rem;
-  margin: 0 0 2rem 0;
+  margin: 4rem 0 2rem 0;
 }
 
 h2 {
@@ -35,16 +35,15 @@ h2 {
   font-weight: bold;
 }
 
+.navbar .is-current {
+  color: #22D0B2;
+}
+
 main,
-header,
 footer {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
-}
-
-header {
-  padding-top: 4rem;
 }
 
 .scroll-wrapper {
@@ -58,6 +57,12 @@ figure {
 
 footer {
   padding: 4rem 1rem;
+}
+
+.hero {
+  padding: 6rem 0;
+  font-size: 2rem;
+  line-height: 3rem;
 }
 
 .api-actions {
@@ -99,11 +104,16 @@ footer {
   }
 
   main,
-  header,
   footer {
     width: 100vw;
     overflow-x: hidden;
     padding: 1rem;
+  }
+
+  .hero {
+    padding-top: 2rem;
+    font-size: 1.2rem;
+    line-height: 2.5rem;
   }
 
   .api-actions li {

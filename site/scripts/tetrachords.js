@@ -3,7 +3,9 @@ import {
   tetrachord,
   TetrachordTypes,
   TetrachordLayouts
-} from '../dist/fretboard.esm.js';
+} from '../../dist/fretboard.esm.js';
+
+import '../styles/style.css';
 
 const fretboardConfiguration = {
   height: 200,

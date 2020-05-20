@@ -1,11 +1,14 @@
+import { isEqual, uniqWith } from 'lodash';
+
 import {
   Fretboard,
   CAGED,
   pentatonic,
   disableDots
-} from '../dist/fretboard.esm.js';
+} from '../../dist/fretboard.esm.js';
 
-import { isEqual, uniqWith } from 'lodash';
+import './navbar.js';
+import '../styles/style.css';
 
 const fretboardConfiguration = {
   height: 200,
@@ -27,54 +30,6 @@ const colors = {
   },
   octaves: ['blue', 'magenta', 'red', 'orange', 'yellow', 'green']
 };
-
-function apiExample(box = CAGED({ mode: 'major', root: 'C3', box: 'C'})) {
-  const fretboard = new Fretboard({
-    el: '#fretboard-api',
-    ...fretboardConfiguration
-  });
-  fretboard.render(box);
-
-  document.querySelectorAll('.api-actions button')
-    .forEach((button) => {
-      button.addEventListener('click', ({ currentTarget }) => {
-        switch (currentTarget.dataset.action) {
-          case 'show-notes':
-            fretboard.dots({
-              text: ({ note }) => note,
-              fill: colors.defaultFill
-            });
-            break;
-          case 'show-notes-with-octave':
-            fretboard.dots({
-              text: ({ noteWithOctave }) => noteWithOctave,
-              fontSize: 10,
-              fill: ({ octave }) => colors.octaves[octave]
-            });
-            break;
-          case 'show-intervals':
-            fretboard.dots({
-              text: ({ interval }) => interval,
-              fill: colors.defaultFill
-            });
-            break;
-          case 'highlight-triad':
-            fretboard.dots({
-              filter: ({ position }) => [1, 3, 5].indexOf(position) > -1,
-              stroke: 'red'
-            });
-            break;
-          default:
-            fretboard.dots({
-              text: () => null,
-              fill: colors.defaultFill,
-              stroke: 'black'
-            });
-            break;
-      }
-    });
-  });
-}
 
 function connectedCagedExample({
   box1 = CAGED({ box: 'C', root: 'D3' }),
@@ -181,11 +136,6 @@ function pentatonicExample(boxes = []) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  apiExample(CAGED({
-    mode: 'major',
-    root: 'C3',
-    box: 'C'
-  }));
   connectedCagedExample({
     box1: CAGED({ box: 'C', root: 'D3' }),
     box2: CAGED({ box: 'A', root: 'D3' })

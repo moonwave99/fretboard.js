@@ -1,21 +1,18 @@
 <!doctype html>
-<html>
+<html class="has-navbar-fixed-top">
 
 <head>
-	<title>Fretboard.js demo | Playback</title>
 	<meta charset="utf-8">
 	<meta name="viewport"
 	  content="width=device-width, initial-scale=1">
+	<title><%= htmlWebpackPlugin.options.title %></title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
-	<link rel="stylesheet" href="style.css">
-	<link rel="stylesheet" href="playback.css">
 </head>
 
 <body>
-	<header>
-		<h1>Fretboard.js demo | Playback</h1>
-	</header>
+	<%= partials.nav('playback') %>
 	<main>
+		<h1>Examples / Playback</h1>
 		<section class="columns">
 			<div class="column is-three-quarters">
 				<div class="scroll-wrapper ">
@@ -30,11 +27,13 @@
 			</aside>
 		</section>
 	</main>
-	<footer>
-		<p>&copy; 2020 mwlabs. | <a href="https://github.com/moonwave99/fretboard.js">github</a></p>
-	</footer>
-	<script src="https://www.abcjs.net/abcjs_basic_5.9.1-min.js"></script>
-	<script src="playback-bundle.js"></script>
+	<%= partials.footer() %>
+	<%= htmlWebpackPlugin
+	  .tags
+	  .bodyTags
+	  .filter((tag) => tag.attributes.src.startsWith('playback'))
+	  .join('')
+	%>
 </body>
 
 </html>

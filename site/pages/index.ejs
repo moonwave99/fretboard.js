@@ -1,0 +1,45 @@
+<!doctype html>
+<html class="has-navbar-fixed-top">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"
+	  content="width=device-width, initial-scale=1">
+	<title><%= htmlWebpackPlugin.options.title %></title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+</head>
+
+<body>
+	<%= partials.nav('index') %>
+	<main>
+		<section class="hero">
+			<p><strong>Fretboard.js</strong> is<p>
+			<ul>
+				<li>a guitar/bass fretboard <strong>SVG visualisation</strong></li>
+				<li>a set of <strong>music oriented tools</strong> - as scale boxes, arpeggios and chord shapes</li>
+				<li> an <strong>API</strong> for user interaction.</li>
+			</ul>
+		</section>
+		<section>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard-api"></figure>
+				<ul class="column api-actions">
+					<li><button class="button is-small is-fullwidth" data-action="show-notes">Show Notes</button></li>
+					<li><button class="button is-small is-fullwidth" data-action="show-notes-with-octave">Show Notes with octave</button></li>
+					<li><button class="button is-small is-fullwidth" data-action="show-intervals">Show Intervals</button></li>
+					<li><button class="button is-small is-fullwidth" data-action="highlight-triad">Highlight root triad</button></li>
+					<li><button class="button is-small is-primary is-fullwidth" data-action="clear">Clear</button></li>
+				</ul>
+			</div>
+		</section>
+	</main>
+	<%= partials.footer() %>
+	<%= htmlWebpackPlugin
+	  .tags
+	  .bodyTags
+	  .filter((tag) => tag.attributes.src.startsWith('index'))
+	  .join('')
+	%>
+</body>
+
+</html>

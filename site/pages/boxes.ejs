@@ -1,33 +1,18 @@
 <!doctype html>
-<html>
+<html class="has-navbar-fixed-top">
 
 <head>
-	<title>Fretboard.js demo</title>
 	<meta charset="utf-8">
 	<meta name="viewport"
 	  content="width=device-width, initial-scale=1">
+	<title><%= htmlWebpackPlugin.options.title %></title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
-	<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-	<header>
-		<h1>Fretboard.js demo</h1>
-	</header>
+	<%= partials.nav('boxes') %>
 	<main>
-		<section>
-			<h2>Dots API</h2>
-			<div class="columns">
-				<figure class="column is-three-quarters" id="fretboard-api"></figure>
-				<ul class="column api-actions">
-					<li><button class="button is-small is-fullwidth" data-action="show-notes">Show Notes</button></li>
-					<li><button class="button is-small is-fullwidth" data-action="show-notes-with-octave">Show Notes with octave</button></li>
-					<li><button class="button is-small is-fullwidth" data-action="show-intervals">Show Intervals</button></li>
-					<li><button class="button is-small is-fullwidth" data-action="highlight-triad">Highlight root triad</button></li>
-					<li><button class="button is-small is-primary is-fullwidth" data-action="clear">Clear</button></li>
-				</ul>
-			</div>
-		</section>
+		<h1>Examples / Boxes</h1>
 		<section>
 			<h2>Connected Boxes</h2>
 			<div class="columns">
@@ -86,10 +71,13 @@
 			</div>
 		</section>
 	</main>
-	<footer>
-		<p>&copy; 2020 mwlabs. | <a href="https://github.com/moonwave99/fretboard.js">github</a></p>
-	</footer>
-	<script src="index-bundle.js"></script>
+	<%= partials.footer() %>
+	<%= htmlWebpackPlugin
+	  .tags
+	  .bodyTags
+	  .filter((tag) => tag.attributes.src.startsWith('boxes'))
+	  .join('')
+	%>
 </body>
 
 </html>

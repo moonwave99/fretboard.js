@@ -1,21 +1,19 @@
 <!doctype html>
-<html>
+<html class="has-navbar-fixed-top">
 
 <head>
-	<title>Fretboard.js demo | Tetrachords</title>
 	<meta charset="utf-8">
 	<meta name="viewport"
 	  content="width=device-width, initial-scale=1">
+	<title><%= htmlWebpackPlugin.options.title %></title>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
-	<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-	<header>
-		<h1>Fretboard.js demo | Tetrachords</h1>
-	</header>
+	<%= partials.nav('tetrachords') %>
 	<main>
 		<section>
+			<h1>Examples / Tetrachords</h1>
 			<p class="description">An <a href="https://en.wikipedia.org/wiki/Heptatonic_scale" target="_blank">heptatonic scale</a> is made up of two adjacent <a href="https://en.wikipedia.org/wiki/Tetrachord">tetrachords</a>, a whole tone apart that is.</p>
 			<div class="columns">
 				<figure class="column is-three-quarters" id="fretboard"></figure>
@@ -90,10 +88,13 @@
 			</div>
 		</section>
 	</main>
-	<footer>
-		<p>&copy; 2020 mwlabs. | <a href="https://github.com/moonwave99/fretboard.js">github</a></p>
-	</footer>
-	<script src="tetrachords-bundle.js"></script>
+	<%= partials.footer() %>
+	<%= htmlWebpackPlugin
+		.tags
+		.bodyTags
+		.filter((tag) => tag.attributes.src.startsWith('tetrachords'))
+		.join('')
+	%>
 </body>
 
 </html>

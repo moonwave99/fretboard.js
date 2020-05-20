@@ -1,0 +1,29 @@
+<!doctype html>
+<html class="has-navbar-fixed-top">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"
+	  content="width=device-width, initial-scale=1">
+	<title><%= htmlWebpackPlugin.options.title %></title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+</head>
+
+<body>
+	<%= partials.nav('documentation') %>
+	<main>
+		<h1>Documentation</h1>
+		<section>
+			<p>WIP</p>
+		</section>
+	</main>
+	<%= partials.footer() %>
+	<%= htmlWebpackPlugin
+	  .tags
+	  .bodyTags
+	  .filter((tag) => tag.attributes.src.startsWith('documentation'))
+	  .join('')
+	%>
+</body>
+
+</html>

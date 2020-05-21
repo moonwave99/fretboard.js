@@ -31,6 +31,6 @@ Permission to use, copy, modify, and/or distribute this software for any purpose
 
 THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
 
-[homepage]: https://fretboardjs.netlify.app/
-[icon]: https://fretboardjs.netlify.app/assets/icon.svg
-[docs]: https://fretboardjs.netlify.app/documentation.html
+[homepage]: https://moonwave99.github.io/fretboardjs/
+[icon]: https://moonwave99.github.io/fretboardjs/assets/icon.svg
+[docs]: https://moonwave99.github.io/fretboardjs/documentation.html

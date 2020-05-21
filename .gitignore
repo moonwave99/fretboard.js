@@ -45,6 +45,3 @@ docs
 
 # Coverage
 .nyc_output
-
-# Local Netlify folder
-.netlify

@@ -2,7 +2,7 @@
 	"name": "@moonwave99/fretboard.js",
 	"version": "0.1.1",
 	"description": "Fretboard diagram generator",
-	"homepage": "https://fretboardjs.netlify.app/",
+	"homepage": "https://moonwave99.github.io/fretboardjs/",
 	"main": "dist/fretboard.cjs.js",
 	"module": "dist/fretboard.esm.js",
 	"browser": "dist/fretboard.umd.js",
@@ -17,7 +17,7 @@
 		"build:prod": "rollup -c",
 		"site:dev": "webpack-dev-server",
 		"site:prod": "webpack",
-		"site:deploy": "npm run build:prod && npm run site:prod && netlify deploy --dir ./_site --prod"
+		"site:deploy": "npm run build:prod && npm run site:prod && gh-pages -d ./_site"
 	},
 	"keywords": [
 		"music",
@@ -48,6 +48,7 @@
 		"eslint": "^7.0.0",
 		"esm": "^3.2.25",
 		"fs-extra": "^9.0.0",
+		"gh-pages": "^2.2.0",
 		"html-webpack-plugin": "^4.3.0",
 		"lodash": "^4.17.15",
 		"marked": "^1.1.0",

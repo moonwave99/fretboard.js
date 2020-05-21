@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="has-navbar-fixed-top">
+<html class="home has-navbar-fixed-top">
 
 <head>
 	<meta charset="utf-8">
@@ -12,20 +12,24 @@
 <body>
 	<%= partials.nav('index') %>
 	<main>
-		<section class="hero"><%= texts['home.hero'] %></section>
-		<section>
-			<div class="columns">
-				<figure class="column is-three-quarters" id="fretboard-api"></figure>
-				<ul class="column api-actions">
-					<li><button class="button is-small is-fullwidth" data-action="show-notes">Show Notes</button></li>
-					<li><button class="button is-small is-fullwidth" data-action="show-notes-with-octave">Show Notes with octave</button></li>
-					<li><button class="button is-small is-fullwidth" data-action="show-intervals">Show Intervals</button></li>
-					<li><button class="button is-small is-fullwidth" data-action="highlight-triad">Highlight root triad</button></li>
-					<li><button class="button is-small is-info is-fullwidth" data-action="clear">Clear</button></li>
-				</ul>
+		<section class="hero">
+			<div class="container">
+				<div class="hero-content"><%= texts['home.hero'] %></div>
+				<div class="hero-example columns">
+					<figure class="column is-three-quarters" id="fretboard-api"></figure>
+					<ul class="column api-actions">
+						<li><button class="button is-small is-fullwidth" data-action="show-notes">Show Notes</button></li>
+						<li><button class="button is-small is-fullwidth" data-action="show-notes-with-octave">Show Notes with octave</button></li>
+						<li><button class="button is-small is-fullwidth" data-action="show-intervals">Show Intervals</button></li>
+						<li><button class="button is-small is-fullwidth" data-action="highlight-triad">Highlight root triad</button></li>
+						<li><button class="button is-small is-info is-fullwidth" data-action="reset">Reset</button></li>
+					</ul>
+				</div>
 			</div>
 		</section>
-		<section class="about text"><%= texts['home.about'] %></section>
+		<div class="container">
+			<section class="about text"><%= texts['home.about'] %></section>
+		</div>
 	</main>
 	<%= partials.footer() %>
 	<%= htmlWebpackPlugin
@@ -35,5 +39,4 @@
 	  .join('')
 	%>
 </body>
-
 </html>

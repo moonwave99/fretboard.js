@@ -14,6 +14,9 @@ The UI ecosystem already has very good fretboard libraries, but my use case was 
 
 As I was moving from rhythm / mainly chord based playing to exploring lead guitar, the dev process helped me in getting a deeper understanding of the fretboard structure.
 
+<!--examples.boxes.description-->
+The library comes with many scale systems and boxes.
+
 <!--examples.boxes.1-->
 This example shows two adjacent **E minor pentatonic** boxes.
 

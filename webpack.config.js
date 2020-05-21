@@ -25,7 +25,7 @@ const documentation = marked(docsFile);
 const partials = {
   footer: () => {
     return `
-      <footer>
+      <footer class="container">
         <p>&copy; 2020 <a href="${labels.links.author}">mwlabs</a>. | <a href="${labels.links.github}">github</a></p>
       </footer>`;
   },

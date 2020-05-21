@@ -4,7 +4,9 @@
 
 Use `npm`/`yarn`:
 
-    $ npm i @moonwave99/fretboard.js --save
+```bash
+$ npm i @moonwave99/fretboard.js --save
+```
 
 `require` / `import` accordingly:
 

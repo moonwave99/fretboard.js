@@ -16,8 +16,9 @@
 
 - [ ] add crop to displayed positions options;
 - [ ] add chords shapes;
-- [ ] add harmonic minor scale and modes;
+- [ ] add harmonic minor scale and its modes;
 - [ ] abstract tuning system;
+- [ ] render static SVGs;
 - [ ] finish docs.
 
 ---

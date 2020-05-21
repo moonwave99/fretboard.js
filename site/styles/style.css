@@ -2,15 +2,19 @@ html,
 body {
   font-family: 'Futura', 'Arial', sans-serif;
   font-size: 16px;
-  background-color: #D2E8F6;
   margin: 0;
   padding: 0;
-  min-height: 100vh;
   -webkit-font-smoothing: antialiased;
 }
 
 html {
   box-sizing: border-box;
+  min-height: 100vh;
+  background-color: #D2E8F6;
+}
+
+.home {
+  background-color: white;
 }
 
 *,
@@ -51,8 +55,7 @@ h2 {
   margin-right: .5rem;
 }
 
-main,
-footer {
+.container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 1rem;
@@ -67,6 +70,10 @@ figure {
   position: relative;
 }
 
+.text {
+  max-width: 768px;
+}
+
 .text p {
   margin-bottom: 2rem;
 }
@@ -75,14 +82,23 @@ figure {
   margin-bottom: 3rem;
 }
 
-footer {
-  padding: 4rem 1rem;
+footer.container {
+  padding: 2rem 1rem;
 }
 
 .hero {
-  padding: 6rem 0;
+  padding: 6rem 0 3rem 0;
+  background-color: #C6EDFC;
+}
+
+.hero strong {
+  color: #3273dc;
+}
+
+.hero-content {
   font-size: 2rem;
   line-height: 3rem;
+  margin-bottom: 2rem;
 }
 
 .api-actions {
@@ -123,15 +139,25 @@ footer {
     width: 100vw;
   }
 
-  main,
-  footer {
+  html.has-navbar-fixed-top {
+    padding-top: 3.25em;
+  }
+
+  .container {
     width: 100vw;
     overflow-x: hidden;
     padding: 1rem;
   }
 
+  .text {
+    max-width: 100%;
+  }
+
   .hero {
     padding-top: 2rem;
+  }
+
+  .hero-content {
     font-size: 1.2rem;
     line-height: 2.5rem;
   }

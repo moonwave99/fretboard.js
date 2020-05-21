@@ -20,8 +20,8 @@
 }
 
 .abcjs-btn g {
-	fill: #22D0B2;
-	stroke: #22D0B2;
+	fill: #3273dc;
+	stroke: #3273dc;
 }
 
 .abcjs-inline-midi .abcjs-btn:hover g {
@@ -37,7 +37,7 @@
 
 .abcjs-inline-midi .abcjs-midi-loop.abcjs-pushed {
 	border: 1px solid #cccccc;
-	background-color: #22D0B2;
+	background-color: #3273dc;
 	box-sizing: border-box;
 }
 
@@ -73,7 +73,7 @@
 }
 
 .abcjs-inline-midi .abcjs-midi-progress-background {
-	background-color: #22D0B2;
+	background-color: #3273dc;
 	height: 10px;
 	border-radius: 5px;
 	border: 2px solid #cccccc;
@@ -89,7 +89,7 @@
 	margin-left: -10px; /* half of the width */
 	height: 14px;
 	background-color: #f4f4f4;
-  border: 1px solid #22D0B2;
+  border: 1px solid #3273dc;
 	position: absolute;
 	display: inline-block;
 	border-radius: 6px;
@@ -110,7 +110,7 @@
 
 .abcjs-inline-midi .abcjs-tempo-wrapper {
 	font-size: 10px;
-	color: #22D0B2;
+	color: #3273dc;
 	box-sizing: border-box;
 	display: flex;
 	align-items: center;
@@ -138,7 +138,7 @@
 
 }
 .abcjs-inline-midi .abcjs-loading-svg circle {
-	stroke: #22D0B2;
+	stroke: #3273dc;
 }
 
 @keyframes abcjs-spin {

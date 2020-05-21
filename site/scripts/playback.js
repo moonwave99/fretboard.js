@@ -79,4 +79,32 @@ K: transpose=-12
       });
     }
   })[0];
+  // const synthControl = new ABCJS.synth.SynthController();
+  //
+  // synthControl.load("#audio", {
+  //   onEvent: ({ midiPitches, elements, ...rest }) => {
+  //     const note = ABCJS.synth.pitchToNoteName[midiPitches[0].pitch];
+  //     const chordElement = elements[0].find(({ tagName }) => tagName === 'text');
+  //     if (chordElement) {
+  //       const chordType = chordElement.querySelector('tspan').innerHTML.substring(1);
+  //       const chord = getChord(chordType, note);
+  //       fretboard.dots({
+  //         text: ({ noteWithOctave, note }) => chord.notes.indexOf(noteWithOctave) > -1 ? note : '',
+  //         fill: ({ noteWithOctave }) => noteWithOctave === note ? colors.intervals['1P'] : 'white',
+  //         stroke: ({ noteWithOctave }) => chord.notes.indexOf(noteWithOctave) > -1 ? colors.intervals['1P'] : 'black',
+  //         ['stroke-width']: ({ noteWithOctave }) => chord.notes.indexOf(noteWithOctave) > -1 ? 4 : 1
+  //       });
+  //     } else {
+  //       fretboard.dots({
+  //         fill: ({ noteWithOctave }) => noteWithOctave === note ? colors.intervals['1P'] : 'white',
+  //       });
+  //     }
+  //   }
+  // }, {
+  //   displayLoop: true,
+  //   displayRestart: true,
+  //   displayPlay: true,
+  //   displayProgress: true,
+  // });
+  // synthControl.setTune(visualObj, false);
 });

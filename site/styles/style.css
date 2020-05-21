@@ -2,7 +2,7 @@ html,
 body {
   font-family: 'Futura', 'Arial', sans-serif;
   font-size: 16px;
-  background-color: #DAF6F1;
+  background-color: #D2E8F6;
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -31,12 +31,24 @@ h2 {
 
 h1,
 h2 {
-  color: #22D0B2;
+  color: #3273dc;
   font-weight: bold;
 }
 
 .navbar .is-current {
-  color: #22D0B2;
+  color: #3273dc;
+}
+
+.navbar-brand {
+  flex-grow: 0.05;
+}
+
+.navbar-brand .navbar-item {
+  flex: 1;
+}
+
+.navbar-brand img {
+  margin-right: .5rem;
 }
 
 main,
@@ -53,6 +65,14 @@ footer {
 figure {
   margin: 0;
   position: relative;
+}
+
+.text p {
+  margin-bottom: 2rem;
+}
+
+.text pre {
+  margin-bottom: 3rem;
 }
 
 footer {

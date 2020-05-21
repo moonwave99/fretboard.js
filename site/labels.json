@@ -1,0 +1,21 @@
+{
+  "links" : {
+    "github": "https://github.com/moonwave99/fretboard.js",
+    "homepage": "https://github.com/moonwave99/fretboard.js",
+    "author": "https://www.diegocaponera.com"
+  },
+  "examples": {
+    "boxes": {
+      "title": "Examples / Boxes",
+      "connected": "Connected Boxes",
+      "caged": "CAGED System",
+      "pentatonic": "Pentatonic boxes"
+    },
+    "tetrachords": {
+      "title": "Examples / Tetrachords"
+    },
+    "playback": {
+      "title": "Examples / Playback"
+    }
+  }
+}

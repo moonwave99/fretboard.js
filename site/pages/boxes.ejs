@@ -12,29 +12,24 @@
 <body>
 	<%= partials.nav('boxes') %>
 	<main>
-		<h1>Examples / Boxes</h1>
+		<h1><%= examples.boxes.title %></h1>
 		<section>
-			<h2>Connected Boxes</h2>
+			<h2><%= examples.boxes.connected %></h2>
 			<div class="columns">
 				<figure class="column is-three-quarters" id="fretboard-connected-pentatonic"></figure>
-				<aside class="column aside">
-					<p>This example shows two adjacent <strong>E minor pentatonic</strong> boxes.</p>
-				</aside>
+				<aside class="column aside"><%= texts['examples.boxes.1'] %></aside>
 			</div>
 			<div class="columns">
 				<figure class="column is-three-quarters" id="fretboard-connected-caged"></figure>
-				<aside class="column aside">
-					<p>This example shows the connection between the <strong>C-shaped box</strong> and the <strong>A-shaped box</strong> of the D major scale.</p>
+				<aside class="column aside"><%= texts['examples.boxes.2'] %></aside>
 				</aside>
 			</div>
 		</section>
 		<section>
-			<h2>CAGED System</h2>
+			<h2><%= examples.boxes.caged %></h2>
 			<div class="columns">
 				<figure class="column is-three-quarters" id="fretboard-caged-e"></figure>
-				<aside class="column aside">
-					<p>The G major scale in all five CAGED boxes. See how they share fret positions vertically!</p>
-				</aside>
+				<aside class="column aside"><%= texts['examples.boxes.3'] %></aside>
 			</div>
 			<div class="columns">
 				<figure class="column is-three-quarters" id="fretboard-caged-d"></figure>
@@ -50,12 +45,10 @@
 			</div>
 		</section>
 		<section>
-			<h2>Pentatonic Boxes</h2>
+			<h2><%= examples.boxes.pentatonic %></h2>
 			<div class="columns">
 				<figure class="column is-three-quarters" id="fretboard-pentatonic-1"></figure>
-				<aside class="column aside">
-					<p>Same as above, but with the G major pentatonic.</p>
-				</aside>
+				<aside class="column aside"><%= texts['examples.boxes.4'] %></aside>
 			</div>
 			<div class="columns">
 				<figure class="column is-three-quarters" id="fretboard-pentatonic-2"></figure>

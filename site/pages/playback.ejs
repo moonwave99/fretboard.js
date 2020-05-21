@@ -12,7 +12,7 @@
 <body>
 	<%= partials.nav('playback') %>
 	<main>
-		<h1>Examples / Playback</h1>
+		<h1><%= examples.playback.title %></h1>
 		<section class="columns">
 			<div class="column is-three-quarters">
 				<div class="scroll-wrapper ">
@@ -21,10 +21,7 @@
 					<figure id="fretboard"></figure>
 				</div>
 			</div>
-			<aside class="column aside">
-				<p>This example highlights the <strong>diatonic seventh arpeggios</strong> in the C major scale played in eight position.</p>
-				<p>Every arpeggio spells the <strong>seventh chord</strong> built by stacking thirds on top of every degree of the major scale, according to the scale structure (e.g. <strong>C-E-G-B</strong>, <strong>D-F-A-C</strong>, ...).</p>
-			</aside>
+			<aside class="column aside"><%= texts['examples.playback'] %></aside>
 		</section>
 	</main>
 	<%= partials.footer() %>

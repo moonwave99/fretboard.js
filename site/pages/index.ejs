@@ -12,14 +12,7 @@
 <body>
 	<%= partials.nav('index') %>
 	<main>
-		<section class="hero">
-			<p><strong>Fretboard.js</strong> is<p>
-			<ul>
-				<li>a guitar/bass fretboard <strong>SVG visualisation</strong></li>
-				<li>a set of <strong>music oriented tools</strong> - as scale boxes, arpeggios and chord shapes</li>
-				<li> an <strong>API</strong> for user interaction.</li>
-			</ul>
-		</section>
+		<section class="hero"><%= texts['home.hero'] %></section>
 		<section>
 			<div class="columns">
 				<figure class="column is-three-quarters" id="fretboard-api"></figure>
@@ -28,10 +21,11 @@
 					<li><button class="button is-small is-fullwidth" data-action="show-notes-with-octave">Show Notes with octave</button></li>
 					<li><button class="button is-small is-fullwidth" data-action="show-intervals">Show Intervals</button></li>
 					<li><button class="button is-small is-fullwidth" data-action="highlight-triad">Highlight root triad</button></li>
-					<li><button class="button is-small is-primary is-fullwidth" data-action="clear">Clear</button></li>
+					<li><button class="button is-small is-info is-fullwidth" data-action="clear">Clear</button></li>
 				</ul>
 			</div>
 		</section>
+		<section class="about text"><%= texts['home.about'] %></section>
 	</main>
 	<%= partials.footer() %>
 	<%= htmlWebpackPlugin

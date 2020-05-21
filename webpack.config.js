@@ -1,23 +1,33 @@
 const path = require('path');
+const fs = require('fs-extra');
+const { chunk } = require('lodash');
+const marked = require('marked');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
+
+const labels = require('./site/labels.json');
+const textsFile = fs.readFileSync('./site/texts.md', 'utf8');
+const docsFile = fs.readFileSync('./site/documentation.md', 'utf8');
 
 const targetPath = path.resolve(__dirname, '_site');
+const examples = ['boxes', 'playback', 'tetrachords'];
 
-const links = {
-  github: 'https://github.com/moonwave99/fretboard.js',
-  homepage: 'https://github.com/moonwave99/fretboard.js',
-  author: 'https://www.diegocaponera.com'
+const getTexts = () => {
+  const tokens = textsFile.split(/<!--([\s\S]*?)-->/g);
+  tokens.shift();
+  return chunk(tokens, 2).reduce(
+    (memo, [key, value]) => ({ ...memo, [key]: marked(value) }), {}
+  );
 };
 
-const examples = ['boxes', 'playback', 'tetrachords'];
+const documentation = marked(docsFile);
 
 const partials = {
   footer: () => {
     return `
       <footer>
-        <p>&copy; 2020 <a href="${links.author}">mwlabs</a>. | <a href="${links.github}">github</a></p>
-      </footer>
-    `;
+        <p>&copy; 2020 <a href="${labels.links.author}">mwlabs</a>. | <a href="${labels.links.github}">github</a></p>
+      </footer>`;
   },
   nav: (section) => {
     const isCurrent = (item) => {
@@ -31,6 +41,7 @@ const partials = {
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="index.html">
+          <img src="assets/icon.svg" alt="Fretboard.js">
           <strong>Fretboard.js</strong>
         </a>
 
@@ -60,7 +71,7 @@ const partials = {
 
         <div class="navbar-end">
           <div class="navbar-item">
-            <a href="${links.github}">See on Github</a>
+            <a href="${labels.links.github}">See on Github</a>
           </div>
         </div>
       </div>
@@ -69,7 +80,21 @@ const partials = {
   }
 };
 
-const templateParameters = { links, partials };
+const templateParameters = { ...labels, partials, texts: getTexts(), documentation };
+const exampleEntries = examples.reduce(
+  (memo, e) => ({ ...memo, [e]: `./site/scripts/${e}.js`})
+  , {}
+);
+
+const examplePages = examples.map(e => {
+  return new HtmlWebpackPlugin({
+    title: `Fretboard.js | Examples | ${e[0].toUpperCase()}${e.substring(1)}`,
+    filename: `${e}.html`,
+    template: `site/pages/${e}.ejs`,
+    inject: false,
+    templateParameters
+  });
+});
 
 module.exports = {
   module: {
@@ -83,15 +108,18 @@ module.exports = {
   entry: {
     index: './site/scripts/index.js',
     documentation: './site/scripts/documentation.js',
-    boxes: './site/scripts/boxes.js',
-    tetrachords: './site/scripts/tetrachords.js',
-    playback: './site/scripts/playback.js'
+    ...exampleEntries
   },
   output: {
     filename: '[name]-bundle.js',
     path: targetPath,
   },
   plugins: [
+    new CopyPlugin({
+      patterns: [
+        { from: 'site/assets', to: 'assets' }
+      ]
+    }),
     new HtmlWebpackPlugin({
       title: 'Fretboard.js',
       filename: 'index.html',
@@ -106,27 +134,7 @@ module.exports = {
       inject: false,
       templateParameters
     }),
-    new HtmlWebpackPlugin({
-      title: 'Fretboard.js | Examples | Boxes',
-      filename: 'boxes.html',
-      template: 'site/pages/boxes.ejs',
-      inject: false,
-      templateParameters
-    }),
-    new HtmlWebpackPlugin({
-      title: 'Fretboard.js | Examples | Playback',
-      filename: 'playback.html',
-      template: 'site/pages/playback.ejs',
-      inject: false,
-      templateParameters
-    }),
-    new HtmlWebpackPlugin({
-      title: 'Fretboard.js | Examples | Tetrachords',
-      filename: 'tetrachords.html',
-      template: 'site/pages/tetrachords.ejs',
-      inject: false,
-      templateParameters
-    }),
+    ...examplePages
   ],
   devServer: {
     contentBase: targetPath,

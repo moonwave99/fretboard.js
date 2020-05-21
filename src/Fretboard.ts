@@ -209,7 +209,7 @@ export class Fretboard {
       const positions = [];
       for (let string = 1; string <= stringCount; string++) {
         const currentString = [];
-        for (let fret = 0; fret < fretCount; fret++) {
+        for (let fret = 0; fret <= fretCount; fret++) {
           currentString.push(getDotCoords({ fret, string }))
         }
         positions.push(currentString);
@@ -328,7 +328,7 @@ export class Fretboard {
     this.baseRendered = true;
   }
 
-  render (dots: Dot[] = []): Fretboard {
+  render(dots: Dot[] = []): Fretboard {
     this._baseRender();
 
     if (!dots.length) {

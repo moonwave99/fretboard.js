@@ -1,0 +1,32 @@
+<svg viewBox="0 0 300 200" xmlns="http://www.w3.org/2000/svg">
+	<g transform="translate(20, 20) scale(0.8823529411764706)">
+		<g class="strings">
+			<line x1="0" y1="1" x2="100%" y2="1" stroke="black" stroke-width="7"></line>
+			<line x1="0" y1="40" x2="100%" y2="40" stroke="black" stroke-width="7"></line>
+			<line x1="0" y1="80" x2="100%" y2="80" stroke="black" stroke-width="7"></line>
+			<line x1="0" y1="120" x2="100%" y2="120" stroke="black" stroke-width="7"></line>
+			<line x1="0" y1="160" x2="100%" y2="160" stroke="black" stroke-width="7"></line>
+			<line x1="0" y1="199" x2="100%" y2="199" stroke="black" stroke-width="7"></line>
+		</g>
+		<g>
+			<line x1="0%" y1="1" x2="0%" y2="199" stroke="black" stroke-width="7"></line>
+			<line x1="35.276192807225115%" y1="1" x2="35.276192807225115%" y2="199" stroke="black" stroke-width="7"></line>
+			<line x1="68.57248504717165%" y1="1" x2="68.57248504717165%" y2="199" stroke="black" stroke-width="7"></line>
+			<line x1="100%" y1="1" x2="100%" y2="199" stroke="black" stroke-width="7"></line>
+		</g>
+		<g>
+			<g>
+				<circle cx="51.924338927198384%" cy="160" r="12.5" stroke="black" stroke-width="5" fill="white"></circle>
+			</g>
+			<g>
+				<circle cx="17.638096403612558%" cy="120" r="12.5" stroke="black" stroke-width="5" fill="white"></circle>
+			</g>
+			<g>
+				<circle cx="51.924338927198384%" cy="80" r="12.5" stroke="black" stroke-width="5" fill="white"></circle>
+			</g>
+			<g>
+				<circle cx="84.28624252358583%" cy="40" r="12.5" stroke="black" stroke-width="5" fill="red"></circle>
+			</g>
+		</g>
+	</g>
+</svg>

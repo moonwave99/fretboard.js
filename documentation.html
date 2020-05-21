@@ -1,0 +1,15 @@
+<!doctype html><html class="has-navbar-fixed-top"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fretboard.js | Documentation</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css"></head><body><nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation"><div class="navbar-brand"><a class="navbar-item" href="index.html"><img src="assets/icon.svg" alt="Fretboard.js"> <strong>Fretboard.js</strong> </a><a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar"><span aria-hidden="true"></span> <span aria-hidden="true"></span> <span aria-hidden="true"></span></a></div><div id="navbar" class="navbar-menu"><div class="navbar-start"><a class="navbar-item is-current" href="documentation.html">Documentation</a><div class="navbar-item has-dropdown is-hoverable"><span class="navbar-link">Examples</span><div class="navbar-dropdown"><a class="navbar-item" href="boxes.html">Boxes</a> <a class="navbar-item" href="tetrachords.html">Tetrachords</a> <a class="navbar-item" href="playback.html">Playback</a></div></div></div><div class="navbar-end"><div class="navbar-item"><a href="https://github.com/moonwave99/fretboard.js">See on Github</a></div></div></div></nav><main><section class="documentation text container"><h1 id="documentation">Documentation</h1><h2 id="installation">Installation</h2><p>Use <code>npm</code>/<code>yarn</code>:</p><pre><code class="language-bash">$ npm i @moonwave99/fretboard.js --save</code></pre><p><code>require</code> / <code>import</code> accordingly:</p><pre><code class="language-javascript">const { Fretboard, CAGED } = require(&#39;@moonwave99/fretboard.js&#39;);
+
+// OR
+
+import { Fretboard, CAGED } from &#39;@moonwave99/fretboard.js&#39;;
+
+const box = CAGED({
+  mode: &#39;major&#39;,
+  root: &#39;C3&#39;,
+  box: &#39;C&#39;
+});
+
+const fretboard = new Fretboard({ el: &#39;#el&#39; });
+
+fretboard.render(box);</code></pre><h2 id="usage">Usage</h2><p>WIP</p></section></main><footer class="container"><p>&copy; 2020 <a href="https://www.diegocaponera.com">mwlabs</a>. | <a href="https://github.com/moonwave99/fretboard.js">github</a></p></footer><script src="documentation-bundle.js"></script></body></html>

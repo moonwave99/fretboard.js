@@ -7,6 +7,7 @@ import {
   CAGED
 } from '../../dist/fretboard.esm.js';
 
+import './navbar.js';
 import '../styles/style.css';
 import '../styles/playback.css';
 

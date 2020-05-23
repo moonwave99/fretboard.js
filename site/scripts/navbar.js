@@ -1,25 +1,51 @@
+import { Fretboard } from '../../dist/fretboard.esm.js';
+
 document.addEventListener('DOMContentLoaded', () => {
+  new Fretboard({
+    el: '#icon',
+    fretCount: 3,
+    stringWidth: 2,
+    fretWidth: 2,
+    dotSize: 8,
+    dotStrokeWidth: 2,
+    leftPadding: 0,
+    rightPadding: 0,
+    topPadding: 0,
+    bottomPadding: 0,
+    width: 90,
+    height: 60,
+    showFretsNumber: false
+  }).render([
+    {
+      string: 5,
+      fret: 2,
+      note: 'B'
+    },
+    {
+      string: 4,
+      fret: 1,
+      note: 'D#'
+    },
+    {
+      string: 3,
+      fret: 2,
+      note: 'A'
+    },
+    {
+      string: 2,
+      fret: 3,
+      note: 'Cx'
+    },
+  ]).dots(({
+    fill: (({ note }) => note === 'Cx' ? 'red' : 'white')
+  }));
 
-  // Get all "navbar-burger" elements
-  const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-
-  // Check if there are any navbar burgers
-  if ($navbarBurgers.length > 0) {
-
-    // Add a click event on each of them
-    $navbarBurgers.forEach( el => {
-      el.addEventListener('click', () => {
-
-        // Get the target from the "data-target" attribute
-        const target = el.dataset.target;
-        const $target = document.getElementById(target);
-
-        // Toggle the "is-active" class on both the "navbar-burger" and the "navbar-menu"
-        el.classList.toggle('is-active');
-        $target.classList.toggle('is-active');
-
-      });
+  document.querySelectorAll('.navbar-burger').forEach( el => {
+    el.addEventListener('click', () => {
+      const target = el.dataset.target;
+      const $target = document.getElementById(target);
+      el.classList.toggle('is-active');
+      $target.classList.toggle('is-active');
     });
-  }
-
+  });
 });

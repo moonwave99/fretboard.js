@@ -39,12 +39,18 @@ h2 {
   font-weight: bold;
 }
 
-.navbar .is-current {
-  color: #3273dc;
+.navbar-icon {
+  width: 37.5px;
+  height: 25px;
+  margin-right: .5rem;
 }
 
-.navbar-brand {
-  flex-grow: 0.05;
+.navbar-icon svg {
+  height: 100%;
+}
+
+.navbar .is-current {
+  color: #3273dc;
 }
 
 .navbar-brand .navbar-item {
@@ -103,7 +109,7 @@ footer.container {
 
 .api-actions {
   margin: 0;
-  padding-top: 1.75rem;
+  padding-top: 1.4rem;
 }
 
 .api-actions li {

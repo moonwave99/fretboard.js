@@ -5,6 +5,7 @@ import {
   TetrachordLayouts
 } from '../../dist/fretboard.esm.js';
 
+import './navbar.js';
 import '../styles/style.css';
 
 const fretboardConfiguration = {

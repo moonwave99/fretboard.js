@@ -41,7 +41,7 @@ const partials = {
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="index.html">
-          <img src="assets/icon.svg" alt="Fretboard.js">
+          <span class="navbar-icon" id="icon" title="I am client generated as well of course!"></span>
           <strong>Fretboard.js</strong>
         </a>
 

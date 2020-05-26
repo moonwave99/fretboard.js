@@ -1,6 +1,6 @@
 import { distance, interval } from '@tonaljs/tonal';
 import { scale } from '@tonaljs/scale';
-import { Dot, Mode } from './scales';
+import { Position, Mode } from './scales';
 
 export function mod (n: number, m: number): number {
   return ((n % m) + m) % m;
@@ -20,7 +20,7 @@ export function generateBox({
   }[];
   root: string;
   modeSchema: Mode;
-}): Dot[] {
+}): Position[] {
   const {
     index: rootIndex,
     root: patternRoot

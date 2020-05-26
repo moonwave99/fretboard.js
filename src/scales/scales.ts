@@ -2,15 +2,12 @@ import { findMode, generateBox } from './utils';
 import { boxes as CAGEDBoxes } from './boxes/CAGED';
 import { boxes as pentatonicBoxes } from './boxes/pentatonic';
 
-export type Dot = {
+export type Position = {
   string: number;
   fret: number;
   note: string;
-  interval?: string;
-  noteWithOctave?: string;
-  octave?: number;
-  position?: number;
   disabled?: boolean;
+  [key: string]: string|number|boolean;
 }
 
 export type Mode = {
@@ -32,7 +29,7 @@ export function pentatonic ({
   mode = 'major',
   root = 'C3',
   box = 1
-} = {}): Dot[] {
+} = {}): Position[] {
   const _box = pentatonicBoxes[box - 1];
   if (!_box) {
     throw new Error(`Cannot find box ${box} in the pentatonic scale`);
@@ -55,7 +52,7 @@ export function CAGED ({
   mode = 'major',
   root = 'C3',
   box = 'C'
-} = {}): Dot[] {
+} = {}): Position[] {
   const _box = (CAGEDBoxes as { [key: string]: BoxDefinition })[box];
   if (!_box) {
     throw new Error(`Cannot find box ${box} in the CAGED system`);

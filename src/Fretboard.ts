@@ -1,7 +1,7 @@
 import { select, Selection, ValueFn, BaseType } from 'd3-selection';
-import { Dot } from './scales/scales';
+import { Position } from './scales/scales';
 
-function dotClasses(dot: Dot, prefix: string): string {
+function dotClasses(dot: Position, prefix: string): string {
   return [
     `dot-${prefix}`,
       ...Object.entries(dot)
@@ -329,7 +329,7 @@ export class Fretboard {
     this.baseRendered = true;
   }
 
-  render(dots: Dot[] = []): Fretboard {
+  render(dots: Position[] = []): Fretboard {
     this._baseRender();
 
     if (!dots.length) {
@@ -370,7 +370,7 @@ export class Fretboard {
       .attr('cx', ({ string, fret }) => `${positions[string - 1][fret].x}%`)
       .attr('cy', ({ string, fret }) => positions[string - 1][fret].y)
       .attr('r', dotSize * 0.5)
-      .attr('class', (dot: Dot) => dotClasses(dot, 'circle'))
+      .attr('class', (dot: Position) => dotClasses(dot, 'circle'))
       .attr('stroke', dotStrokeColor)
       .attr('stroke-width', dotStrokeWidth)
       .attr('fill', dotFill);
@@ -378,7 +378,7 @@ export class Fretboard {
     dotsNodes.append('text')
       .attr('x', ({ string, fret }) => `${positions[string - 1][fret].x}%`)
       .attr('y', ({ string, fret }) => positions[string - 1][fret].y)
-      .attr('class', (dot: Dot) => dotClasses(dot, 'text'))
+      .attr('class', (dot: Position) => dotClasses(dot, 'text'))
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'central')
       .attr('font-size', dotTextSize)

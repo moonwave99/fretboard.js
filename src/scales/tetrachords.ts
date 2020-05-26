@@ -1,4 +1,4 @@
-import { Dot } from './scales';
+import { Position } from './scales';
 import { interval } from '@tonaljs/tonal';
 import { transpose } from '@tonaljs/note';
 
@@ -45,7 +45,7 @@ export function tetrachord({
   layout: TetrachordLayouts.Linear,
   string: 6,
   fret: 0
-}): Dot[] {
+}): Position[] {
   const tetrachord = Tetrachords[type];
   const pattern = [{
     string,

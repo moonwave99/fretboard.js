@@ -12,7 +12,7 @@ const {
   bottomPadding,
   leftPadding,
   rightPadding,
-  fretsNumberHeight
+  fretNumbersHeight
 } = defaultOptions;
 
 const defaultWidth =
@@ -24,7 +24,7 @@ const defaultHeight =
     height
   + topPadding
   + bottomPadding
-  + fretsNumberHeight;
+  + fretNumbersHeight;
 
 
 test.beforeEach(() => {
@@ -48,14 +48,14 @@ test('Fretboard with default options', t => {
 test('Fretboard without fret numbers', t => {
   const fretboard = new Fretboard({
     el: '#el',
-    showFretsNumber: false
+    showFretNumbers: false
   });
   fretboard.render();
 
   const svg = document.querySelector('#el svg');
 
   t.truthy(svg);
-  t.is(svg.getAttribute('viewBox'), `0 0 ${defaultWidth} ${defaultHeight - fretsNumberHeight}`);
+  t.is(svg.getAttribute('viewBox'), `0 0 ${defaultWidth} ${defaultHeight - fretNumbersHeight}`);
   t.is(svg.querySelectorAll('.fret-numbers').length, 0);
 });
 

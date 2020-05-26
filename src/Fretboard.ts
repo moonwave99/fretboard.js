@@ -79,10 +79,10 @@ export const defaultOptions = {
   dotStrokeWidth: 2,
   dotTextSize: 12,
   dotFill: 'white',
-  dotText: '',
+  dotText: (): string => '',
   disabledOpacity: 0.9,
-  showFretsNumber: true,
-  fretsNumberHeight: 40,
+  showFretNumbers: true,
+  fretNumbersHeight: 40,
   fretNumbersMargin: 20,
   fretNumbersColor: '#00000099',
   font: 'Arial'
@@ -95,8 +95,8 @@ function getDimensions ({
   rightPadding,
   width,
   height,
-  showFretsNumber,
-  fretsNumberHeight
+  showFretNumbers,
+  fretNumbersHeight
 }: {
   topPadding: number;
   bottomPadding: number;
@@ -104,8 +104,8 @@ function getDimensions ({
   rightPadding: number;
   width: number;
   height: number;
-  showFretsNumber: boolean;
-  fretsNumberHeight: number;
+  showFretNumbers: boolean;
+  fretNumbersHeight: number;
 }): {
   totalWidth: number;
   totalHeight: number;
@@ -113,8 +113,8 @@ function getDimensions ({
   const totalWidth = width + leftPadding + rightPadding;
   let totalHeight = height + topPadding + bottomPadding;
 
-  if (showFretsNumber) {
-    totalHeight += fretsNumberHeight;
+  if (showFretNumbers) {
+    totalHeight += fretNumbersHeight;
   }
   return { totalWidth, totalHeight };
 }
@@ -143,10 +143,10 @@ type Options = {
   dotStrokeWidth: number;
   dotTextSize: number;
   dotFill: string;
-  dotText: string;
+  dotText: ValueFn<BaseType, unknown, string>;
   disabledOpacity: number;
-  showFretsNumber: boolean;
-  fretsNumberHeight: number;
+  showFretNumbers: boolean;
+  fretNumbersHeight: number;
   fretNumbersMargin: number;
   fretNumbersColor: string;
   font: string;
@@ -249,7 +249,7 @@ export class Fretboard {
       fretWidth,
       middleFretWidth,
       middleFretColor,
-      showFretsNumber,
+      showFretNumbers,
       fretNumbersMargin,
       fretNumbersColor,
       topPadding
@@ -307,7 +307,7 @@ export class Fretboard {
         }
       });
 
-    if (showFretsNumber) {
+    if (showFretNumbers) {
       const fretNumbersGroup = svg
         .append('g')
         .attr('class', 'fret-numbers')

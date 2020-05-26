@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bottomPadding: 0,
     width: 90,
     height: 60,
-    showFretsNumber: false
+    showFretNumbers: false
   }).render([
     {
       string: 5,

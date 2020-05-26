@@ -29,12 +29,12 @@ export const boxes = {
     {
       name: 'aeolian',
       aliases: ['minor', 'natural minor'],
-      root: 'C#2',
+      root: 'C#3',
       index: 6
     },
     {
       name: 'locrian',
-      root: 'D#2',
+      root: 'D#3',
       index: 7
     }],
     pattern: [

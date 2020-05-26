@@ -311,6 +311,7 @@ export class Fretboard {
       const fretNumbersGroup = svg
         .append('g')
         .attr('class', 'fret-numbers')
+        .attr('font-family', font)
         .attr('transform', `translate(0 ${fretNumbersMargin + topPadding + strings[strings.length - 1]})`);
 
       fretNumbersGroup
@@ -318,10 +319,10 @@ export class Fretboard {
         .data(frets.slice(1))
         .enter()
         .append('text')
+        .attr('text-anchor', 'middle')
         .attr('x', (d, i) => totalWidth / 100 * (d - (d - frets[i]) / 2))
         .attr('fill', (_d, i) => i === MIDDLE_FRET ? middleFretColor : fretNumbersColor)
-        .attr('font-family', font)
-        .attr('text-anchor', 'middle')
+
         .text((_d, i) => `${i + 1}`)
     }
 
@@ -355,7 +356,8 @@ export class Fretboard {
 
     const dotGroup = svg
       .append('g')
-      .attr('class', 'dots');
+      .attr('class', 'dots')
+      .attr('font-family', font);
 
     const dotsNodes = dotGroup.selectAll('g')
       .data(dots)
@@ -379,7 +381,6 @@ export class Fretboard {
       .attr('class', (dot: Dot) => dotClasses(dot, 'text'))
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'central')
-      .attr('font-family', font)
       .attr('font-size', dotTextSize)
       .text(dotText);
 

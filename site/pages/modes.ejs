@@ -1,0 +1,42 @@
+<!doctype html>
+<html class="has-navbar-fixed-top">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"
+	  content="width=device-width, initial-scale=1">
+	<title><%= htmlWebpackPlugin.options.title %></title>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
+</head>
+
+<body>
+	<%= partials.nav('modes') %>
+	<main>
+		<section class="container">
+			<h1><%= examples.modes.title %></h1>
+			<section class="description"><%= texts['examples.modes'] %></section>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard"></figure>
+				<form class="column api-actions">
+					<div class="field">
+					  <div class="control">
+					    <div class="select is-small">
+								<select name="mode">
+									<option disabled selected>Select Mode...</option>
+								</select>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+		</section>
+	</main>
+	<%= partials.footer() %>
+	<%= htmlWebpackPlugin
+		.tags
+		.bodyTags
+		.filter((tag) => tag.attributes.src.startsWith('modes'))
+		.join('')
+	%>
+</body>
+</html>

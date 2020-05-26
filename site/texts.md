@@ -29,6 +29,9 @@ The G major scale in all five CAGED boxes. See how they share fret positions ver
 <!--examples.boxes.4-->
 Same as above, but with the G major pentatonic.
 
+<!--examples.modes-->
+A different starting note inside a box corresponds to a different mode.
+
 <!--examples.tetrachords-->
 An [heptatonic scale][1] is made up of two adjacent [tetrachords][2], a whole tone apart that is.
 

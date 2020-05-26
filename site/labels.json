@@ -11,6 +11,9 @@
       "caged": "CAGED System",
       "pentatonic": "Pentatonic boxes"
     },
+    "modes": {
+      "title": "Examples / Modes"
+    },
     "tetrachords": {
       "title": "Examples / Tetrachords"
     },

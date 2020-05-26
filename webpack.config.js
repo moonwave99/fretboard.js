@@ -10,7 +10,7 @@ const textsFile = fs.readFileSync('./site/texts.md', 'utf8');
 const docsFile = fs.readFileSync('./site/documentation.md', 'utf8');
 
 const targetPath = path.resolve(__dirname, '_site');
-const examples = ['boxes', 'playback', 'tetrachords'];
+const examples = ['boxes', 'modes', 'playback', 'tetrachords'];
 
 const getTexts = () => {
   const tokens = textsFile.split(/<!--([\s\S]*?)-->/g);
@@ -63,6 +63,7 @@ const partials = {
 
             <div class="navbar-dropdown">
               <a class="navbar-item ${isCurrent('boxes')}" href="boxes.html">Boxes</a>
+              <a class="navbar-item ${isCurrent('modes')}" href="modes.html">Modes</a>
               <a class="navbar-item ${isCurrent('tetrachords')}" href="tetrachords.html">Tetrachords</a>
               <a class="navbar-item ${isCurrent('playback')}" href="playback.html">Playback</a>
             </div>

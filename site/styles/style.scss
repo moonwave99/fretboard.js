@@ -12,6 +12,8 @@
 @import "~bulma/sass/grid/_all";
 @import "~bulma/sass/layout/_all";
 
+$mainColor: #3273dc;
+
 html, body {
   font-family: 'Futura', 'Arial', sans-serif;
   font-size: 16px;
@@ -48,9 +50,16 @@ h2 {
   margin: 4rem 0 2rem 0;
 }
 
-h1, h2 {
-  color: #3273dc;
+h1, h2, h3 {
+  color: $mainColor;
   font-weight: bold;
+}
+
+blockquote {
+  line-height: 3rem;
+  padding-left: 1rem;
+  background-color: rgba($mainColor, .1);
+  border-left: .5rem solid $mainColor;
 }
 
 .navbar-icon {
@@ -64,7 +73,7 @@ h1, h2 {
 }
 
 .navbar .is-current {
-  color: #3273dc;
+  color: $mainColor;
 }
 
 .navbar-brand {
@@ -109,7 +118,7 @@ footer.container {
   background-color: #C6EDFC;
 
   strong {
-    color: #3273dc;
+    color: $mainColor;
   }
 }
 

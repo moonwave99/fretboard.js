@@ -102,3 +102,58 @@ fretNumbersHeight | string   | 40           | Fret numbers container height
 fretNumbersMargin | string   | 20           | Fret number container top margin
 fretNumbersColor  | string   | '#00000099'  | Fret numbers color
 font              | string   | 'Arial'      | Text font
+
+## Fretboard API
+
+The `Fretboard` object has the following methods:
+
+```typescript
+render(positions: Position[]): Fretboard
+```
+
+Displays the passed positions on the fretboard. Returns the instance itself.
+
+```typescript
+style({
+  filter = (): boolean => true,
+  text,
+  fontSize,
+  fontFill,
+  ...opts  
+}: {
+  filter?: (position: Position) => boolean;
+  text?: (position: Position) => string;
+  fontSize?: number;
+  fontFill?: string;
+  [key: string]: string | number | Function;  
+}): Fretboard
+```
+
+Applies the passed properties to selected positions (via the `filter` function parameter). If no filter is provided, all positions are affected. Returns the instance itself.
+
+### Example:
+
+```typescript
+const fretboard = new Fretboard();
+
+// the box positions contain the note name and the interval from the root
+const box = CAGED({
+  mode: 'major',
+  root: 'C3',
+  box: 'C'
+});
+
+fretboard.render(box);
+fretboard.style({
+  // this gives us just the root notes
+  filter: ({ interval }) => interval === '1P',
+  // displays the note name
+  text: ({ note }) => note, 
+  // sets the value of the fill attribute
+  fill: ({ interval }) => interval === '1P' ? 'red' : 'white' 
+})
+```
+
+> Why don't you provide a more expressive API like .highlightMajorTriads()?
+
+The aim of this library is to be as abstract as possible, and to make no assumptions besides the bare string/fret positioning. Since you can pass as many properties as you want to the position entries, you can provide full controlled and rich visualisations.

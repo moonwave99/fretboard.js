@@ -1,5 +1,21 @@
-html,
-body {
+@charset "utf-8";
+
+@import "~bulma/sass/utilities/_all";
+@import "~bulma/sass/base/_all";
+@import "~bulma/sass/elements/container";
+@import "~bulma/sass/elements/content";
+@import "~bulma/sass/elements/table";
+@import "~bulma/sass/elements/button";
+@import "~bulma/sass/elements/form";
+@import "~bulma/sass/form/shared";
+@import "~bulma/sass/form/checkbox-radio";
+@import "~bulma/sass/form/select";
+@import "~bulma/sass/components/navbar";
+@import "~bulma/sass/components/dropdown";
+@import "~bulma/sass/grid/_all";
+@import "~bulma/sass/layout/_all";
+
+html, body {
   font-family: 'Futura', 'Arial', sans-serif;
   font-size: 16px;
   margin: 0;
@@ -17,10 +33,12 @@ html {
   background-color: white;
 }
 
-*,
-*:before,
-*:after {
+* {
   box-sizing: inherit;
+
+  &:before, &:after {
+    box-sizing: inherit;
+  }
 }
 
 h1 {
@@ -33,8 +51,7 @@ h2 {
   margin: 4rem 0 2rem 0;
 }
 
-h1,
-h2 {
+h1, h2 {
   color: #3273dc;
   font-weight: bold;
 }
@@ -43,22 +60,24 @@ h2 {
   width: 37.5px;
   height: 25px;
   margin-right: .5rem;
-}
 
-.navbar-icon svg {
-  height: 100%;
+  svg {
+    height: 100%;
+  }
 }
 
 .navbar .is-current {
   color: #3273dc;
 }
 
-.navbar-brand .navbar-item {
-  flex: 1;
-}
+.navbar-brand {
+  .navbar-item {
+    flex: 1;
+  }
 
-.navbar-brand img {
-  margin-right: .5rem;
+  img {
+    margin-right: .5rem;
+  }
 }
 
 .container {
@@ -74,14 +93,14 @@ figure {
 
 .text {
   max-width: 768px;
-}
 
-.text p {
-  margin-bottom: 2rem;
-}
+  p {
+    margin-bottom: 2rem;
+  }
 
-.text pre {
-  margin-bottom: 3rem;
+  pre {
+    margin-bottom: 3rem;
+  }
 }
 
 footer.container {
@@ -91,10 +110,10 @@ footer.container {
 .hero {
   padding: 6rem 0 3rem 0;
   background-color: #C6EDFC;
-}
 
-.hero strong {
-  color: #3273dc;
+  strong {
+    color: #3273dc;
+  }
 }
 
 .hero-content {
@@ -106,17 +125,20 @@ footer.container {
 .api-actions {
   margin: 0;
   padding-top: 1.4rem;
-}
 
-.api-actions li {
-  list-style: none;
-  display: block;
-  margin: .25rem 0;
-}
+  li {
+    list-style: none;
+    display: block;
+    margin: .25rem 0;
+  }
 
-.api-actions .select,
-.api-actions .select select {
-  width: 100%;
+  .select {
+    width: 100%;
+
+    select {
+      width: 100%;
+    }
+  }
 }
 
 .aside {
@@ -125,10 +147,10 @@ footer.container {
   justify-content: center;
   padding-top: 1.9rem;
   padding-bottom: 4.75rem;
-}
 
-.aside p {
-  margin-bottom: 2rem;
+  p {
+    margin-bottom: 2rem;
+  }
 }
 
 .description {
@@ -139,10 +161,10 @@ footer.container {
   html {
     font-size: 12px;
     width: 100vw;
-  }
 
-  html.has-navbar-fixed-top {
-    padding-top: 3.25em;
+    &.has-navbar-fixed-top {
+      padding-top: 3.25em;
+    }
   }
 
   .container {
@@ -167,10 +189,21 @@ footer.container {
   .api-actions li {
     display: block;
     margin-bottom: 1rem;
+
+    button {
+      width: 100%;
+    }
   }
 
-  .api-actions li button {
-    width: 100%;
+  .column {
+    overflow-y: auto;
+  }
+
+  .controls .modes .radio {
+    display: block;
+    margin: 0;
+    line-height: 2.5rem;
+    font-size: 1.2rem;
   }
 }
 
@@ -185,30 +218,18 @@ footer.container {
   padding: 0 1rem;
   line-height: 1.5rem;
   text-align: center;
-}
 
-.controls .modes .radio {
-  margin-right: 1rem;
+  .modes .radio {
+    margin-right: 1rem;
+  }
 }
 
 .boxes {
   padding-top: 2rem;
-}
 
-.boxes .radio {
-  display: block;
-  margin: 0;
-  line-height: 2rem;
-}
-
-@media screen and (max-width: 768px) {
-  .column {
-    overflow-y: auto;
-  }
-  .controls .modes .radio{
+  .radio {
     display: block;
     margin: 0;
-    line-height: 2.5rem;
-    font-size: 1.2rem;
+    line-height: 2rem;
   }
 }

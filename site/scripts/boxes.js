@@ -8,7 +8,7 @@ import {
 } from '../../dist/fretboard.esm.js';
 
 import './navbar.js';
-import '../styles/style.css';
+import '../styles/style.scss';
 
 const fretboardConfiguration = {
   height: 200,

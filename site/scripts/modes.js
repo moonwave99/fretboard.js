@@ -4,7 +4,7 @@ import {
 } from '../../dist/fretboard.esm.js';
 
 import './navbar.js';
-import '../styles/style.css';
+import '../styles/style.scss';
 
 const modeMap = [
   {
@@ -58,10 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let selectedRoot = '';
   let selectedMode = 'ionian';
 
-  const fretboard = new Fretboard({
-    ...fretboardConfiguration,
-    el: '#fretboard'
-  });
+  const fretboard = new Fretboard(fretboardConfiguration);
 
   function getRoot(root, box) {
     switch (box) {

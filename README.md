@@ -19,6 +19,7 @@
 - [ ] add harmonic minor scale and its modes;
 - [ ] abstract tuning system;
 - [ ] render static SVGs;
+- [ ] add hover / click event handlers;
 - [ ] finish docs.
 
 ---

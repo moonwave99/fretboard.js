@@ -8,7 +8,7 @@ import {
 } from '../../dist/fretboard.esm.js';
 
 import './navbar.js';
-import '../styles/style.css';
+import '../styles/style.scss';
 import '../styles/playback.css';
 
 const fretboardConfiguration = {
@@ -33,13 +33,11 @@ const colors = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-  const fretboard = new Fretboard({
-    ...fretboardConfiguration,
-    el: '#fretboard'
-  }).render(CAGED({
-    root: 'C3',
-    box: 'E'
-  }));
+  const fretboard = new Fretboard(fretboardConfiguration)
+    .render(CAGED({
+      root: 'C3',
+      box: 'E'
+    }));
 
 	const music = `
 X: 1

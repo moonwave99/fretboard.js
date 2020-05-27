@@ -31,7 +31,7 @@ Same as above, but with the G major pentatonic.
 
 <!--examples.modes-->
 A different starting note inside a box corresponds to a different mode.  
-The **E-box** of the CAGED system can be called _the locrian box_, since it starts on degree 7 of the scale.
+For instance, if we play the **C-shaped** box starting from the first box note - E that is -, we get the corrisponding **phrygian** mode.
 
 <!--examples.tetrachords-->
 An [heptatonic scale][1] is made up of two adjacent [tetrachords][2], a whole tone apart that is.

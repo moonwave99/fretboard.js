@@ -30,7 +30,8 @@ The G major scale in all five CAGED boxes. See how they share fret positions ver
 Same as above, but with the G major pentatonic.
 
 <!--examples.modes-->
-A different starting note inside a box corresponds to a different mode.
+A different starting note inside a box corresponds to a different mode.  
+The **E-box** of the CAGED system can be called _the locrian box_, since it starts on degree 7 of the scale.
 
 <!--examples.tetrachords-->
 An [heptatonic scale][1] is made up of two adjacent [tetrachords][2], a whole tone apart that is.

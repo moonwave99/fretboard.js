@@ -92,7 +92,7 @@ export const boxes = {
     },
     {
       name: 'locrian',
-      root: 'C#2',
+      root: 'C#3',
       index: 5
     }],
     pattern: [

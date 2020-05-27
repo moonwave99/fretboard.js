@@ -107,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return `
       <label class="radio box-${box}">
         <input type="radio" name="mode" value="${box}" ${selectedBox === box ? 'checked' : ''}>
-        ${box}
+        <strong>${box}</strong> shaped box
       </label>
     `;
   }).join('');

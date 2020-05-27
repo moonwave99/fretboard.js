@@ -15,26 +15,14 @@
 		<section class="container">
 			<h1><%= examples.modes.title %></h1>
 			<section class="description"><%= texts['examples.modes'] %></section>
+			<section class="controls">
+				<div class="control modes"></div>
+			</section>
 			<div class="columns">
 				<figure class="column is-three-quarters" id="fretboard"></figure>
-				<form class="column api-actions">
+				<form class="column api-actions boxes">
 					<div class="field">
-					  <div class="control">
-					    <div class="select is-small">
-								<select name="mode">
-									<option disabled selected>Select Mode...</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="field">
-					  <div class="control">
-					    <div class="select is-small">
-								<select name="box">
-									<option disabled selected>Select Box...</option>
-								</select>
-							</div>
-						</div>
+					  <div class="control"></div>
 					</div>
 				</form>
 			</div>

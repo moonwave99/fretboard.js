@@ -9,31 +9,38 @@ import '../styles/style.css';
 const modeMap = [
   {
     root: 'C',
-    mode: 'ionian'
+    mode: 'ionian',
+    color: '#e76f51'
   },
   {
     root: 'D',
-    mode: 'dorian'
+    mode: 'dorian',
+    color: '#6a994e'
   },
   {
     root: 'E',
-    mode: 'phrygian'
+    mode: 'phrygian',
+    color: '#8338ec'
   },
   {
     root: 'F',
-    mode: 'lydian'
+    mode: 'lydian',
+    color: '#ffbd00'
   },
   {
     root: 'G',
-    mode: 'mixolydian'
+    mode: 'mixolydian',
+    color: '#e36414'
   },
   {
     root: 'A',
-    mode: 'aeolian'
+    mode: 'aeolian',
+    color: '#00bbf9'
   },
   {
     root: 'B',
-    mode: 'locrian'
+    mode: 'locrian',
+    color: '#1D5DF2'
   }
 ];
 
@@ -72,43 +79,54 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updateFretboard() {
-    const { root } = modeMap.find(({ mode }) => mode === selectedMode);
+    const { root, color } = modeMap.find(({ mode }) => mode === selectedMode);
     selectedRoot = getRoot(root, selectedBox);
     fretboard.render(CAGED({
       root: selectedRoot,
       box: selectedBox,
       mode: selectedMode
     })).dots({
-      fill: ({ note }) => note === selectedRoot.charAt(0) ? '#F25116' : 'white',
+      fill: ({ note }) => note === selectedRoot.charAt(0) ? color : 'white',
       text: ({ note }) => note
     });
   }
 
-  const $boxSelect = document.querySelector('select[name="box"]');
-  const $modeSelect = document.querySelector('select[name="mode"]');
-  modeMap.forEach(({ mode }) => {
-    const option = document.createElement('option');
-    option.innerHTML = mode;
-    $modeSelect.appendChild(option);
+  const $modeControl = document.querySelector('.modes');
+  const $boxControl = document.querySelector('.boxes');
+
+  $modeControl.innerHTML = modeMap.map(({ mode, color }) => {
+    return `
+      <label class="radio mode-${mode}" style="color: ${color}">
+        <input type="radio" name="mode" value="${mode}" ${selectedMode === mode ? 'checked' : ''}>
+        ${mode}
+      </label>
+    `;
+  }).join('');
+
+  $boxControl.innerHTML = 'CAGED'.split('').map(box => {
+    return `
+      <label class="radio box-${box}">
+        <input type="radio" name="mode" value="${box}" ${selectedBox === box ? 'checked' : ''}>
+        ${box}
+      </label>
+    `;
+  }).join('');
+
+  $modeControl.querySelectorAll('input').forEach(el => {
+    el.addEventListener('change', (event) => {
+      const { mode, root } = modeMap.find(
+        ({ mode }) => mode === event.target.value
+      );
+      selectedMode = mode;
+      updateFretboard();
+    });
   });
 
-  'CAGED'.split('').forEach(letter => {
-    const option = document.createElement('option');
-    option.innerHTML = letter;
-    $boxSelect.appendChild(option);
-  });
-
-  $boxSelect.addEventListener('change', (event) => {
-    selectedBox = event.target.value;
-    updateFretboard();
-  });
-
-  $modeSelect.addEventListener('change', (event) => {
-    const { mode, root } = modeMap.find(
-      ({ mode }) => mode === event.target.value
-    );
-    selectedMode = mode;
-    updateFretboard();
+  $boxControl.querySelectorAll('input').forEach(el => {
+    el.addEventListener('change', (event) => {
+      selectedBox = event.target.value;
+      updateFretboard();
+    });
   });
 
   updateFretboard();

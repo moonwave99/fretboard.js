@@ -183,3 +183,22 @@ footer.container {
     width: 200%;
   }
 }
+
+.controls {
+  margin: 3rem 0 1.5rem 0;
+  padding-left: 1rem;
+}
+
+.controls .modes .radio {
+  margin-right: 1rem;
+}
+
+.boxes {
+  padding-top: 2rem;
+}
+
+.boxes .radio {
+  display: block;
+  margin: 0;
+  line-height: 2rem;
+}

@@ -56,7 +56,7 @@ function generateFrets ({
 const MIDDLE_FRET = 11;
 
 export const defaultOptions = {
-  el: '',
+  el: '#fretboard',
   stringCount: 6,
   stringWidth: 1,
   stringColor: 'black',
@@ -164,7 +164,7 @@ export class Fretboard {
   positions: Point[][];
   svg: Selection<BaseType, unknown, HTMLElement, unknown>;
   private baseRendered: boolean;
-  constructor (options: object) {
+  constructor (options = {}) {
     this.options = Object.assign({}, defaultOptions, options);
     const {
       el,

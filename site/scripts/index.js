@@ -36,32 +36,32 @@ function apiExample(box = CAGED({ mode: 'major', root: 'C3', box: 'C'})) {
       button.addEventListener('click', ({ currentTarget }) => {
         switch (currentTarget.dataset.action) {
           case 'show-notes':
-            fretboard.dots({
+            fretboard.style({
               text: ({ note }) => note,
               fill: colors.defaultFill
             });
             break;
           case 'show-notes-with-octave':
-            fretboard.dots({
+            fretboard.style({
               text: ({ noteWithOctave }) => noteWithOctave,
               fontSize: 10,
               fill: ({ octave }) => colors.octaves[octave]
             });
             break;
           case 'show-intervals':
-            fretboard.dots({
+            fretboard.style({
               text: ({ interval }) => interval,
               fill: colors.defaultFill
             });
             break;
           case 'highlight-triad':
-            fretboard.dots({
+            fretboard.style({
               filter: ({ position }) => [1, 3, 5].indexOf(position) > -1,
               stroke: 'red'
             });
             break;
           default:
-            fretboard.dots({
+            fretboard.style({
               text: () => null,
               fill: colors.defaultFill,
               stroke: 'black'

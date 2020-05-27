@@ -113,11 +113,11 @@ test('Fretboard render twice', t => {
   t.is(svg.querySelectorAll('.dots .dot').length, dots.length);
 });
 
-test('Fretboard dots()', t => {
+test('Fretboard style()', t => {
   const fretboard = new Fretboard({ el: '#el' });
   const dots = pentatonic({ box: 1, root: 'G2' });
   fretboard.render(dots);
-  fretboard.dots({
+  fretboard.style({
     filter: ({ note }) => note === 'G',
     text: ({ note }) => note,
     fill: 'red'
@@ -132,11 +132,11 @@ test('Fretboard dots()', t => {
     .forEach(node => t.is(node.getAttribute('fill'), 'red'))
 });
 
-test('Fretboard dots() no text', t => {
+test('Fretboard style() no text', t => {
   const fretboard = new Fretboard({ el: '#el' });
   const dots = pentatonic({ box: 1, root: 'G2' });
   fretboard.render(dots);
-  fretboard.dots({
+  fretboard.style({
     filter: ({ note }) => note === 'G',
     fill: 'red'
   });
@@ -147,11 +147,11 @@ test('Fretboard dots() no text', t => {
     .forEach(node => t.is(node.getAttribute('fill'), 'red'))
 });
 
-test('Fretboard dots() no filter', t => {
+test('Fretboard style() no filter', t => {
   const fretboard = new Fretboard({ el: '#el' });
   const dots = pentatonic({ box: 1, root: 'G2' });
   fretboard.render(dots);
-  fretboard.dots({
+  fretboard.style({
     text: ({ note }) => note
   });
 

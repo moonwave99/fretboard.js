@@ -74,7 +74,7 @@ K: transpose=-12
       const octave = element.minpitch < 7 ? 3 : 4;
       const [root, chordType] = [element.chord[0].name[0], element.chord[0].name.substring(1)];
       const chord = getChord(chordType, `${root}${octave}`);
-      fretboard.dots({
+      fretboard.style({
         stroke: ({ noteWithOctave }) => chord.notes.indexOf(noteWithOctave) > -1 ? colors.intervals['1P'] : 'black',
         ['stroke-width']: ({ noteWithOctave }) => chord.notes.indexOf(noteWithOctave) > -1 ? 4 : 1
       });
@@ -89,14 +89,14 @@ K: transpose=-12
   //     if (chordElement) {
   //       const chordType = chordElement.querySelector('tspan').innerHTML.substring(1);
   //       const chord = getChord(chordType, note);
-  //       fretboard.dots({
+  //       fretboard.style({
   //         text: ({ noteWithOctave, note }) => chord.notes.indexOf(noteWithOctave) > -1 ? note : '',
   //         fill: ({ noteWithOctave }) => noteWithOctave === note ? colors.intervals['1P'] : 'white',
   //         stroke: ({ noteWithOctave }) => chord.notes.indexOf(noteWithOctave) > -1 ? colors.intervals['1P'] : 'black',
   //         ['stroke-width']: ({ noteWithOctave }) => chord.notes.indexOf(noteWithOctave) > -1 ? 4 : 1
   //       });
   //     } else {
-  //       fretboard.dots({
+  //       fretboard.style({
   //         fill: ({ noteWithOctave }) => noteWithOctave === note ? colors.intervals['1P'] : 'white',
   //       });
   //     }

@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
       fret: 3,
       note: 'Cx'
     },
-  ]).dots(({
+  ]).style(({
     fill: (({ note }) => note === 'Cx' ? 'red' : 'white')
   }));
 

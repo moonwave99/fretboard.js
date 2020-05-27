@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
       root: selectedRoot,
       box: selectedBox,
       mode: selectedMode
-    })).dots({
+    })).style({
       fill: ({ note }) => note === selectedRoot.charAt(0) ? color : 'white',
       text: ({ note }) => note
     });

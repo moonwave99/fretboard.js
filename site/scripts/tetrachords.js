@@ -49,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
   fretboard.render([
     ...lowerTetrachord,
     ...upperTetrachord
-  ]).dots({
+  ]).style({
     fill: (dot, index) => index < 4 ? 'yellow' : 'pink'
   });
 
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
           type: options.upperTetrachordType,
           layout: +options.upperTetrachordLayout
         })
-      ]).dots({
+      ]).style({
         fill: (dot, index) => index < 4 ? 'yellow' : 'pink'
       });
     })

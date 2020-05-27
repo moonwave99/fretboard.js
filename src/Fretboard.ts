@@ -387,7 +387,7 @@ export class Fretboard {
     return this;
   }
 
-  dots ({
+  style ({
     filter = (): boolean => true,
     text,
     fontSize,

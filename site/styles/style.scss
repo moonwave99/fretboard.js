@@ -2,11 +2,8 @@
 
 @import "~bulma/sass/utilities/_all";
 @import "~bulma/sass/base/_all";
-@import "~bulma/sass/elements/container";
-@import "~bulma/sass/elements/content";
 @import "~bulma/sass/elements/table";
 @import "~bulma/sass/elements/button";
-@import "~bulma/sass/elements/form";
 @import "~bulma/sass/form/shared";
 @import "~bulma/sass/form/checkbox-radio";
 @import "~bulma/sass/form/select";
@@ -155,6 +152,10 @@ footer.container {
 
 .description {
   margin-bottom: 1rem;
+}
+
+.documentation {
+  margin-bottom: 2rem;
 }
 
 @media screen and (max-width: 768px) {

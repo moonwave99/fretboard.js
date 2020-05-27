@@ -4,6 +4,7 @@ const { chunk } = require('lodash');
 const marked = require('marked');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const labels = require('./site/labels.json');
 const textsFile = fs.readFileSync('./site/texts.md', 'utf8');
@@ -23,9 +24,9 @@ const getTexts = () => {
 const documentation = marked(docsFile);
 
 const partials = {
-  footer: () => {
+  footer: (footerClass = '') => {
     return `
-      <footer class="container">
+      <footer class="container ${footerClass}">
         <p>&copy; 2020 <a href="${labels.links.author}">mwlabs</a>. | <a href="${labels.links.github}">github</a></p>
       </footer>`;
   },
@@ -101,8 +102,13 @@ module.exports = {
   module: {
     rules: [
       {
-        test: [/\.css$/i, /\.scss$/],
-        use: ['style-loader', 'css-loader', 'sass-loader'],
+        test: /\.(sa|sc|c)ss$/,
+        use: [
+          MiniCssExtractPlugin.loader,
+          // 'style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
       }
     ]
   },
@@ -120,6 +126,10 @@ module.exports = {
       patterns: [
         { from: 'site/assets', to: 'assets' }
       ]
+    }),
+    new MiniCssExtractPlugin({
+      filename: '[name].css',
+      chunkFilename: '[id].css',
     }),
     new HtmlWebpackPlugin({
       title: 'Fretboard.js',

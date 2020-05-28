@@ -6,9 +6,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const labels = require('./site/labels.json');
-const textsFile = fs.readFileSync('./site/texts.md', 'utf8');
-const docsFile = fs.readFileSync('./site/documentation.md', 'utf8');
+const labels = require('./site/data/labels.json');
+const textsFile = fs.readFileSync('./site/data/texts.md', 'utf8');
+const docs = {
+  fretboard: fs.readFileSync('./site/data/documentation/fretboard.md', 'utf8'),
+  musicTools: fs.readFileSync('./site/data/documentation/music-tools.md', 'utf8')
+};
 
 const targetPath = path.resolve(__dirname, '_site');
 const examples = ['boxes', 'modes', 'tetrachords'];
@@ -21,7 +24,10 @@ const getTexts = () => {
   );
 };
 
-const documentation = marked(docsFile);
+const documentation = {
+  fretboard: marked(docs.fretboard),
+  musicTools: marked(docs.musicTools),
+};
 
 const partials = {
   footer: (footerClass = '') => {
@@ -32,10 +38,14 @@ const partials = {
   },
   nav: (section) => {
     const isCurrent = (item) => {
-      if (item === 'examples') {
-        return examples.indexOf(section) > -1 ? 'is-current' : '';
+      switch (item) {
+        case 'examples':
+          return examples.indexOf(section) > -1 ? 'is-current' : '';
+        case 'documentation':
+          return Object.keys(documentation).indexOf(section) > -1 ? 'is-current' : '';
+        default:
+          return section === item ? 'is-current' : '';
       }
-      return section === item ? 'is-current' : '';
     }
 
     return `
@@ -55,7 +65,16 @@ const partials = {
 
       <div id="navbar" class="navbar-menu">
         <div class="navbar-start">
-          <a class="navbar-item ${isCurrent('documentation')}" href="documentation.html">Documentation</a>
+          <div class="navbar-item has-dropdown is-hoverable">
+            <span class="navbar-link ${isCurrent('documentation')}">
+              Documentation
+            </span>
+
+            <div class="navbar-dropdown">
+              <a class="navbar-item ${isCurrent('fretboard')}" href="documentation-fretboard.html">Fretboard</a>
+              <a class="navbar-item ${isCurrent('musicTools')}" href="documentation-music-tools.html">Music tools</a>
+            </div>
+          </div>
 
           <div class="navbar-item has-dropdown is-hoverable">
             <span class="navbar-link ${isCurrent('examples')}">
@@ -63,10 +82,10 @@ const partials = {
             </span>
 
             <div class="navbar-dropdown">
-              <a class="navbar-item ${isCurrent('boxes')}" href="boxes.html">Boxes</a>
-              <a class="navbar-item ${isCurrent('modes')}" href="modes.html">Modes</a>
-              <a class="navbar-item ${isCurrent('tetrachords')}" href="tetrachords.html">Tetrachords</a>
-              <a class="navbar-item ${isCurrent('playback')}" href="playback.html">Playback</a>
+              <a class="navbar-item ${isCurrent('boxes')}" href="examples-boxes.html">Boxes</a>
+              <a class="navbar-item ${isCurrent('modes')}" href="examples-modes.html">Modes</a>
+              <a class="navbar-item ${isCurrent('tetrachords')}" href="examples-tetrachords.html">Tetrachords</a>
+              <a class="navbar-item ${isCurrent('playback')}" href="examples-playback.html">Playback</a>
             </div>
           </div>
         </div>
@@ -91,8 +110,8 @@ const exampleEntries = examples.reduce(
 const examplePages = examples.map(e => {
   return new HtmlWebpackPlugin({
     title: `Fretboard.js | Examples | ${e[0].toUpperCase()}${e.substring(1)}`,
-    filename: `${e}.html`,
-    template: `site/pages/${e}.ejs`,
+    filename: `examples-${e}.html`,
+    template: `site/pages/examples/${e}.ejs`,
     inject: false,
     templateParameters
   });
@@ -113,7 +132,7 @@ module.exports = {
   },
   entry: {
     index: './site/scripts/index.js',
-    playback: './site/scripts/playback.js'
+    playback: './site/scripts/examples/playback.js'
   },
   output: {
     filename: '[name]-bundle.js',
@@ -137,17 +156,24 @@ module.exports = {
       templateParameters
     }),
     new HtmlWebpackPlugin({
-      title: 'Fretboard.js | Documentation',
-      filename: 'documentation.html',
-      template: 'site/pages/documentation.ejs',
+      title: 'Fretboard.js | Documentation | Fretboard',
+      filename: 'documentation-fretboard.html',
+      template: 'site/pages/documentation/fretboard.ejs',
+      inject: false,
+      templateParameters
+    }),
+    new HtmlWebpackPlugin({
+      title: 'Fretboard.js | Documentation | Music Tools',
+      filename: 'documentation-music-tools.html',
+      template: 'site/pages/documentation/music-tools.ejs',
       inject: false,
       templateParameters
     }),
     ...examplePages,
     new HtmlWebpackPlugin({
       title: 'Fretboard.js | Examples | Playback',
-      filename: 'playback.html',
-      template: 'site/pages/playback.ejs',
+      filename: 'examples-playback.html',
+      template: 'site/pages/examples/playback.ejs',
       inject: false,
       templateParameters
     }),

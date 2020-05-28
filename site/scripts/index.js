@@ -4,9 +4,9 @@ import './navbar.js';
 import './documentation.js';
 
 import home from './home.js';
-import modes from './modes.js';
-import boxes from './boxes.js';
-import tetrachords from './tetrachords.js';
+import modes from './examples/modes.js';
+import boxes from './examples/boxes.js';
+import tetrachords from './examples/tetrachords.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   switch (document.documentElement.dataset.section) {

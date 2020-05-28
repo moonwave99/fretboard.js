@@ -5,12 +5,12 @@ import { getChord } from '@tonaljs/chord';
 import {
   Fretboard,
   CAGED
-} from '../../dist/fretboard.esm.js';
+} from '../../../dist/fretboard.esm.js';
 
-import { fretboardConfiguration, colors } from './config.js';
-import '../styles/style.scss';
-import './navbar.js';
-import '../styles/playback.css';
+import { fretboardConfiguration, colors } from '../config.js';
+import '../navbar.js';
+import '../../styles/style.scss';
+import '../../styles/playback.css';
 
 document.addEventListener('DOMContentLoaded', () => {
   const fretboard = new Fretboard(fretboardConfiguration)

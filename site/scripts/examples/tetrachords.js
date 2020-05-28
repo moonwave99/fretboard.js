@@ -3,9 +3,9 @@ import {
   tetrachord,
   TetrachordTypes,
   TetrachordLayouts
-} from '../../dist/fretboard.esm.js';
+} from '../../../dist/fretboard.esm.js';
 
-import { fretboardConfiguration, colors } from './config.js';
+import { fretboardConfiguration, colors } from '../config.js';
 
 export default function tetrachords() {
   const options = {

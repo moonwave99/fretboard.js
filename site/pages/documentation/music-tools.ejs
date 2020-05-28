@@ -1,0 +1,30 @@
+<!doctype html>
+<html class="has-navbar-fixed-top" data-section="documentation">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"
+	  content="width=device-width, initial-scale=1">
+	<title><%= htmlWebpackPlugin.options.title %></title>
+	<%= htmlWebpackPlugin
+	  .tags
+	  .headTags
+		.filter((tag) => tag.attributes.href.startsWith('index'))
+	  .join('')
+	%>
+</head>
+
+<body>
+	<%= partials.nav('musicTools') %>
+	<main>
+		<section class="documentation text container"><%= documentation.musicTools %></section>
+	</main>
+	<%= partials.footer('text') %>
+	<%= htmlWebpackPlugin
+		.tags
+		.bodyTags
+		.filter((tag) => tag.attributes.src.startsWith('index'))
+		.join('')
+	%>
+</body>
+</html>

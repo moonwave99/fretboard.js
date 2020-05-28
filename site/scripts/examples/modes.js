@@ -1,9 +1,9 @@
 import {
   Fretboard,
   CAGED
-} from '../../dist/fretboard.esm.js';
+} from '../../../dist/fretboard.esm.js';
 
-import { fretboardConfiguration, modeMap } from './config.js';
+import { fretboardConfiguration, modeMap } from '../config.js';
 
 export default function modes() {
   let selectedBox = 'C';

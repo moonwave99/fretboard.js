@@ -5,9 +5,9 @@ import {
   CAGED,
   pentatonic,
   disableDots
-} from '../../dist/fretboard.esm.js';
+} from '../../../dist/fretboard.esm.js';
 
-import { fretboardConfiguration, colors } from './config.js';
+import { fretboardConfiguration, colors } from '../config.js';
 
 function connectedCagedExample({
   box1 = CAGED({ box: 'C', root: 'D3' }),

@@ -3,57 +3,9 @@ import {
   CAGED
 } from '../../dist/fretboard.esm.js';
 
-import './navbar.js';
-import '../styles/style.scss';
+import { fretboardConfiguration, modeMap } from './config.js';
 
-const modeMap = [
-  {
-    root: 'C',
-    mode: 'ionian',
-    color: '#e76f51'
-  },
-  {
-    root: 'D',
-    mode: 'dorian',
-    color: '#6a994e'
-  },
-  {
-    root: 'E',
-    mode: 'phrygian',
-    color: '#8338ec'
-  },
-  {
-    root: 'F',
-    mode: 'lydian',
-    color: '#ffbd00'
-  },
-  {
-    root: 'G',
-    mode: 'mixolydian',
-    color: '#e36414'
-  },
-  {
-    root: 'A',
-    mode: 'aeolian',
-    color: '#00bbf9'
-  },
-  {
-    root: 'B',
-    mode: 'locrian',
-    color: '#1D5DF2'
-  }
-];
-
-const fretboardConfiguration = {
-  height: 200,
-  stringsWidth: 1.5,
-  dotSize: 25,
-  fretCount: 16,
-  fretsWidth: 1.2,
-  font: 'Futura'
-};
-
-document.addEventListener('DOMContentLoaded', () => {
+export default function modes() {
   let selectedBox = 'C';
   let selectedRoot = '';
   let selectedMode = 'ionian';
@@ -127,4 +79,4 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   updateFretboard();
-});
+}

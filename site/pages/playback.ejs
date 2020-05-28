@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="has-navbar-fixed-top">
+<html class="has-navbar-fixed-top" data-section="playback">
 
 <head>
 	<meta charset="utf-8">
@@ -29,10 +29,10 @@
 	</main>
 	<%= partials.footer() %>
 	<%= htmlWebpackPlugin
-	  .tags
-	  .bodyTags
-	  .filter((tag) => tag.attributes.src.startsWith('playback'))
-	  .join('')
+		.tags
+		.bodyTags
+		.filter((tag) => tag.attributes.src.startsWith('playback'))
+		.join('')
 	%>
 </body>
 </html>

@@ -11,7 +11,7 @@ const textsFile = fs.readFileSync('./site/texts.md', 'utf8');
 const docsFile = fs.readFileSync('./site/documentation.md', 'utf8');
 
 const targetPath = path.resolve(__dirname, '_site');
-const examples = ['boxes', 'modes', 'playback', 'tetrachords'];
+const examples = ['boxes', 'modes', 'tetrachords'];
 
 const getTexts = () => {
   const tokens = textsFile.split(/<!--([\s\S]*?)-->/g);
@@ -105,7 +105,6 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          // 'style-loader',
           'css-loader',
           'sass-loader'
         ]
@@ -114,8 +113,7 @@ module.exports = {
   },
   entry: {
     index: './site/scripts/index.js',
-    documentation: './site/scripts/documentation.js',
-    ...exampleEntries
+    playback: './site/scripts/playback.js'
   },
   output: {
     filename: '[name]-bundle.js',
@@ -145,7 +143,14 @@ module.exports = {
       inject: false,
       templateParameters
     }),
-    ...examplePages
+    ...examplePages,
+    new HtmlWebpackPlugin({
+      title: 'Fretboard.js | Examples | Playback',
+      filename: 'playback.html',
+      template: 'site/pages/playback.ejs',
+      inject: false,
+      templateParameters
+    }),
   ],
   devServer: {
     contentBase: targetPath,

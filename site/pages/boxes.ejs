@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="has-navbar-fixed-top">
+<html class="has-navbar-fixed-top" data-section="boxes">
 
 <head>
 	<meta charset="utf-8">
@@ -9,7 +9,7 @@
 	<%= htmlWebpackPlugin
 		.tags
 		.headTags
-		.filter((tag) => tag.attributes.href.startsWith('boxes'))
+		.filter((tag) => tag.attributes.href.startsWith('index'))
 		.join('')
 	%>
 </head>
@@ -72,10 +72,10 @@
 	</main>
 	<%= partials.footer() %>
 	<%= htmlWebpackPlugin
-	  .tags
-	  .bodyTags
-	  .filter((tag) => tag.attributes.src.startsWith('boxes'))
-	  .join('')
+		.tags
+		.bodyTags
+		.filter((tag) => tag.attributes.src.startsWith('index'))
+		.join('')
 	%>
 </body>
 

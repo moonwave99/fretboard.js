@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="has-navbar-fixed-top">
+<html class="has-navbar-fixed-top" data-section="modes">
 
 <head>
 	<meta charset="utf-8">
@@ -7,10 +7,10 @@
 	  content="width=device-width, initial-scale=1">
 	<title><%= htmlWebpackPlugin.options.title %></title>
 	<%= htmlWebpackPlugin
-		.tags
-		.headTags
-		.filter((tag) => tag.attributes.href.startsWith('modes'))
-		.join('')
+	  .tags
+	  .headTags
+		.filter((tag) => tag.attributes.href.startsWith('index'))
+	  .join('')
 	%>
 </head>
 
@@ -39,7 +39,7 @@
 	<%= htmlWebpackPlugin
 		.tags
 		.bodyTags
-		.filter((tag) => tag.attributes.src.startsWith('modes'))
+		.filter((tag) => tag.attributes.src.startsWith('index'))
 		.join('')
 	%>
 </body>

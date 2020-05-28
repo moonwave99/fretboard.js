@@ -5,19 +5,9 @@ import {
   TetrachordLayouts
 } from '../../dist/fretboard.esm.js';
 
-import './navbar.js';
-import '../styles/style.scss';
+import { fretboardConfiguration, colors } from './config.js';
 
-const fretboardConfiguration = {
-  height: 200,
-  stringsWidth: 1.5,
-  dotSize: 25,
-  fretCount: 16,
-  fretsWidth: 1.2,
-  font: 'Futura'
-};
-
-document.addEventListener('DOMContentLoaded', () => {
+export default function tetrachords() {
   const options = {
     lowerTetrachordType: TetrachordTypes.Major,
     lowerTetrachordLayout: TetrachordLayouts.ThreePlusOne,
@@ -79,4 +69,4 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     })
   );
-});
+}

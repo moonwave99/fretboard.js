@@ -1,5 +1,5 @@
-import '../styles/style.scss';
 import '../../node_modules/prismjs/themes/prism-solarizedlight.css';
+import '../styles/style.scss';
 import './navbar.js';
 import './documentation.js';
 

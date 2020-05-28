@@ -2,7 +2,13 @@ import { isEqual, uniqWith } from 'lodash';
 import { Fretboard, CAGED } from '../../dist/fretboard.esm.js';
 import { fretboardConfiguration, colors } from './config.js';
 
-function apiExample(box = CAGED({ mode: 'major', root: 'C3', box: 'C'})) {
+export default function home() {
+  const box = CAGED({
+    mode: 'major',
+    root: 'C3',
+    box: 'C'
+  });
+
   const fretboard = new Fretboard({
     el: '#fretboard-api',
     ...fretboardConfiguration
@@ -48,12 +54,5 @@ function apiExample(box = CAGED({ mode: 'major', root: 'C3', box: 'C'})) {
       }
     });
   });
-}
 
-export default function home() {
-  apiExample(CAGED({
-    mode: 'major',
-    root: 'C3',
-    box: 'C'
-  }));
 }

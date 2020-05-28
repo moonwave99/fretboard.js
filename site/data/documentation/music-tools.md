@@ -1,3 +1,0 @@
-# Documentation - Music Tools
-
-WIP

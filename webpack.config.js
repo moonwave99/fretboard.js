@@ -6,15 +6,17 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const targetPath = path.resolve(__dirname, '_site');
+
+const documentation = ['fretboard', 'musicTools'];
+const examples = ['boxes', 'modes', 'tetrachords'];
+
 const labels = require('./site/data/labels.json');
 const textsFile = fs.readFileSync('./site/data/texts.md', 'utf8');
-const docs = {
-  fretboard: fs.readFileSync('./site/data/documentation/fretboard.md', 'utf8'),
-  musicTools: fs.readFileSync('./site/data/documentation/music-tools.md', 'utf8')
-};
-
-const targetPath = path.resolve(__dirname, '_site');
-const examples = ['boxes', 'modes', 'tetrachords'];
+const docs = documentation.reduce((memo, key) => ({
+  ...memo,
+  [key]: marked(fs.readFileSync(`./site/data/documentation/${key}.md`, 'utf8'))
+}), {});
 
 const getTexts = () => {
   const tokens = textsFile.split(/<!--([\s\S]*?)-->/g);
@@ -22,11 +24,6 @@ const getTexts = () => {
   return chunk(tokens, 2).reduce(
     (memo, [key, value]) => ({ ...memo, [key]: marked(value) }), {}
   );
-};
-
-const documentation = {
-  fretboard: marked(docs.fretboard),
-  musicTools: marked(docs.musicTools),
 };
 
 const partials = {
@@ -42,7 +39,7 @@ const partials = {
         case 'examples':
           return examples.indexOf(section) > -1 ? 'is-current' : '';
         case 'documentation':
-          return Object.keys(documentation).indexOf(section) > -1 ? 'is-current' : '';
+          return documentation.indexOf(section) > -1 ? 'is-current' : '';
         default:
           return section === item ? 'is-current' : '';
       }
@@ -101,7 +98,7 @@ const partials = {
   }
 };
 
-const templateParameters = { ...labels, partials, texts: getTexts(), documentation };
+const templateParameters = { ...labels, partials, texts: getTexts(), docs };
 const exampleEntries = examples.reduce(
   (memo, e) => ({ ...memo, [e]: `./site/scripts/${e}.js`})
   , {}

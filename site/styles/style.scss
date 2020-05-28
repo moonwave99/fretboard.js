@@ -50,6 +50,10 @@ h2 {
   margin: 4rem 0 2rem 0;
 }
 
+h3 {
+  margin: 2rem 0 1rem 0;
+}
+
 h1, h2, h3 {
   color: $mainColor;
   font-weight: bold;
@@ -106,6 +110,13 @@ figure {
 
   pre {
     margin-bottom: 3rem;
+  }
+
+  ul {
+    padding-left: 1rem;
+    li {
+      list-style: initial;
+    }
   }
 }
 

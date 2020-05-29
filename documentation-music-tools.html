@@ -4,7 +4,13 @@ pentatonic ({
   box = 1,
   root = &#39;C3&#39;,
   mode = &#39;major&#39;,
-}): Position[]</code></pre><p>Accepts:</p><ul><li><strong>box</strong>: 1-5;</li><li><strong>root</strong>: the root, relative to the box;</li><li><strong>mode</strong>: the mode of the pentatonic scale - major or minor.</li></ul><h3 id="caged">CAGED</h3><p>Returns the positions for one of the five <a href="https://appliedguitartheory.com/lessons/caged-guitar-theory-system/">CAGED</a> system boxes.</p><pre><code class="language-typescript">import { CAGED } from &#39;@moonwave99/fretboard.js&#39;;
+}): Position[]</code></pre><p>Accepts:</p><ul><li><strong>box</strong>: 1-5;</li><li><strong>root</strong>: the root, relative to the box;</li><li><strong>mode</strong>: the mode of the pentatonic scale - major or minor.</li></ul><h3 id="three-note-per-string">Three-Note-Per-String</h3><p>Returns the positions for one of the five <strong>3NPS</strong> boxes.</p><pre><code class="language-typescript">import { TNPString } from &#39;@moonwave99/fretboard.js&#39;;
+
+TNPString ({
+  box = 1,
+  root = &#39;E3&#39;,
+  mode = &#39;major&#39;,
+}): Position[]</code></pre><p>Accepts:</p><ul><li><strong>box</strong>: 1-7;</li><li><strong>root</strong>: the root, relative to the box;</li><li><strong>mode</strong>: the mode of the box itself.</li></ul><h3 id="caged">CAGED</h3><p>Returns the positions for one of the five <a href="https://appliedguitartheory.com/lessons/caged-guitar-theory-system/">CAGED</a> system boxes.</p><pre><code class="language-typescript">import { CAGED } from &#39;@moonwave99/fretboard.js&#39;;
 
 CAGED ({
   box = &#39;C&#39;,

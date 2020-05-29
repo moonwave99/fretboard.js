@@ -1,5 +1,6 @@
 import { findMode, generateBox } from './utils';
 import { boxes as CAGEDBoxes } from './boxes/CAGED';
+import { boxes as TNPStringBoxes } from './boxes/3nps';
 import { boxes as pentatonicBoxes } from './boxes/pentatonic';
 
 export type Position = {
@@ -64,6 +65,29 @@ export function CAGED ({
   }
   return generateBox({
     name: `CAGED ${box} box - ${root }${mode}`,
+    scaleTitle: `${root} ${mode}`,
+    pattern,
+    root,
+    modeSchema
+  });
+}
+
+export function TNPString({
+  mode = 'major',
+  root = 'E2',
+  box = 1
+} = {}): Position[] {
+  const _box = TNPStringBoxes[box - 1];
+  if (!_box) {
+    throw new Error(`Cannot find box ${box} in the 3NPS system`);
+  }
+  const { pattern, modes } = _box;
+  const modeSchema = findMode({ modes, modeName: mode });
+  if (!modeSchema) {
+    throw new Error(`Cannot find mode ${mode} in the 3NPS ${box} box`);
+  }
+  return generateBox({
+    name: `3NPS ${box} box - ${root }${mode}`,
     scaleTitle: `${root} ${mode}`,
     pattern,
     root,

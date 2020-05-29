@@ -3,6 +3,7 @@ import { isEqual, uniqWith } from 'lodash';
 import {
   Fretboard,
   CAGED,
+  TNPString,
   pentatonic,
   disableDots
 } from '../../../dist/fretboard.esm.js';
@@ -99,6 +100,23 @@ function cagedExample(boxes = []) {
   });
 }
 
+function TNPStringExample() {
+  const box = TNPString({
+    box: 1,
+    root: 'A2',
+    mode: 'major'
+  });
+  const fretboard = new Fretboard({
+    el: '#fretboard-3nps',
+    dotText: ({ note }) => note,
+    dotFill: ({ interval }) => interval === '1P' ? colors.intervals[interval] : colors.defaultFill,
+    ...fretboardConfiguration,
+    fretCount: 18
+  });
+  console.log(box)
+  fretboard.render(box);
+}
+
 function pentatonicExample(boxes = []) {
   boxes.forEach(({ box, root }, i) => {
     const fretBoard = new Fretboard({
@@ -129,6 +147,7 @@ export default function boxes() {
     { box: 'A', root: 'G3' },
     { box: 'G', root: 'G3' }
   ]);
+  TNPStringExample();
   pentatonicExample([
     { box: 1, root: 'G2' },
     { box: 2, root: 'G3' },

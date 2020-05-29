@@ -29,6 +29,9 @@ The G major scale in all five CAGED boxes. See how they share fret positions ver
 <!--examples.boxes.4-->
 Same as above, but with the G major pentatonic.
 
+<!--examples.boxes.threeNotesPerString-->
+The three note per string system is very consistent and allows quick runs with alternate picking over all six strings, as opposed to other systems that have strings with just two notes on them.
+
 <!--examples.modes-->
 A different starting note inside a box corresponds to a different mode.  
 For instance, if we play the **C-shaped** box starting from the first box note - E that is -, we get the corrisponding **phrygian** mode.

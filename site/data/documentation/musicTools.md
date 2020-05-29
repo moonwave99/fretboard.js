@@ -25,6 +25,25 @@ Accepts:
 - **root**: the root, relative to the box;
 - **mode**: the mode of the pentatonic scale - major or minor.
 
+### Three-Note-Per-String
+
+Returns the positions for one of the five **3NPS** boxes.
+
+```typescript
+import { TNPString } from '@moonwave99/fretboard.js';
+
+TNPString ({
+  box = 1,
+  root = 'E3',
+  mode = 'major',
+}): Position[]
+```
+
+Accepts:
+
+- **box**: 1-7;
+- **root**: the root, relative to the box;
+- **mode**: the mode of the box itself.
 
 ### CAGED
 

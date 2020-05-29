@@ -113,7 +113,6 @@ function TNPStringExample() {
     ...fretboardConfiguration,
     fretCount: 18
   });
-  console.log(box)
   fretboard.render(box);
 }
 

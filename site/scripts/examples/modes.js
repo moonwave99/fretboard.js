@@ -1,16 +1,93 @@
 import {
   Fretboard,
-  CAGED
+  CAGED,
+  TNPString
 } from '../../../dist/fretboard.esm.js';
 
 import { fretboardConfiguration, modeMap } from '../config.js';
 
-export default function modes() {
+function modesTNPString() {
+  const $wrapper = document.getElementById('modes-3nps');
+
+  let selectedBox = 1;
+  let selectedRoot = '';
+  let selectedMode = 'ionian';
+
+  const fretboard = new Fretboard({
+    ...fretboardConfiguration,
+    fretCount: 18,
+    el: '#fretboard-3nps'
+  });
+
+  function getRoot(root, box) {
+    return ['E2', 'F#2', 'G#2', 'A2', 'B2', 'C#3', 'D#3'][box - 1];
+  }
+
+  function updateFretboard() {
+    const { root, color } = modeMap.find(({ mode }) => mode === selectedMode);
+    selectedRoot = getRoot(root, selectedBox);
+    fretboard.render(TNPString({
+      root: selectedRoot,
+      box: selectedBox,
+      mode: selectedMode
+    })).style({
+      fill: ({ note }) => note === selectedRoot.match(/(.*)[\d]/)[1] ? color : 'white',
+      text: ({ note }) => note
+    });
+  }
+
+  const $modeControl = $wrapper.querySelector('.modes');
+  const $boxControl = $wrapper.querySelector('.boxes');
+
+  $modeControl.innerHTML = modeMap.map(({ mode, color }) => {
+    return `
+      <label class="radio mode-${mode}" style="color: ${color}">
+        <input type="radio" name="mode" value="${mode}" ${selectedMode === mode ? 'checked' : ''}>
+        ${mode}
+      </label>
+    `;
+  }).join('');
+
+  $boxControl.innerHTML = [1, 2, 3, 4, 5, 6, 7].map(box => {
+    return `
+      <label class="radio box-${box}">
+        <input type="radio" name="mode" value="${box}" ${selectedBox === box ? 'checked' : ''}>
+        pattern <strong>${box}</strong>
+      </label>
+    `;
+  }).join('');
+
+  $modeControl.querySelectorAll('input').forEach(el => {
+    el.addEventListener('change', (event) => {
+      const { mode, root } = modeMap.find(
+        ({ mode }) => mode === event.target.value
+      );
+      selectedMode = mode;
+      updateFretboard();
+    });
+  });
+
+  $boxControl.querySelectorAll('input').forEach(el => {
+    el.addEventListener('change', (event) => {
+      selectedBox = +event.target.value;
+      updateFretboard();
+    });
+  });
+
+  updateFretboard();
+}
+
+function modesCAGED() {
+  const $wrapper = document.getElementById('modes-caged');
+
   let selectedBox = 'C';
   let selectedRoot = '';
   let selectedMode = 'ionian';
 
-  const fretboard = new Fretboard(fretboardConfiguration);
+  const fretboard = new Fretboard({
+    ...fretboardConfiguration,
+    el: '#fretboard-caged'
+  });
 
   function getRoot(root, box) {
     switch (box) {
@@ -35,13 +112,13 @@ export default function modes() {
       box: selectedBox,
       mode: selectedMode
     })).style({
-      fill: ({ note }) => note === selectedRoot.charAt(0) ? color : 'white',
+      fill: ({ note }) => note === selectedRoot.match(/(.*)[\d]/)[1] ? color : 'white',
       text: ({ note }) => note
     });
   }
 
-  const $modeControl = document.querySelector('.modes');
-  const $boxControl = document.querySelector('.boxes');
+  const $modeControl = $wrapper.querySelector('.modes');
+  const $boxControl = $wrapper.querySelector('.boxes');
 
   $modeControl.innerHTML = modeMap.map(({ mode, color }) => {
     return `
@@ -79,4 +156,9 @@ export default function modes() {
   });
 
   updateFretboard();
+}
+
+export default function modes() {
+  modesTNPString();
+  modesCAGED();
 }

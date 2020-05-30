@@ -32,9 +32,12 @@ Same as above, but with the G major pentatonic.
 <!--examples.boxes.threeNotesPerString-->
 The three note per string system is very consistent and allows quick runs with alternate picking over all six strings, as opposed to other systems that have strings with just two notes on them.
 
-<!--examples.modes-->
+<!--examples.modes.caged-->
 A different starting note inside a box corresponds to a different mode.  
 For instance, if we play the **C-shaped** box starting from the first box note - E that is -, we get the corrisponding **phrygian** mode.
+
+<!--examples.modes.threeNotesPerString-->
+Same applies for the 3NPS system.
 
 <!--examples.tetrachords-->
 An [heptatonic scale][1] is made up of two adjacent [tetrachords][2], a whole tone apart that is.

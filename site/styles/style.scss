@@ -255,7 +255,9 @@ footer.container {
 
 .boxes {
   padding-top: 2rem;
-
+  &.no-padding {
+    padding-top: 0;
+  }
   .radio {
     display: block;
     margin: 0;

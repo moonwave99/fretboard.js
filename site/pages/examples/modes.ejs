@@ -19,20 +19,38 @@
 	<main>
 		<section class="container">
 			<h1><%= examples.modes.title %></h1>
-			<section class="description"><%= texts['examples.modes'] %></section>
-			<div class="columns">
-				<section class="controls column is-three-quarters">
-					<div class="control modes"></div>
-				</section>
-			</div>
-			<div class="columns">
-				<figure class="column is-three-quarters" id="fretboard"></figure>
-				<form class="column api-actions boxes">
-					<div class="field">
-						<div class="control"></div>
-					</div>
-				</form>
-			</div>
+			<section class="description"><%= texts['examples.modes.caged'] %></section>
+			<section id="modes-caged">
+				<div class="columns">
+					<section class="controls column is-three-quarters">
+						<div class="control modes"></div>
+					</section>
+				</div>
+				<div class="columns">
+					<figure class="column is-three-quarters" id="fretboard-caged"></figure>
+					<form class="column api-actions boxes">
+						<div class="field">
+							<div class="control"></div>
+						</div>
+					</form>
+				</div>
+			</section>
+			<section class="description"><%= texts['examples.modes.threeNotesPerString'] %></section>
+			<section id="modes-3nps">
+				<div class="columns">
+					<section class="controls column is-three-quarters">
+						<div class="control modes"></div>
+					</section>
+				</div>
+				<div class="columns">
+					<figure class="column is-three-quarters" id="fretboard-3nps"></figure>
+					<form class="column api-actions boxes no-padding">
+						<div class="field">
+							<div class="control"></div>
+						</div>
+					</form>
+				</div>
+			</section>
 		</section>
 	</main>
 	<%= partials.footer() %>

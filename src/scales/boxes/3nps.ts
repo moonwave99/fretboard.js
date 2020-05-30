@@ -69,8 +69,6 @@ function getModes(mode = 'ionian'): {
     });
   }
 
-  console.log(output)
-
   return output;
 }
 

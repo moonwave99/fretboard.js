@@ -362,6 +362,7 @@ export class Fretboard {
     const dotsNodes = dotGroup.selectAll('g')
       .data(dots)
       .enter()
+      .filter(({ fret }) => fret >= 0)
       .append('g')
       .attr('class', ({ disabled }) => disabled ? 'dot dot-disabled' : 'dot')
       .attr('opacity', ({ disabled }) => disabled ? disabledOpacity : 1);

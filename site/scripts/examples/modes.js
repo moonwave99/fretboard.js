@@ -94,7 +94,7 @@ function modesCAGED() {
 
   let selectedBox = 'C';
   let selectedRoot = '';
-  let selectedMode = 'ionian';
+  let selectedMode = 'phrygian';
 
   const fretboard = new Fretboard({
     ...fretboardConfiguration,

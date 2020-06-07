@@ -37,7 +37,8 @@ A different starting note inside a box corresponds to a different mode.
 For instance, if we play the **C-shaped** box starting from the first box note - E that is -, we get the corrisponding **phrygian** mode.
 
 <!--examples.modes.threeNotesPerString-->
-Same applies for the 3NPS system.
+Same applies for the **3NPS** system. This system is more consistent: to every pattern it corresponds a mode.  
+E.g. if you play pattern 2 you get the **dorian** mode of the starting note, check it yourself down here.
 
 <!--examples.tetrachords-->
 An [heptatonic scale][1] is made up of two adjacent [tetrachords][2], a whole tone apart that is.

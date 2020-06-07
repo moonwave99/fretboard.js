@@ -19,42 +19,46 @@
 	<main>
 		<section class="container">
 			<h1><%= examples.modes.title %></h1>
-			<section class="description"><%= texts['examples.modes.caged'] %></section>
-			<section id="modes-caged">
-				<form>
-					<div class="columns">
-						<section class="controls column is-three-quarters">
-							<div class="control modes"></div>
-						</section>
-					</div>
-					<div class="columns">
-						<figure class="column is-three-quarters" id="fretboard-caged"></figure>
-						<div class="column api-actions boxes">
-							<div class="field">
-								<div class="control"></div>
+			<article class="example">
+				<section class="description"><%= texts['examples.modes.caged'] %></section>
+				<section id="modes-caged">
+					<form>
+						<div class="columns">
+							<section class="controls column is-three-quarters">
+								<div class="control modes"></div>
+							</section>
+						</div>
+						<div class="columns">
+							<figure class="column is-three-quarters" id="fretboard-caged"></figure>
+							<div class="column api-actions boxes">
+								<div class="field">
+									<div class="control"></div>
+								</div>
 							</div>
 						</div>
-					</div>
-				</form>
-			</section>
-			<section class="description"><%= texts['examples.modes.threeNotesPerString'] %></section>
-			<section id="modes-3nps">
-				<form>
-					<div class="columns">
-						<section class="controls column is-three-quarters">
-							<div class="control modes"></div>
-						</section>
-					</div>
-					<div class="columns">
-						<figure class="column is-three-quarters" id="fretboard-3nps"></figure>
-						<div class="column api-actions boxes no-padding">
-							<div class="field">
-								<div class="control"></div>
-							</div>
-						</div>
-					</div>
+					</form>
 				</section>
-			</form>
+			</article>
+			<article class="example">
+				<section class="description"><%= texts['examples.modes.threeNotesPerString'] %></section>
+				<section id="modes-3nps">
+					<form>
+						<div class="columns">
+							<section class="controls column is-three-quarters">
+								<div class="control modes"></div>
+							</section>
+						</div>
+						<div class="columns">
+							<figure class="column is-three-quarters" id="fretboard-3nps"></figure>
+							<div class="column api-actions boxes no-padding">
+								<div class="field">
+									<div class="control"></div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</section>
+			</article>
 		</section>
 	</main>
 	<%= partials.footer() %>

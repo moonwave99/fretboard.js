@@ -1,6 +1,6 @@
 import { findMode, generateBox } from './utils';
 import { boxes as CAGEDBoxes } from './boxes/CAGED';
-import { boxes as TNPStringBoxes } from './boxes/3nps';
+import { boxes as TNPStringBoxes } from './boxes/threeNotesPerString';
 import { boxes as pentatonicBoxes } from './boxes/pentatonic';
 
 export type Position = {

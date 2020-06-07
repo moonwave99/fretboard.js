@@ -1,3 +1,5 @@
+import { scale } from '@tonaljs/scale';
+
 import {
   Fretboard,
   CAGED,
@@ -5,6 +7,11 @@ import {
 } from '../../../dist/fretboard.esm.js';
 
 import { fretboardConfiguration, modeMap } from '../config.js';
+
+const twoOctavesScale = [
+  ...scale('E2 ionian').notes,
+  ...scale('E3 ionian').notes
+];
 
 function modesTNPString() {
   const $wrapper = document.getElementById('modes-3nps');
@@ -19,13 +26,18 @@ function modesTNPString() {
     el: '#fretboard-3nps'
   });
 
-  function getRoot(root, box) {
-    return ['E2', 'F#2', 'G#2', 'A2', 'B2', 'C#3', 'D#3'][box - 1];
+  function getRoot(box) {
+    const modeIndex = modeMap.findIndex(({ mode }) => mode === selectedMode);
+    let noteIndex = modeIndex;
+    if (modeIndex < box - 1) {
+      noteIndex += 7;
+    }
+    return twoOctavesScale[noteIndex];
   }
 
   function updateFretboard() {
     const { root, color } = modeMap.find(({ mode }) => mode === selectedMode);
-    selectedRoot = getRoot(root, selectedBox);
+    selectedRoot = getRoot(selectedBox);
     fretboard.render(TNPString({
       root: selectedRoot,
       box: selectedBox,
@@ -51,7 +63,7 @@ function modesTNPString() {
   $boxControl.innerHTML = [1, 2, 3, 4, 5, 6, 7].map(box => {
     return `
       <label class="radio box-${box}">
-        <input type="radio" name="mode" value="${box}" ${selectedBox === box ? 'checked' : ''}>
+        <input type="radio" name="box" value="${box}" ${selectedBox === box ? 'checked' : ''}>
         pattern <strong>${box}</strong>
       </label>
     `;
@@ -132,7 +144,7 @@ function modesCAGED() {
   $boxControl.innerHTML = 'CAGED'.split('').map(box => {
     return `
       <label class="radio box-${box}">
-        <input type="radio" name="mode" value="${box}" ${selectedBox === box ? 'checked' : ''}>
+        <input type="radio" name="box" value="${box}" ${selectedBox === box ? 'checked' : ''}>
         <strong>${box}</strong> shaped box
       </label>
     `;

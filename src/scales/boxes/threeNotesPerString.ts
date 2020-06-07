@@ -90,7 +90,7 @@ export const boxes = [
       ...getStringPattern({ string: 6, patternIndex: 2, baseFret: 0 + 2 }),
       ...getStringPattern({ string: 5, patternIndex: 0, baseFret: 0 + 2 }),
       ...getStringPattern({ string: 4, patternIndex: 0, baseFret: 0 + 2 }),
-      ...getStringPattern({ string: 3, patternIndex: 2, baseFret: 1 + 2 }),
+      ...getStringPattern({ string: 3, patternIndex: 0, baseFret: 0 + 2 }),
       ...getStringPattern({ string: 2, patternIndex: 1, baseFret: 2 + 2 }),
       ...getStringPattern({ string: 1, patternIndex: 1, baseFret: 2 + 2 })
     ]

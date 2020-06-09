@@ -109,11 +109,15 @@ fretLeftPadding   | number   | 0            | Amount of empty frets to display b
 
 The `Fretboard` object has the following methods:
 
+### render()
+
 ```typescript
 render(positions: Position[]): Fretboard
 ```
 
 Displays the passed positions on the fretboard. Returns the instance itself.
+
+### style()
 
 ```typescript
 style({
@@ -131,9 +135,7 @@ style({
 }): Fretboard
 ```
 
-Applies the passed properties to selected positions (via the `filter` function parameter). If no filter is provided, all positions are affected. Returns the instance itself.
-
-### Example:
+Applies the passed properties to selected positions (via the `filter` function parameter). If no filter is provided, all positions are affected. Returns the instance itself. Example:
 
 ```typescript
 const fretboard = new Fretboard();
@@ -155,6 +157,24 @@ fretboard.style({
   fill: ({ interval }) => interval === '1P' ? 'red' : 'white' 
 })
 ```
+
+### muteStrings()
+
+```typescript
+muteStrings({
+  strings,
+  width,
+  strokeWidth,
+  stroke
+}: {
+  strings: number[];
+  width?: number;
+  strokeWidth?: number;
+  stroke?: string;
+}): Fretboard
+```
+
+Marks passed strings with a cross, e.g. `fretboard.muteStrings({ strings: [1, 6]})`.
 
 > Why don't you provide a more expressive API like .highlightMajorTriads()?
 

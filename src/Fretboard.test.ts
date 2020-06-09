@@ -104,6 +104,25 @@ test('Fretboard with dots', t => {
   t.is(svg.querySelectorAll('.dots .dot').length, dots.length);
 });
 
+
+test('Fretboard with cropping', t => {
+  const fretboard = new Fretboard({
+    scaleFrets: false,
+    fretCount: 4,
+    crop: true
+  });
+  const dots = pentatonic({ box: 1, root: 'C3' });
+  fretboard.render(dots);
+
+  const svg = document.querySelector('#fretboard svg');
+  t.truthy(svg);
+  t.is(svg.getAttribute('viewBox'), `0 0 ${defaultWidth} ${defaultHeight}`);
+  t.deepEqual(
+    Array.from(svg.querySelectorAll('.fret-numbers text')).map(x => x.innerHTML),
+    [ '7', '8', '9', '10' ]
+  );
+});
+
 test('Fretboard with disabled dots', t => {
   const fretboard = new Fretboard();
   const dots = pentatonic({ box: 1, root: 'G2' })

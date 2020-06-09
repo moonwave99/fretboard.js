@@ -73,6 +73,8 @@ export const defaultOptions = {
   middleFretColor: 'red',
   middleFretWidth: 3,
   scaleFrets: true,
+  crop: false,
+  fretLeftPadding: 0,
   topPadding: 20,
   bottomPadding: 15,
   leftPadding: 20,
@@ -154,6 +156,8 @@ type Options = {
   fretNumbersHeight: number;
   fretNumbersMargin: number;
   fretNumbersColor: string;
+  crop: boolean;
+  fretLeftPadding: number;
   font: string;
 }
 
@@ -236,7 +240,7 @@ export class Fretboard {
       .attr('transform', `translate(${leftPadding}, ${topPadding}) scale(${width / totalWidth})`);
   }
 
-  _baseRender(): void {
+  _baseRender(dotOffset: number): void {
     if (this.baseRendered) {
       return;
     }
@@ -321,7 +325,9 @@ export class Fretboard {
         .append('g')
         .attr('class', 'fret-numbers')
         .attr('font-family', font)
-        .attr('transform', `translate(0 ${fretNumbersMargin + topPadding + strings[strings.length - 1]})`);
+        .attr('transform',
+          `translate(0 ${fretNumbersMargin + topPadding + strings[strings.length - 1]})`
+        );
 
       fretNumbersGroup
         .selectAll('text')
@@ -331,20 +337,13 @@ export class Fretboard {
         .attr('text-anchor', 'middle')
         .attr('x', (d, i) => totalWidth / 100 * (d - (d - frets[i]) / 2))
         .attr('fill', (_d, i) => i === MIDDLE_FRET ? middleFretColor : fretNumbersColor)
-
-        .text((_d, i) => `${i + 1}`)
+        .text((_d, i) => `${i + 1 + dotOffset}`)
     }
 
     this.baseRendered = true;
   }
 
   render(dots: Position[] = []): Fretboard {
-    this._baseRender();
-
-    if (!dots.length) {
-      return this;
-    }
-
     const {
       svg,
       positions
@@ -358,8 +357,19 @@ export class Fretboard {
       dotSize,
       dotText,
       dotTextSize,
-      disabledOpacity
+      disabledOpacity,
+      fretLeftPadding,
+      crop
     } = this.options;
+
+    const dotOffset = crop
+      ? Math.max(0, Math.min(...dots.map(({ fret }) => fret)) - 1 - fretLeftPadding)
+      : 0;
+    this._baseRender(dotOffset);
+
+    if (!dots.length) {
+      return this;
+    }
 
     svg.select('.dots').remove();
 
@@ -377,8 +387,8 @@ export class Fretboard {
       .attr('opacity', ({ disabled }) => disabled ? disabledOpacity : 1);
 
     dotsNodes.append('circle')
-      .attr('cx', ({ string, fret }) => `${positions[string - 1][fret].x}%`)
-      .attr('cy', ({ string, fret }) => positions[string - 1][fret].y)
+      .attr('cx', ({ string, fret }) => `${positions[string - 1][fret - dotOffset].x}%`)
+      .attr('cy', ({ string, fret }) => positions[string - 1][fret - dotOffset].y)
       .attr('r', dotSize * 0.5)
       .attr('class', (dot: Position) => dotClasses(dot, 'circle'))
       .attr('stroke', dotStrokeColor)
@@ -386,8 +396,8 @@ export class Fretboard {
       .attr('fill', dotFill);
 
     dotsNodes.append('text')
-      .attr('x', ({ string, fret }) => `${positions[string - 1][fret].x}%`)
-      .attr('y', ({ string, fret }) => positions[string - 1][fret].y)
+      .attr('x', ({ string, fret }) => `${positions[string - 1][fret - dotOffset].x}%`)
+      .attr('y', ({ string, fret }) => positions[string - 1][fret - dotOffset].y)
       .attr('class', (dot: Position) => dotClasses(dot, 'text'))
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'central')

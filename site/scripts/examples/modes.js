@@ -1,4 +1,4 @@
-import { scale } from '@tonaljs/scale';
+import { get as getScale } from '@tonaljs/scale';
 
 import {
   Fretboard,
@@ -9,8 +9,8 @@ import {
 import { fretboardConfiguration, modeMap } from '../config.js';
 
 const twoOctavesScale = [
-  ...scale('E2 ionian').notes,
-  ...scale('E3 ionian').notes
+  ...getScale('E2 ionian').notes,
+  ...getScale('E3 ionian').notes
 ];
 
 function modesTNPString() {

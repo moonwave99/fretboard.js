@@ -1,5 +1,5 @@
 import { distance, interval } from '@tonaljs/tonal';
-import { scale } from '@tonaljs/scale';
+import { get as getScale } from '@tonaljs/scale';
 import { Position, Mode } from './scales';
 
 export function mod (n: number, m: number): number {
@@ -26,7 +26,7 @@ export function generateBox({
     root: patternRoot
   } = modeSchema;
   const { semitones } = interval(distance(patternRoot, root));
-  const { intervals, notes } = scale(scaleTitle);
+  const { intervals, notes } = getScale(scaleTitle);
   const baseOctave = +root.substr(-1);
 
   let octaveIncrement = 0;

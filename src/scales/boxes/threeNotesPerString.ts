@@ -1,4 +1,4 @@
-import { scale as getScale } from '@tonaljs/scale';
+import { get as getScale } from '@tonaljs/scale';
 
 function getStringPattern({
   patternIndex = 0,

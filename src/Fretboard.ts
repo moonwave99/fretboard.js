@@ -38,7 +38,7 @@ function generateStrings({
   return strings;
 }
 
-function generateFrets ({
+function generateFrets({
   scaleFrets,
   fretCount
 }: {
@@ -67,9 +67,9 @@ export const defaultOptions = {
   stringColor: 'black',
   fretCount: 15,
   fretWidth: 1,
-  fretColor: 'black',
+  fretColor: '#666',
   nutWidth: 7,
-  nutColor: 'black',
+  nutColor: '#666',
   middleFretColor: 'red',
   middleFretWidth: 3,
   scaleFrets: true,
@@ -95,7 +95,14 @@ export const defaultOptions = {
   font: 'Arial'
 };
 
-function getDimensions ({
+export const defaultMuteStringsParams = {
+  strings: [] as number[],
+  width: 15,
+  strokeWidth: 5,
+  stroke: '#333'
+};
+
+function getDimensions({
   topPadding,
   bottomPadding,
   leftPadding,
@@ -166,6 +173,13 @@ type Point = {
   y: number;
 }
 
+type MuteStringsParams = {
+  strings: number[];
+  width?: number;
+  strokeWidth?: number;
+  stroke?: string;
+}
+
 export class Fretboard {
   options: Options;
   strings: number[];
@@ -234,10 +248,10 @@ export class Fretboard {
         : select<BaseType, unknown>(el)
       )
       .append('svg')
-      .attr('viewBox', `0 0 ${totalWidth} ${totalHeight}`)
+        .attr('viewBox', `0 0 ${totalWidth} ${totalHeight}`)
       .append('g')
-      .attr('class', 'fretboard-wrapper')
-      .attr('transform', `translate(${leftPadding}, ${topPadding}) scale(${width / totalWidth})`);
+        .attr('class', 'fretboard-wrapper')
+        .attr('transform', `translate(${leftPadding}, ${topPadding}) scale(${width / totalWidth})`);
   }
 
   _baseRender(dotOffset: number): void {
@@ -272,19 +286,19 @@ export class Fretboard {
 
     const stringGroup = svg
       .append('g')
-      .attr('class', 'strings');
+        .attr('class', 'strings');
 
     stringGroup
       .selectAll('line')
       .data(strings)
       .enter()
       .append('line')
-      .attr('x1', 0)
-      .attr('y1', d => d)
-      .attr('x2', '100%')
-      .attr('y2', d => d)
-      .attr('stroke', stringColor)
-      .attr('stroke-width', stringWidth);
+        .attr('x1', 0)
+        .attr('y1', d => d)
+        .attr('x2', '100%')
+        .attr('y2', d => d)
+        .attr('stroke', stringColor)
+        .attr('stroke-width', stringWidth);
 
     const fretsGroup = svg
       .append('g')
@@ -295,49 +309,49 @@ export class Fretboard {
       .data(frets)
       .enter()
       .append('line')
-      .attr('x1', d => `${d}%`)
-      .attr('y1', 1)
-      .attr('x2', d => `${d}%`)
-      .attr('y2', height - 1)
-      .attr('stroke', (_d, i) => {
-        switch(i) {
-          case 0:
-            return nutColor;
-          case MIDDLE_FRET:
-            return middleFretColor;
-          default:
-            return fretColor;
-        }
-      })
-      .attr('stroke-width', (_d, i) => {
-        switch(i) {
-          case 0:
-            return nutWidth;
-          case MIDDLE_FRET:
-            return middleFretWidth;
-          default:
-            return fretWidth;
-        }
-      });
+        .attr('x1', d => `${d}%`)
+        .attr('y1', 1)
+        .attr('x2', d => `${d}%`)
+        .attr('y2', height - 1)
+        .attr('stroke', (_d, i) => {
+          switch(i) {
+            case 0:
+              return nutColor;
+            case MIDDLE_FRET:
+              return middleFretColor;
+            default:
+              return fretColor;
+          }
+        })
+        .attr('stroke-width', (_d, i) => {
+          switch(i) {
+            case 0:
+              return nutWidth;
+            case MIDDLE_FRET:
+              return middleFretWidth;
+            default:
+              return fretWidth;
+          }
+        });
 
     if (showFretNumbers) {
       const fretNumbersGroup = svg
         .append('g')
-        .attr('class', 'fret-numbers')
-        .attr('font-family', font)
-        .attr('transform',
-          `translate(0 ${fretNumbersMargin + topPadding + strings[strings.length - 1]})`
-        );
+          .attr('class', 'fret-numbers')
+          .attr('font-family', font)
+          .attr('transform',
+            `translate(0 ${fretNumbersMargin + topPadding + strings[strings.length - 1]})`
+          );
 
       fretNumbersGroup
         .selectAll('text')
         .data(frets.slice(1))
         .enter()
         .append('text')
-        .attr('text-anchor', 'middle')
-        .attr('x', (d, i) => totalWidth / 100 * (d - (d - frets[i]) / 2))
-        .attr('fill', (_d, i) => i === MIDDLE_FRET ? middleFretColor : fretNumbersColor)
-        .text((_d, i) => `${i + 1 + dotOffset}`)
+          .attr('text-anchor', 'middle')
+          .attr('x', (d, i) => totalWidth / 100 * (d - (d - frets[i]) / 2))
+          .attr('fill', (_d, i) => i === MIDDLE_FRET ? middleFretColor : fretNumbersColor)
+          .text((_d, i) => `${i + 1 + dotOffset}`)
     }
 
     this.baseRendered = true;
@@ -375,16 +389,16 @@ export class Fretboard {
 
     const dotGroup = svg
       .append('g')
-      .attr('class', 'dots')
-      .attr('font-family', font);
+        .attr('class', 'dots')
+        .attr('font-family', font);
 
     const dotsNodes = dotGroup.selectAll('g')
       .data(dots)
       .enter()
       .filter(({ fret }) => fret >= 0)
       .append('g')
-      .attr('class', ({ disabled }) => disabled ? 'dot dot-disabled' : 'dot')
-      .attr('opacity', ({ disabled }) => disabled ? disabledOpacity : 1);
+        .attr('class', ({ disabled }) => disabled ? 'dot dot-disabled' : 'dot')
+        .attr('opacity', ({ disabled }) => disabled ? disabledOpacity : 1);
 
     dotsNodes.append('circle')
       .attr('cx', ({ string, fret }) => `${positions[string - 1][fret - dotOffset].x}%`)
@@ -436,6 +450,43 @@ export class Fretboard {
         .attr('font-size', fontSize || dotTextSize)
         .attr('fill', fontFill || 'black');
     }
+
+    return this;
+  }
+
+  muteStrings(params: MuteStringsParams): Fretboard {
+    const {
+      svg,
+      positions
+    } = this;
+
+    const {
+      strings,
+      stroke,
+      strokeWidth,
+      width
+    } = { ...defaultMuteStringsParams, ...params };
+
+    svg
+      .append('g')
+        .attr('class', 'muted-strings')
+        .attr('transform', `translate(${-width / 2}, ${-width / 2})`)
+      .selectAll('path')
+        .data(strings)
+        .enter()
+      .append('path')
+        .attr('d', d => {
+          const { y } = positions[d - 1][0];
+          return [
+            `M 0 ${y}`,
+            `L ${width} ${y + width}`,
+            `M ${width} ${y}`,
+            `L 0 ${y + width}`
+          ].join(' ');
+        })
+        .attr('stroke', stroke)
+        .attr('stroke-width', strokeWidth)
+        .attr('class', 'muted-string');
 
     return this;
   }

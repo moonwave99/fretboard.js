@@ -193,3 +193,15 @@ test('Fretboard style() no filter', t => {
   svg.querySelectorAll('.dots .dot-text')
     .forEach(node => t.truthy(node.innerHTML))
 });
+
+test('Fretboard muteStrings()', t => {
+  const fretboard = new Fretboard();
+  fretboard.render([]);
+  fretboard.muteStrings({
+    strings: [6, 1]
+  });
+
+  const svg = document.querySelector('#fretboard svg');
+
+  t.is(svg.querySelectorAll('.muted-strings .muted-string').length, 2);
+});

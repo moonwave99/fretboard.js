@@ -14,7 +14,7 @@
 
 ## Roadmap
 
-- [ ] add crop to displayed positions options;
+- [x] add crop to displayed positions options;
 - [ ] add chords shapes;
 - [ ] add harmonic minor scale and its modes;
 - [ ] abstract tuning system;

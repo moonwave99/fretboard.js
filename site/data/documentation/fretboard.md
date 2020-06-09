@@ -71,7 +71,7 @@ fretboard.render([
 **Note**: even though the context should provide enough disambiguation, the word _string_ refers to both the instrument ones and the programming data type!
 
 Parameter         | Type     | Default      | Description
-------------------|----------|--------------|----------------------------------------------------------
+------------------|----------|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 el                | string   | '#fretboard' | Container element selector
 stringCount       | string   | 6            | Number of instrument strings to display
 stringWidth       | string   | 1            | String line stroke width
@@ -102,6 +102,8 @@ fretNumbersHeight | string   | 40           | Fret numbers container height
 fretNumbersMargin | string   | 20           | Fret number container top margin
 fretNumbersColor  | string   | '#00000099'  | Fret numbers color
 font              | string   | 'Arial'      | Text font
+crop              | boolean  | false        | If `true`, crops the rendering. Must be used in conjunction with `fretCount`, so set it to a value enough to contain your diagram (3/4 for a chord, 5/6 for a scale box for instance)
+fretLeftPadding   | number   | 0            | Amount of empty frets to display before dots.
 
 ## Fretboard API
 

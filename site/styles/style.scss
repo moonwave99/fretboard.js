@@ -186,8 +186,38 @@ footer.container {
   margin-bottom: 1rem;
 }
 
+.chords {
+  figcaption {
+    text-align: center;
+    font-weight: bold;
+  }
+}
+
 .documentation {
   margin-bottom: 2rem;
+}
+
+.controls {
+  margin: 2rem 0 0 0;
+  padding: 0 1rem;
+  line-height: 1.5rem;
+  text-align: center;
+
+  .modes .radio {
+    margin-right: 1rem;
+  }
+}
+
+.boxes {
+  padding-top: 2rem;
+  &.no-padding {
+    padding-top: 0;
+  }
+  .radio {
+    display: block;
+    margin: 0;
+    line-height: 2rem;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -232,11 +262,24 @@ footer.container {
     overflow-y: auto;
   }
 
-  .controls .modes .radio {
-    display: block;
-    margin: 0;
-    line-height: 2.5rem;
-    font-size: 1.2rem;
+  .controls {
+    text-align: left;
+    .modes .radio {
+      display: block;
+      margin: 0;
+      line-height: 2.5rem;
+      font-size: 1.2rem;
+    }
+  }
+
+  .modes-wrapper {
+    form {
+      display: flex;
+      flex-direction: column;
+      .modes-selector-wrapper {
+        order: 2;
+      }
+    }
   }
 }
 
@@ -244,27 +287,7 @@ footer.container {
   figure svg {
     width: 200%;
   }
-}
-
-.controls {
-  margin: 2rem 0 0 0;
-  padding: 0 1rem;
-  line-height: 1.5rem;
-  text-align: center;
-
-  .modes .radio {
-    margin-right: 1rem;
-  }
-}
-
-.boxes {
-  padding-top: 2rem;
-  &.no-padding {
-    padding-top: 0;
-  }
-  .radio {
-    display: block;
-    margin: 0;
-    line-height: 2rem;
+  .chords figure svg {
+    width: 100%;
   }
 }

@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" class="has-navbar-fixed-top" data-section="chords">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"
+	  content="width=device-width, initial-scale=1">
+	<title><%= htmlWebpackPlugin.options.title %></title>
+	<%= htmlWebpackPlugin
+		.tags
+		.headTags
+		.filter((tag) => tag.attributes.href.startsWith('index'))
+		.join('')
+	%>
+</head>
+
+<body>
+	<%= partials.nav('tetrachords') %>
+	<main>
+		<section class="container">
+			<h1><%= examples.chords.title %></h1>
+			<section class="example">
+				<header class="description"><%= texts['examples.chords.open'] %></header>
+				<div class="chords columns">
+					<div class="column one-fifth">
+						<figure data-chord="C"></figure>
+					</div>
+					<div class="column one-fifth">
+						<figure data-chord="Am"></figure>
+					</div>
+					<div class="column one-fifth">
+						<figure data-chord="G"></figure>
+					</div>
+					<div class="column one-fifth">
+						<figure data-chord="E"></figure>
+					</div>
+					<div class="column one-fifth">
+						<figure data-chord="D"></figure>
+					</div>
+				</div>
+			</section>
+			<section class="example">
+				<header class="description"><%= texts['examples.chords.jazz'] %></header>
+				<div class="chords columns">
+					<div class="column one-fifth">
+						<figure data-chord="E7#9" data-crop="true" data-show-fret-numbers="true"></figure>
+					</div>
+					<div class="column one-fifth">
+						<figure
+							data-chord="G7#5"
+							data-crop="true"
+							data-show-fret-numbers="true"
+							data-fret-left-padding="1"></figure>
+					</div>
+					<div class="column one-fifth">
+						<figure
+							data-chord="Amaj7"
+							data-crop="true"
+							data-show-fret-numbers="true"
+							data-fret-left-padding="1"></figure>
+					</div>
+					<div class="column one-fifth">
+						<figure
+							data-chord="Em7add11"
+							data-crop="true"
+							data-show-fret-numbers="true"></figure>
+					</div>
+					<div class="column one-fifth">
+						<figure
+							data-chord="C#m7b5"
+							data-crop="true"
+							data-show-fret-numbers="true"
+							data-fret-left-padding="1"></figure>
+					</div>
+				</div>
+			</section>
+		</section>
+	</main>
+	<%= partials.footer() %>
+	<%= htmlWebpackPlugin
+		.tags
+		.bodyTags
+		.filter((tag) => tag.attributes.src.startsWith('index'))
+		.join('')
+	%>
+</body>
+</html>

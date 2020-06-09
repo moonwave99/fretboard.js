@@ -9,7 +9,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const targetPath = path.resolve(__dirname, '_site');
 
 const documentation = ['fretboard', 'musicTools'];
-const examples = ['boxes', 'modes', 'tetrachords'];
+const examples = ['boxes', 'modes', 'chords', 'tetrachords'];
 
 const labels = require('./site/data/labels.json');
 const textsFile = fs.readFileSync('./site/data/texts.md', 'utf8');
@@ -25,6 +25,8 @@ const getTexts = () => {
     (memo, [key, value]) => ({ ...memo, [key]: marked(value) }), {}
   );
 };
+
+const capitalize = (string) => `${string[0].toUpperCase()}${string.substring(1)}`
 
 const partials = {
   footer: (footerClass = '') => {
@@ -44,6 +46,10 @@ const partials = {
           return section === item ? 'is-current' : '';
       }
     }
+
+    const examplesEntries = [...examples, 'playback'].map(
+      e =>`<a class="navbar-item ${isCurrent(e)}" href="examples-${e}.html">${capitalize(e)}</a>`
+    ).join('\n');
 
     return `
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
@@ -78,12 +84,7 @@ const partials = {
               Examples
             </span>
 
-            <div class="navbar-dropdown">
-              <a class="navbar-item ${isCurrent('boxes')}" href="examples-boxes.html">Boxes</a>
-              <a class="navbar-item ${isCurrent('modes')}" href="examples-modes.html">Modes</a>
-              <a class="navbar-item ${isCurrent('tetrachords')}" href="examples-tetrachords.html">Tetrachords</a>
-              <a class="navbar-item ${isCurrent('playback')}" href="examples-playback.html">Playback</a>
-            </div>
+            <div class="navbar-dropdown">${examplesEntries}</div>
           </div>
         </div>
 

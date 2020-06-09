@@ -1,5 +1,7 @@
 import { Fretboard } from '../../dist/fretboard.esm.js';
 
+import { chordDiagrams } from './config.js';
+
 document.addEventListener('DOMContentLoaded', () => {
   new Fretboard({
     el: '#icon',
@@ -14,30 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
     bottomPadding: 0,
     width: 90,
     height: 60,
-    showFretNumbers: false
-  }).render([
-    {
-      string: 5,
-      fret: 2,
-      note: 'B'
-    },
-    {
-      string: 4,
-      fret: 1,
-      note: 'D#'
-    },
-    {
-      string: 3,
-      fret: 2,
-      note: 'A'
-    },
-    {
-      string: 2,
-      fret: 3,
-      note: 'Cx'
-    },
-  ]).style(({
-    fill: (({ note }) => note === 'Cx' ? 'red' : 'white')
+    showFretNumbers: false,
+    crop: true
+  }).render(chordDiagrams['E7#9']).style(({
+    fill: (({ note }) => note === 'F##' ? 'red' : 'white')
   }));
 
   document.querySelectorAll('.navbar-burger').forEach( el => {

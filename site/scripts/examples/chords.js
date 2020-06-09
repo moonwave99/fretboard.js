@@ -4,8 +4,14 @@ import { fretboardConfiguration, colors, chordDiagrams } from '../config.js';
 
 export default function chords() {
   document.querySelectorAll('.chords figure').forEach(el => {
-    const { chord, crop, showFretNumbers, fretLeftPadding } = el.dataset;
-    new Fretboard({
+    const {
+      chord,
+      crop,
+      showFretNumbers,
+      fretLeftPadding,
+      mutedStrings
+    } = el.dataset;
+    const fretboard = new Fretboard({
       ...fretboardConfiguration,
       el,
       width: 300,
@@ -22,6 +28,10 @@ export default function chords() {
       fretLeftPadding: fretLeftPadding ? +fretLeftPadding : 0,
       crop
     }).render(chordDiagrams[chord]);
+
+    if (mutedStrings) {
+      fretboard.muteStrings({ strings: JSON.parse(mutedStrings) });
+    }
     const figCaption = document.createElement('figcaption');
     figCaption.innerHTML = chord;
     el.append(figCaption);

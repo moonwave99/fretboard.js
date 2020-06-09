@@ -45,6 +45,22 @@ test('Fretboard with default options', t => {
   t.is(svg.querySelectorAll('.fret-numbers text').length, fretCount);
 });
 
+test('Fretboard with existing DOM element', t => {
+  const el = document.createElement('div');
+  el.id = 'fretboard';
+  document.body.append(el);
+  const fretboard = new Fretboard({ el });
+  fretboard.render([]);
+
+  const svg = document.querySelector('#fretboard svg');
+
+  t.truthy(svg);
+  t.is(svg.getAttribute('viewBox'), `0 0 ${defaultWidth} ${defaultHeight}`);
+  t.is(svg.querySelectorAll('.strings line').length, stringCount);
+  t.is(svg.querySelectorAll('.frets line').length, fretCount + 1);
+  t.is(svg.querySelectorAll('.fret-numbers text').length, fretCount);
+});
+
 test('Fretboard without fret numbers', t => {
   const fretboard = new Fretboard({
     showFretNumbers: false

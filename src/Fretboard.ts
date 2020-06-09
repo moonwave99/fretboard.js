@@ -1,4 +1,9 @@
-import { select, Selection, ValueFn, BaseType } from 'd3-selection';
+import {
+  select,
+  Selection,
+  ValueFn,
+  BaseType
+} from 'd3-selection';
 import { Position } from './scales/scales';
 
 function dotClasses(dot: Position, prefix: string): string {
@@ -120,7 +125,7 @@ function getDimensions ({
 }
 
 type Options = {
-  el: string;
+  el: string | BaseType;
   stringCount: number;
   stringWidth: number;
   stringColor: string;
@@ -219,7 +224,11 @@ export class Fretboard {
 
     this.positions = generatePositions(this.options);
 
-    this.svg = select(el)
+    this.svg = (
+      typeof el === 'string'
+        ? select(el)
+        : select<BaseType, unknown>(el)
+      )
       .append('svg')
       .attr('viewBox', `0 0 ${totalWidth} ${totalHeight}`)
       .append('g')

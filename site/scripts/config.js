@@ -101,11 +101,11 @@ export const chordDiagrams = {
     { string: 3, fret: 6, note: 'C#', interval: '3M' },
     { string: 2, fret: 5, note: 'E', interval: '5P' },
   ],
-  'Em7add11': [
-    { string: 6, fret: 12, note: 'E', interval: '1P' },
-    { string: 4, fret: 12, note: 'D', interval: '7m' },
-    { string: 3, fret: 12, note: 'G', interval: '3m' },
-    { string: 2, fret: 10, note: 'A', interval: 'P4' },
+  'Dm7add11': [
+    { string: 6, fret: 10, note: 'D', interval: '1P' },
+    { string: 4, fret: 10, note: 'C', interval: '7m' },
+    { string: 3, fret: 10, note: 'F', interval: '3m' },
+    { string: 2, fret: 8, note: 'G', interval: 'P4' },
   ],
   'C#m7b5': [
     { string: 5, fret: 4, note: 'C#', interval: '1P' },

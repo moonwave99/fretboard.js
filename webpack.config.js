@@ -13,13 +13,14 @@ const examples = ['boxes', 'modes', 'chords', 'tetrachords'];
 
 const labels = require('./site/data/labels.json');
 const textsFile = fs.readFileSync('./site/data/texts.md', 'utf8');
+const snippetsFile = fs.readFileSync('./site/data/snippets.md', 'utf8');
 const docs = documentation.reduce((memo, key) => ({
   ...memo,
   [key]: marked(fs.readFileSync(`./site/data/documentation/${key}.md`, 'utf8'))
 }), {});
 
-const getTexts = () => {
-  const tokens = textsFile.split(/<!--([\s\S]*?)-->/g);
+const getTexts = (file) => {
+  const tokens = file.split(/<!--([\s\S]*?)-->/g);
   tokens.shift();
   return chunk(tokens, 2).reduce(
     (memo, [key, value]) => ({ ...memo, [key]: marked(value) }), {}
@@ -83,7 +84,6 @@ const partials = {
             <span class="navbar-link ${isCurrent('examples')}">
               Examples
             </span>
-
             <div class="navbar-dropdown">${examplesEntries}</div>
           </div>
         </div>
@@ -99,7 +99,13 @@ const partials = {
   }
 };
 
-const templateParameters = { ...labels, partials, texts: getTexts(), docs };
+const templateParameters = {
+  ...labels,
+  partials,
+  texts: getTexts(textsFile),
+  snippets: getTexts(snippetsFile),
+  docs
+};
 const exampleEntries = examples.reduce(
   (memo, e) => ({ ...memo, [e]: `./site/scripts/${e}.js`})
   , {}

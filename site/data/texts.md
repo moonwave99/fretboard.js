@@ -4,7 +4,7 @@
 - a guitar/bass fretboard **SVG visualisation**
 - a set of **music oriented tools** - as scale boxes, arpeggios and chord shapes
 - an **API** for user interaction.
-- 
+
 <!--home.about-->
 ## About
 

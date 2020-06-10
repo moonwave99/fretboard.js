@@ -64,7 +64,7 @@ export const defaultOptions = {
   el: '#fretboard',
   stringCount: 6,
   stringWidth: 1,
-  stringColor: 'black',
+  stringColor: '#666',
   fretCount: 15,
   fretWidth: 1,
   fretColor: '#666',

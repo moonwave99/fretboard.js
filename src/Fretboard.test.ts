@@ -205,3 +205,13 @@ test('Fretboard muteStrings()', t => {
 
   t.is(svg.querySelectorAll('.muted-strings .muted-string').length, 2);
 });
+
+test('Fretboard renderChord()', t => {
+  const fretboard = new Fretboard();
+  fretboard.renderChord('x32010');
+
+  const svg = document.querySelector('#fretboard svg');
+
+  t.is(svg.querySelectorAll('.muted-strings .muted-string').length, 1);
+  t.is(svg.querySelectorAll('.dots .dot').length, 3);
+});

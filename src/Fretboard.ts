@@ -5,6 +5,7 @@ import {
   BaseType
 } from 'd3-selection';
 import { Position } from './scales/scales';
+import { parseChord } from './chords/chords';
 
 function dotClasses(dot: Position, prefix: string): string {
   return [
@@ -488,6 +489,15 @@ export class Fretboard {
         .attr('stroke-width', strokeWidth)
         .attr('class', 'muted-string');
 
+    return this;
+  }
+
+  renderChord(chord: string): Fretboard {
+    const { positions, mutedStrings } = parseChord(chord);
+    this.render(positions);
+    this.muteStrings({
+      strings: mutedStrings
+    });
     return this;
   }
 }

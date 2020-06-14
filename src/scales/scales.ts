@@ -6,7 +6,7 @@ import { boxes as pentatonicBoxes } from './boxes/pentatonic';
 export type Position = {
   string: number;
   fret: number;
-  note: string;
+  note?: string;
   disabled?: boolean;
   [key: string]: string|number|boolean;
 }

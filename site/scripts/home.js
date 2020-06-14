@@ -40,7 +40,7 @@ export default function home() {
             break;
           case 'highlight-triad':
             fretboard.style({
-              filter: ({ position }) => [1, 3, 5].indexOf(position) > -1,
+              filter: ({ degree }) => [1, 3, 5].indexOf(degree) > -1,
               stroke: 'red'
             });
             break;

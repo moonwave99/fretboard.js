@@ -48,7 +48,7 @@ export function generateBox({
       noteWithOctave: note + (octave + octaveIncrement),
       octave: baseOctave + octaveIncrement,
       interval: intervals[index],
-      position: +intervals[index][0]
+      degree: +intervals[index][0]
     }
   });
 }

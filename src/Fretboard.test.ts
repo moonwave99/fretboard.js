@@ -215,3 +215,13 @@ test('Fretboard renderChord()', t => {
   t.is(svg.querySelectorAll('.muted-strings .muted-string').length, 1);
   t.is(svg.querySelectorAll('.dots .dot').length, 3);
 });
+
+test('Fretboard renderChord() above 9th fret', t => {
+  const fretboard = new Fretboard();
+  fretboard.renderChord('10-x-10-10-8-x');
+
+  const svg = document.querySelector('#fretboard svg');
+
+  t.is(svg.querySelectorAll('.muted-strings .muted-string').length, 2);
+  t.is(svg.querySelectorAll('.dots .dot').length, 4);
+});

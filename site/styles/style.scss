@@ -220,8 +220,8 @@ footer.container {
   }
 }
 
-.code {
-  p {
+.code, .documentation {
+  p, ul, ol {
     margin-bottom: 2rem;
   }
   pre {

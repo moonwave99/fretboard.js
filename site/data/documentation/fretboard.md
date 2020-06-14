@@ -158,6 +158,46 @@ fretboard.style({
 })
 ```
 
+### renderChord()
+
+```typescript
+render(chord: string): Fretboard
+```
+
+Shorthand for rendering positions from a chord voicing string, e.g. `x32010` for a C Major in open position.
+
+The string is mapped onto the fretboard starting from the bottom string, in this case:
+
+- `x`: 6th string muted;
+- `3`: 5th string 3rd fret;
+- `2`: 4th string 2nd fret;
+- `0`: 3rd string open;
+- `1`: 2nd string 1st fret;
+- `0`: 1st string open.
+
+Examples:
+
+```typescript
+// renders an open C major
+const fretboard = new Fretboard({
+  fretCount: 3,
+  showFretNumbers: false
+});
+
+fretboard.renderChord('x32010');
+
+// renders the Hendrix chord, displaying only frets 6, 7, 8
+const fretboard = new Fretboard({
+  fretCount: 3,
+  showFretNumbers: true,
+  crop: true
+});
+
+fretboard.renderChord('x7678x');
+```
+
+**Note:** for frets above the 9th, the dash-splitted-notation should be used in order to prevent parsing ambiguity - for instance `10-x-10-10-8-x` for a `Dmadd11` chord.
+
 ### muteStrings()
 
 ```typescript

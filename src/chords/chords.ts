@@ -6,7 +6,8 @@ export function parseChord(chord: string): {
 } {
   const positions = [] as Position[];
   const mutedStrings = [] as number[];
-  chord.split('').reverse().forEach((fret, string) => {
+  const splitter = chord.indexOf('-') > -1 ? '-' : '';
+  chord.split(splitter).reverse().forEach((fret, string) => {
     if (fret === '0') {
       return;
     }

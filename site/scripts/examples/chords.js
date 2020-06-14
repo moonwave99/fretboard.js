@@ -1,10 +1,11 @@
 import { Fretboard } from '../../../dist/fretboard.esm.js';
 
-import { fretboardConfiguration, colors, chordDiagrams } from '../config.js';
+import { fretboardConfiguration, colors } from '../config.js';
 
 export default function chords() {
   document.querySelectorAll('.chords figure').forEach(el => {
     const {
+      name,
       chord,
       crop,
       showFretNumbers,
@@ -27,13 +28,10 @@ export default function chords() {
       showFretNumbers: !!showFretNumbers,
       fretLeftPadding: fretLeftPadding ? +fretLeftPadding : 0,
       crop
-    }).render(chordDiagrams[chord]);
+    }).renderChord(chord);
 
-    if (mutedStrings) {
-      fretboard.muteStrings({ strings: JSON.parse(mutedStrings) });
-    }
     const figCaption = document.createElement('figcaption');
-    figCaption.innerHTML = chord;
+    figCaption.innerHTML = name;
     el.append(figCaption);
   });
 }

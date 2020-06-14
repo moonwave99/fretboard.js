@@ -17,7 +17,10 @@ const fretboard = new Fretboard({
   showFretNumbers: false
 })
 
-fretboard.render([
+fretboard.renderChord('x32010');
+
+// this is a shorthand for:
+fretboard.renderChord([
   { string: 5, fret: 3 },
   { string: 4, fret: 2 },
   { string: 2, fret: 1 }

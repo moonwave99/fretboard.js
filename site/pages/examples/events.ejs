@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" class="has-navbar-fixed-top" data-section="events">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"
+	  content="width=device-width, initial-scale=1">
+	<title><%= htmlWebpackPlugin.options.title %></title>
+	<%= htmlWebpackPlugin
+		.tags
+		.headTags
+		.filter((tag) => tag.attributes.href.startsWith('index'))
+		.join('')
+	%>
+</head>
+
+<body>
+	<%= partials.nav('events') %>
+	<main>
+		<section class="container">
+			<h1><%= examples.events.title %></h1>
+			<section class="description"><%= texts['examples.events'] %></section>
+			<div class="columns">
+				<figure class="column is-three-quarters" id="fretboard"></figure>
+			</div>
+		</section>
+	</main>
+	<%= partials.footer() %>
+	<%= htmlWebpackPlugin
+		.tags
+		.bodyTags
+		.filter((tag) => tag.attributes.src.startsWith('index'))
+		.join('')
+	%>
+</body>
+</html>

@@ -216,6 +216,28 @@ muteStrings({
 
 Marks passed strings with a cross, e.g. `fretboard.muteStrings({ strings: [1, 6]})`.
 
+## Events
+
+You can listen to `click` and `mousemove` events on a fretboard instance. The callback function will be invoked with the corresponding `Position` (string/fret number).
+
+```typescript
+fretboard.on(eventName, (position: Position) => void)
+```
+
+For example:
+
+```typescript
+// this renders a dot following the mouse coordinates
+const fretboard = new Fretboard();
+fretboard.render([]);
+fretboard.on('mousemove', position => fretboard.render([position]));
+
+// you can remove the eventListeners with
+fretboard.removeEventListeners();
+```
+
+## FAQ
+
 > Why don't you provide a more expressive API like .highlightMajorTriads()?
 
 The aim of this library is to be as abstract as possible, and to make no assumptions besides the bare string/fret positioning. Since you can pass as many properties as you want to the position entries, you can provide full controlled and rich visualisations.

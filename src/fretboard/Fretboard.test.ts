@@ -1,6 +1,6 @@
 import test from 'ava';
-import { Fretboard, defaultOptions } from './Fretboard';
-import { pentatonic } from './scales/scales';
+import { Position, Fretboard, defaultOptions } from './Fretboard';
+import { pentatonic } from '../scales/scales';
 import browserEnv from 'browser-env';
 
 const {
@@ -224,4 +224,15 @@ test('Fretboard renderChord() above 9th fret', t => {
 
   t.is(svg.querySelectorAll('.muted-strings .muted-string').length, 2);
   t.is(svg.querySelectorAll('.dots .dot').length, 4);
+});
+
+test('Fretboard handlers', async t => {
+  new Fretboard()
+    .render([])
+    .handlers({
+      click: (position: Position) => t.deepEqual(position, { string: 1, fret: 0 })
+    });
+  const hoverDiv = document.querySelector('#fretboard .hoverDiv');
+  hoverDiv.dispatchEvent(new MouseEvent('click'));
+  t.truthy(hoverDiv);
 });

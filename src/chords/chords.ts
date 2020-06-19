@@ -1,4 +1,4 @@
-import { Position } from '../scales/scales';
+import { Position } from '../fretboard/Fretboard';
 
 export function parseChord(chord: string): {
   positions: Position[];

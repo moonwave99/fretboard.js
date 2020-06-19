@@ -4,62 +4,30 @@ import {
   ValueFn,
   BaseType
 } from 'd3-selection';
-import { Position } from './scales/scales';
-import { parseChord } from './chords/chords';
 
-function dotClasses(dot: Position, prefix: string): string {
-  return [
-    `dot-${prefix}`,
-      ...Object.entries(dot)
-        .map(([key, value]: [string, string]) => `dot-${prefix}-${key}-${value}`)
-  ].join(' ');
-}
+import { throttle } from 'throttle-debounce';
 
-function generateStrings({
-  stringCount,
-  stringWidth,
-  height
-}: {
-  stringCount: number;
-  stringWidth: number;
-  height: number;
-}): number[] {
-  const strings = [];
+import {
+  generateStrings,
+  generateFrets,
+  dotClasses,
+  getDimensions,
+  getPositionFromMouseCoords,
+  createHoverDiv
+} from './utils';
 
-  for (let i = 0; i < stringCount; i++) {
-    let y = (height / (stringCount - 1)) * i;
-    if (i === 0) {
-      y += stringWidth;
-    }
-    if (i === stringCount - 1) {
-      y -= stringWidth;
-    }
-    strings.push(y);
-  }
-  return strings;
-}
-
-function generateFrets({
-  scaleFrets,
-  fretCount
-}: {
-  scaleFrets: boolean;
-  fretCount: number;
-}): number[] {
-  const fretRatio = Math.pow(2, 1 / 12);
-  const frets = [0];
-
-  for (let i = 1; i <= fretCount; i++) {
-    let x = (100 / fretCount) * i;
-    if (scaleFrets) {
-      x = 100 - 100 / Math.pow(fretRatio, i);
-    }
-    frets.push(x);
-  }
-  return frets.map(x => x / frets[frets.length - 1] * 100);
-}
+import { parseChord } from '../chords/chords';
 
 const MIDDLE_FRET = 11;
+const THROTTLE_INTERVAL = 50;
+
+export type Position = {
+  string: number;
+  fret: number;
+  note?: string;
+  disabled?: boolean;
+  [key: string]: string|number|boolean;
+}
 
 export const defaultOptions = {
   el: '#fretboard',
@@ -103,38 +71,7 @@ export const defaultMuteStringsParams = {
   stroke: '#333'
 };
 
-function getDimensions({
-  topPadding,
-  bottomPadding,
-  leftPadding,
-  rightPadding,
-  width,
-  height,
-  showFretNumbers,
-  fretNumbersHeight
-}: {
-  topPadding: number;
-  bottomPadding: number;
-  leftPadding: number;
-  rightPadding: number;
-  width: number;
-  height: number;
-  showFretNumbers: boolean;
-  fretNumbersHeight: number;
-}): {
-  totalWidth: number;
-  totalHeight: number;
-} {
-  const totalWidth = width + leftPadding + rightPadding;
-  let totalHeight = height + topPadding + bottomPadding;
-
-  if (showFretNumbers) {
-    totalHeight += fretNumbersHeight;
-  }
-  return { totalWidth, totalHeight };
-}
-
-type Options = {
+export type Options = {
   el: string | BaseType;
   stringCount: number;
   stringWidth: number;
@@ -187,7 +124,9 @@ export class Fretboard {
   frets: number[];
   positions: Point[][];
   svg: Selection<BaseType, unknown, HTMLElement, unknown>;
+  wrapper: Selection<BaseType, unknown, HTMLElement, unknown>;
   private baseRendered: boolean;
+  private hoverDiv: HTMLDivElement;
   constructor (options = {}) {
     this.options = Object.assign({}, defaultOptions, options);
     const {
@@ -248,8 +187,13 @@ export class Fretboard {
         ? select(el)
         : select<BaseType, unknown>(el)
       )
+      .append('div')
+        .attr('class', 'fretbard-html-wrapper')
+        .attr('style', 'position: relative')
       .append('svg')
-        .attr('viewBox', `0 0 ${totalWidth} ${totalHeight}`)
+        .attr('viewBox', `0 0 ${totalWidth} ${totalHeight}`);
+
+    this.wrapper = this.svg
       .append('g')
         .attr('class', 'fretboard-wrapper')
         .attr('transform', `translate(${leftPadding}, ${topPadding}) scale(${width / totalWidth})`);
@@ -261,7 +205,7 @@ export class Fretboard {
     }
 
     const {
-      svg,
+      wrapper,
       frets,
       strings
     } = this;
@@ -285,7 +229,7 @@ export class Fretboard {
 
     const { totalWidth } = getDimensions(this.options);
 
-    const stringGroup = svg
+    const stringGroup = wrapper
       .append('g')
         .attr('class', 'strings');
 
@@ -301,7 +245,7 @@ export class Fretboard {
         .attr('stroke', stringColor)
         .attr('stroke-width', stringWidth);
 
-    const fretsGroup = svg
+    const fretsGroup = wrapper
       .append('g')
       .attr('class', 'frets');
 
@@ -336,7 +280,7 @@ export class Fretboard {
         });
 
     if (showFretNumbers) {
-      const fretNumbersGroup = svg
+      const fretNumbersGroup = wrapper
         .append('g')
           .attr('class', 'fret-numbers')
           .attr('font-family', font)
@@ -360,7 +304,7 @@ export class Fretboard {
 
   render(dots: Position[] = []): Fretboard {
     const {
-      svg,
+      wrapper,
       positions
     } = this;
 
@@ -386,9 +330,9 @@ export class Fretboard {
       return this;
     }
 
-    svg.select('.dots').remove();
+    wrapper.select('.dots').remove();
 
-    const dotGroup = svg
+    const dotGroup = wrapper
       .append('g')
         .attr('class', 'dots')
         .attr('font-family', font);
@@ -435,9 +379,9 @@ export class Fretboard {
     fontFill?: string;
     [key: string]: string | number | Function;
   }): Fretboard {
-    const { svg } = this;
+    const { wrapper } = this;
     const { dotTextSize } = this.options;
-    const dots = svg.selectAll('.dot-circle')
+    const dots = wrapper.selectAll('.dot-circle')
       .filter(filter);
 
     Object.keys(opts).forEach(
@@ -445,7 +389,7 @@ export class Fretboard {
     );
 
     if (text) {
-      svg.selectAll('.dot-text')
+      wrapper.selectAll('.dot-text')
         .filter(filter)
         .text(text)
         .attr('font-size', fontSize || dotTextSize)
@@ -457,7 +401,7 @@ export class Fretboard {
 
   muteStrings(params: MuteStringsParams): Fretboard {
     const {
-      svg,
+      wrapper,
       positions
     } = this;
 
@@ -468,7 +412,7 @@ export class Fretboard {
       width
     } = { ...defaultMuteStringsParams, ...params };
 
-    svg
+    wrapper
       .append('g')
         .attr('class', 'muted-strings')
         .attr('transform', `translate(${-width / 2}, ${-width / 2})`)
@@ -498,6 +442,41 @@ export class Fretboard {
     this.muteStrings({
       strings: mutedStrings
     });
+    return this;
+  }
+
+  handlers(handlers: {
+    [key: string]: (position: Position) => void;
+  }): Fretboard {
+    const {
+      svg,
+      options,
+      strings,
+      frets,
+      hoverDiv
+    } = this;
+    const svgNode = svg.node() as HTMLElement;
+    if (!hoverDiv) {
+      this.hoverDiv = createHoverDiv(options);
+      svgNode.parentNode.appendChild(this.hoverDiv);
+    }
+
+    const stringsGroup = svg.select('.strings');
+
+    ['mousemove', 'click'].forEach(handler => {
+      if (!handlers[handler]) {
+        return;
+      }
+      this.hoverDiv.addEventListener(handler,
+        throttle(THROTTLE_INTERVAL, (event: MouseEvent) => handlers[handler](getPositionFromMouseCoords({
+          event,
+          stringsGroup,
+          strings,
+          frets,
+          ...options
+        })))
+      );
+    })
     return this;
   }
 }

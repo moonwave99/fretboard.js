@@ -1,15 +1,8 @@
+import { Position } from '../fretboard/Fretboard';
 import { findMode, generateBox } from './utils';
 import { boxes as CAGEDBoxes } from './boxes/CAGED';
 import { boxes as TNPStringBoxes } from './boxes/threeNotesPerString';
 import { boxes as pentatonicBoxes } from './boxes/pentatonic';
-
-export type Position = {
-  string: number;
-  fret: number;
-  note?: string;
-  disabled?: boolean;
-  [key: string]: string|number|boolean;
-}
 
 export type Mode = {
   name: string;

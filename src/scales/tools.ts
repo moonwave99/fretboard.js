@@ -1,4 +1,4 @@
-import { Position } from './scales';
+import { Position } from '../fretboard/Fretboard';
 
 function transform({
   box = [] as Position[],

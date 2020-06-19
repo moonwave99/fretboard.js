@@ -1,4 +1,4 @@
-export { Fretboard } from './Fretboard';
+export { Fretboard } from './fretboard/Fretboard';
 export { CAGED, pentatonic, TNPString } from './scales/scales';
 export {
   tetrachord,

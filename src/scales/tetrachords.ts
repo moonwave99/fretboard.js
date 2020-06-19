@@ -1,4 +1,4 @@
-import { Position } from './scales';
+import { Position } from '../fretboard/Fretboard';
 import { interval } from '@tonaljs/tonal';
 import { transpose } from '@tonaljs/note';
 

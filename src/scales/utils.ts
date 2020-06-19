@@ -1,6 +1,7 @@
 import { distance, interval } from '@tonaljs/tonal';
 import { get as getScale } from '@tonaljs/scale';
-import { Position, Mode } from './scales';
+import { Position } from '../fretboard/Fretboard';
+import { Mode } from './scales';
 
 export function mod (n: number, m: number): number {
   return ((n % m) + m) % m;

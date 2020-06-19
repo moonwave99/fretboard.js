@@ -128,6 +128,7 @@ export const getPositionFromMouseCoords = ({
       foundFret = i;
       break;
     }
+    foundFret = i;
   }
 
   if (x < leftPadding + nutWidth) {

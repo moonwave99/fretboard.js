@@ -29,6 +29,8 @@ export type Position = {
   [key: string]: string|number|boolean;
 }
 
+type FretboardHandler = (position: Position) => void;
+
 export const defaultOptions = {
   el: '#fretboard',
   stringCount: 6,
@@ -127,7 +129,11 @@ export class Fretboard {
   wrapper: Selection<BaseType, unknown, HTMLElement, unknown>;
   private baseRendered: boolean;
   private hoverDiv: HTMLDivElement;
+  private handlers: {
+    [key: string]: (event: MouseEvent) => void;
+  };
   constructor (options = {}) {
+    this.handlers = {};
     this.options = Object.assign({}, defaultOptions, options);
     const {
       el,
@@ -196,7 +202,10 @@ export class Fretboard {
     this.wrapper = this.svg
       .append('g')
         .attr('class', 'fretboard-wrapper')
-        .attr('transform', `translate(${leftPadding}, ${topPadding}) scale(${width / totalWidth})`);
+        .attr(
+          'transform',
+          `translate(${leftPadding}, ${topPadding}) scale(${width / totalWidth})`
+        );
   }
 
   _baseRender(dotOffset: number): void {
@@ -445,9 +454,7 @@ export class Fretboard {
     return this;
   }
 
-  handlers(handlers: {
-    [key: string]: (position: Position) => void;
-  }): Fretboard {
+  on(eventName: string, handler: FretboardHandler): Fretboard {
     const {
       svg,
       options,
@@ -455,28 +462,44 @@ export class Fretboard {
       frets,
       hoverDiv
     } = this;
-    const svgNode = svg.node() as HTMLElement;
-    if (!hoverDiv) {
-      this.hoverDiv = createHoverDiv(options);
-      svgNode.parentNode.appendChild(this.hoverDiv);
-    }
-
     const stringsGroup = svg.select('.strings');
 
-    ['mousemove', 'click'].forEach(handler => {
-      if (!handlers[handler]) {
-        return;
-      }
-      this.hoverDiv.addEventListener(handler,
-        throttle(THROTTLE_INTERVAL, (event: MouseEvent) => handlers[handler](getPositionFromMouseCoords({
+    if (!hoverDiv) {
+      this.hoverDiv = createHoverDiv(options);
+      (svg.node() as HTMLElement).parentNode.appendChild(this.hoverDiv);
+    }
+
+    if (this.handlers[eventName]) {
+      this.hoverDiv.removeEventListener(eventName, this.handlers[eventName]);
+    } else {
+      this.handlers[eventName] = throttle(
+        THROTTLE_INTERVAL,
+        (event: MouseEvent) => handler(getPositionFromMouseCoords({
           event,
           stringsGroup,
           strings,
           frets,
           ...options
-        })))
+        }
+      )));
+      this.hoverDiv.addEventListener(eventName, this.handlers[eventName]);
+    }
+    return this;
+  }
+
+  removeEventListeners(): Fretboard {
+    const {
+      hoverDiv,
+      handlers
+    } = this;
+    if (!hoverDiv) {
+      return this;
+    }
+    Object
+      .entries(handlers)
+      .map(
+        ([eventName, handler]) => hoverDiv.removeEventListener(eventName, handler)
       );
-    })
     return this;
   }
 }

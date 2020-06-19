@@ -26,7 +26,6 @@ const defaultHeight =
   + bottomPadding
   + fretNumbersHeight;
 
-
 test.beforeEach(() => {
 	browserEnv();
   document.body.innerHTML = '<div id="fretboard"></div>';
@@ -226,13 +225,50 @@ test('Fretboard renderChord() above 9th fret', t => {
   t.is(svg.querySelectorAll('.dots .dot').length, 4);
 });
 
-test('Fretboard handlers', async t => {
+test('Fretboard event handlers', t => {
   new Fretboard()
     .render([])
-    .handlers({
-      click: (position: Position) => t.deepEqual(position, { string: 1, fret: 0 })
-    });
+    .on('click', (position: Position) => t.deepEqual(position, { string: 1, fret: 0 }));
   const hoverDiv = document.querySelector('#fretboard .hoverDiv');
   hoverDiv.dispatchEvent(new MouseEvent('click'));
   t.truthy(hoverDiv);
+});
+
+test('Fretboard add new event listener', t => {
+  let count = 0;
+  const handler = (): void => { count++ };
+  const fretboard = new Fretboard()
+    .render([])
+    .on('click', handler);
+  const hoverDiv = document.querySelector('#fretboard .hoverDiv');
+  hoverDiv.dispatchEvent(new MouseEvent('click'));
+  t.is(count, 1);
+
+  fretboard.on('click', () => true);
+  hoverDiv.dispatchEvent(new MouseEvent('click'));
+  t.is(count, 1);
+});
+
+test('Fretboard removeEventListeners', t => {
+  let count = 0;
+  const handler = (): void => { count++ };
+  const fretboard = new Fretboard()
+    .render([])
+    .on('click', handler);
+  const hoverDiv = document.querySelector('#fretboard .hoverDiv');
+  hoverDiv.dispatchEvent(new MouseEvent('click'));
+  t.is(count, 1);
+
+  fretboard.removeEventListeners();
+  hoverDiv.dispatchEvent(new MouseEvent('click'));
+  t.is(count, 1);
+});
+
+test('Fretboard removeEventListeners before adding listeners', t => {
+  new Fretboard()
+    .render([])
+    .removeEventListeners();
+  const svg = document.querySelector('#fretboard svg');
+
+  t.truthy(svg);
 });

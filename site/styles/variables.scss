@@ -1,0 +1,3 @@
+@import '../config.json';
+
+$mainColor: map-get($colors, 'primaryFill');

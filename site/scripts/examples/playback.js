@@ -7,10 +7,11 @@ import {
   CAGED
 } from '../../../dist/fretboard.esm.js';
 
-import { fretboardConfiguration, colors } from '../config.js';
+import { fretboardConfiguration, soundFontUrl, colors } from '../config.js';
+import { diatonicArpeggios } from '../music.js';
 import '../navbar.js';
 import '../../styles/style.scss';
-import '../../styles/playback.css';
+import '../../styles/playback.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
   const fretboard = new Fretboard(fretboardConfiguration)
@@ -19,29 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
       box: 'E'
     }));
 
-	const music = `
-X: 1
-M: 4/4
-Q: 1/4=70
-L: 1/8
-K: C
-K: transpose=-12
-"_Cmaj7"(CEGB) "_Dm7"(DFAc) | "_Em7"(EGBd) "_Fmaj7"(FAce) | "_G7"(GBdf) "_Am7"(Aceg) |
-"_Bm7b5"(Bdfa) "_Cmaj7"(cegb) | "_Dm7"(dfac') "_Em7"(egbd') ||
-  `;
-
-  ABCJS.renderMidi('audio', music, {
-    program: 25,
-    inlineControls: {
-      loopToggle: true,
-      tempo: true
-    },
-    midiListener: (abcjsElement, currentEvent, context) => {
-      console.log(abcjsElement, currentEvent, context)
-    },
-  });
-
-  const visualObj = ABCJS.renderAbc('notation', music, {
+  const visualObj = ABCJS.renderAbc('notation', diatonicArpeggios, {
     program: 25,
     responsive: 'resize',
     add_classes: true,
@@ -58,32 +37,55 @@ K: transpose=-12
       });
     }
   })[0];
-  // const synthControl = new ABCJS.synth.SynthController();
-  //
-  // synthControl.load("#audio", {
-  //   onEvent: ({ midiPitches, elements, ...rest }) => {
-  //     const note = ABCJS.synth.pitchToNoteName[midiPitches[0].pitch];
-  //     const chordElement = elements[0].find(({ tagName }) => tagName === 'text');
-  //     if (chordElement) {
-  //       const chordType = chordElement.querySelector('tspan').innerHTML.substring(1);
-  //       const chord = getChord(chordType, note);
-  //       fretboard.style({
-  //         text: ({ noteWithOctave, note }) => chord.notes.indexOf(noteWithOctave) > -1 ? note : '',
-  //         fill: ({ noteWithOctave }) => noteWithOctave === note ? colors.intervals['1P'] : 'white',
-  //         stroke: ({ noteWithOctave }) => chord.notes.indexOf(noteWithOctave) > -1 ? colors.intervals['1P'] : 'black',
-  //         ['stroke-width']: ({ noteWithOctave }) => chord.notes.indexOf(noteWithOctave) > -1 ? 4 : 1
-  //       });
-  //     } else {
-  //       fretboard.style({
-  //         fill: ({ noteWithOctave }) => noteWithOctave === note ? colors.intervals['1P'] : 'white',
-  //       });
-  //     }
-  //   }
-  // }, {
-  //   displayLoop: true,
-  //   displayRestart: true,
-  //   displayPlay: true,
-  //   displayProgress: true,
-  // });
-  // synthControl.setTune(visualObj, false);
+
+  const chordLabels = document.querySelectorAll('#notation .abcjs-annotation');
+  const noteElements = document.querySelectorAll('#notation .abcjs-note');
+  const synthControl = new ABCJS.synth.SynthController();
+
+  chordLabels.forEach((x) => {
+    const chordType = x.querySelector('tspan').innerHTML.substring(1);
+    x.classList.add('abcjs-chord', `abcjs-chord-type-${chordType}`);
+  });
+
+  let chord = null;
+  let chordType = null;
+
+  synthControl.load("#audio", {
+    onEvent: ({ midiPitches, elements, ...rest }) => {
+      const note = ABCJS.synth.pitchToNoteName[midiPitches[0].pitch];
+      const chordElement = elements[0].find(({ classList }) => classList.contains('abcjs-annotation'));
+      const noteElement = elements[0].find(({ classList }) => classList.contains('abcjs-note'));
+
+      if (!chordElement) {
+        fretboard.style({
+          fill: ({ noteWithOctave }) => noteWithOctave === note ? colors.chordTypes[chordType] : 'white',
+        });
+      } else {
+        chordLabels.forEach((x) => {
+          x.classList.toggle('abcjs-chord-playing', x === chordElement)
+        });
+        chordType = chordElement.querySelector('tspan').innerHTML.substring(1);
+        chord = getChord(chordType, note);
+
+        fretboard.style({
+          text: ({ noteWithOctave, note }) => chord.notes.indexOf(noteWithOctave) > -1 ? note : '',
+          fill: ({ noteWithOctave }) => noteWithOctave === note ? colors.chordTypes[chordType] : 'white',
+          stroke: ({ noteWithOctave }) => chord.notes.indexOf(noteWithOctave) > -1 ? colors.chordTypes[chordType] : 'black',
+          ['stroke-width']: ({ noteWithOctave }) => chord.notes.indexOf(noteWithOctave) > -1 ? 4 : 1
+        });
+      }
+
+      noteElements.forEach((x) => {
+        x.classList.toggle('abcjs-note_playing', x === noteElement)
+      });
+    }
+  }, {
+    displayLoop: true,
+    displayRestart: true,
+    displayPlay: true,
+    displayProgress: true
+  });
+
+  synthControl.setTune(visualObj, false, { soundFontUrl });
+  synthControl.toggleLoop();
 });

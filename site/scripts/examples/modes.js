@@ -51,9 +51,9 @@ function modesTNPString() {
   const $modeControl = $wrapper.querySelector('.modes');
   const $boxControl = $wrapper.querySelector('.boxes');
 
-  $modeControl.innerHTML = modeMap.map(({ mode, color }) => {
+  $modeControl.innerHTML = modeMap.map(({ mode }) => {
     return `
-      <label class="radio mode-${mode}" style="color: ${color}">
+      <label class="radio mode-${mode}">
         <input type="radio" name="mode" value="${mode}" ${selectedMode === mode ? 'checked' : ''}>
         ${mode}
       </label>
@@ -132,9 +132,9 @@ function modesCAGED() {
   const $modeControl = $wrapper.querySelector('.modes');
   const $boxControl = $wrapper.querySelector('.boxes');
 
-  $modeControl.innerHTML = modeMap.map(({ mode, color }) => {
+  $modeControl.innerHTML = modeMap.map(({ mode }) => {
     return `
-      <label class="radio mode-${mode}" style="color: ${color}">
+      <label class="radio mode-${mode}">
         <input type="radio" name="mode" value="${mode}" ${selectedMode === mode ? 'checked' : ''}>
         ${mode}
       </label>

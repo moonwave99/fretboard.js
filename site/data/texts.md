@@ -52,7 +52,15 @@ An [heptatonic scale][1] is made up of two adjacent [tetrachords][2], a whole to
 <!--examples.playback-->
 This example highlights the **diatonic seventh arpeggios** in the C major scale played in eight position.
 
-Every arpeggio spells the **seventh chord** built by stacking thirds on top of every degree of the major scale, according to the scale structure (e.g. **C-E-G-B**, **D-F-A-C**, ...).
+Every arpeggio spells the **seventh chord** built by stacking thirds on top of every degree of the major scale, according to the scale structure (e.g. **C-E-G-B**, **D-F-A-C**, ...), yelding the following sequence (in C major):
+
+- Cmaj7
+- Dm7
+- Em7
+- Fmaj7
+- G7
+- Am7
+- Bm7b5
 
 <!--examples.chords.open-->
 Fretboard.js can render chord diagrams of course. Here you have some good old [open chords][open-chords].

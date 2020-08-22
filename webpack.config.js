@@ -3,6 +3,7 @@ const fs = require('fs-extra');
 const { chunk } = require('lodash');
 const marked = require('marked');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const jsonImporter = require('node-sass-json-importer');
 const CopyPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -129,7 +130,14 @@ module.exports = {
         use: [
           MiniCssExtractPlugin.loader,
           'css-loader',
-          'sass-loader'
+          {
+            loader: 'sass-loader',
+            options: {
+              sassOptions: {
+                importer: jsonImporter()
+              }
+            }
+          }
         ]
       }
     ]

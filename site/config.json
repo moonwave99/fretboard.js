@@ -1,0 +1,36 @@
+{
+  "colors": {
+    "defaultFill": "white",
+    "defaultStroke": "black",
+    "disabled": "#aaa",
+    "primaryFill": "#3273dc",
+    "intervals": {
+      "1P": "#F25116",
+      "3M": "#F29727",
+      "5P": "#F2E96B"
+    },
+    "octaves": [
+      "blue",
+      "magenta",
+      "red",
+      "orange",
+      "yellow",
+      "green"
+    ],
+    "chordTypes": {
+      "maj7": "#00bbf9",
+      "7": "#F25116",
+      "m7": "#F29727",
+      "m7b5": "#8338ec"
+    },
+    "modes": {
+      "ionian": "#e76f51",
+      "dorian": "#6a994e",
+      "phrygian": "#8338ec",
+      "lydian": "#ffbd00",
+      "mixolydian": "#e36414",
+      "aeolian": "#00bbf9",
+      "locrian": "#1D5DF2"
+    }
+  }
+}

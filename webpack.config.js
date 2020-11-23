@@ -129,70 +129,69 @@ module.exports = {
         test: /\.(sa|sc|c)ss$/,
         use: [
           MiniCssExtractPlugin.loader,
-          'css-loader',
+          "css-loader",
           {
-            loader: 'sass-loader',
+            loader: "sass-loader",
             options: {
+              implementation: require("sass"),
               sassOptions: {
-                importer: jsonImporter()
-              }
-            }
-          }
-        ]
-      }
-    ]
+                importer: jsonImporter(),
+              },
+            },
+          },
+        ],
+      },
+    ],
   },
   entry: {
-    index: './site/scripts/index.js',
-    playback: './site/scripts/examples/playback.js'
+    index: "./site/scripts/index.js",
+    playback: "./site/scripts/examples/playback.js",
   },
   output: {
-    filename: '[name]-bundle.js',
+    filename: "[name]-bundle.js",
     path: targetPath,
   },
   plugins: [
     new CopyPlugin({
-      patterns: [
-        { from: 'site/assets', to: 'assets' }
-      ]
+      patterns: [{ from: "site/assets", to: "assets" }],
     }),
     new MiniCssExtractPlugin({
-      filename: '[name].css',
-      chunkFilename: '[id].css',
+      filename: "[name].css",
+      chunkFilename: "[id].css",
     }),
     new HtmlWebpackPlugin({
-      title: 'Fretboard.js',
-      filename: 'index.html',
-      template: 'site/pages/index.ejs',
+      title: "Fretboard.js",
+      filename: "index.html",
+      template: "site/pages/index.ejs",
       inject: false,
-      templateParameters
+      templateParameters,
     }),
     new HtmlWebpackPlugin({
-      title: 'Fretboard.js | Documentation | Fretboard',
-      filename: 'documentation-fretboard.html',
-      template: 'site/pages/documentation/fretboard.ejs',
+      title: "Fretboard.js | Documentation | Fretboard",
+      filename: "documentation-fretboard.html",
+      template: "site/pages/documentation/fretboard.ejs",
       inject: false,
-      templateParameters
+      templateParameters,
     }),
     new HtmlWebpackPlugin({
-      title: 'Fretboard.js | Documentation | Music Tools',
-      filename: 'documentation-music-tools.html',
-      template: 'site/pages/documentation/music-tools.ejs',
+      title: "Fretboard.js | Documentation | Music Tools",
+      filename: "documentation-music-tools.html",
+      template: "site/pages/documentation/music-tools.ejs",
       inject: false,
-      templateParameters
+      templateParameters,
     }),
     ...examplePages,
     new HtmlWebpackPlugin({
-      title: 'Fretboard.js | Examples | Playback',
-      filename: 'examples-playback.html',
-      template: 'site/pages/examples/playback.ejs',
+      title: "Fretboard.js | Examples | Playback",
+      filename: "examples-playback.html",
+      template: "site/pages/examples/playback.ejs",
       inject: false,
-      templateParameters
+      templateParameters,
     }),
   ],
   devServer: {
     contentBase: targetPath,
     compress: true,
-    port: 9000
+    port: 9000,
   },
 };

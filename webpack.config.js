@@ -28,7 +28,11 @@ const getTexts = (file) => {
   );
 };
 
-const capitalize = (string) => `${string[0].toUpperCase()}${string.substring(1)}`
+const { repository } = require('./package.json');
+
+const getExampleLink = (example) => `${repository.url}/tree/master/site/scripts/examples/${example}.js`;
+
+const capitalize = (string) => `${string[0].toUpperCase()}${string.substring(1)}`;
 
 const partials = {
   footer: (footerClass = '') => {
@@ -105,6 +109,7 @@ const templateParameters = {
   partials,
   texts: getTexts(textsFile),
   snippets: getTexts(snippetsFile),
+  getExampleLink,
   docs
 };
 const exampleEntries = examples.reduce(

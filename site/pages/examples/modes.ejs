@@ -18,7 +18,12 @@
 	<%= partials.nav('modes') %>
 	<main>
 		<section class="container">
-			<h1><%= examples.modes.title %></h1>
+			<header>
+				<h1><%= examples.modes.title %></h1>
+				<p>
+					<a href="<%= getExampleLink('modes') %>">See example source</a>
+				</p>
+			</header>			
 			<article class="example">
 				<section class="description"><%= texts['examples.modes.caged'] %></section>
 				<section id="modes-caged" class="modes-wrapper">

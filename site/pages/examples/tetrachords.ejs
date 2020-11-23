@@ -18,8 +18,13 @@
 	<%= partials.nav('tetrachords') %>
 	<main>
 		<section class="container">
-			<h1><%= examples.tetrachords.title %></h1>
-			<section class="description"><%= texts['examples.tetrachords'] %></section>
+			<header>
+				<h1><%= examples.tetrachords.title %></h1>
+				<p>
+					<a href="<%= getExampleLink('tetrachords') %>">See example source</a>
+				</p>				
+				<%= texts['examples.tetrachords'] %>
+			</header>			
 			<div class="columns">
 				<figure class="column is-three-quarters" id="fretboard"></figure>
 				<form class="column api-actions">

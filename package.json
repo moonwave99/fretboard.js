@@ -25,6 +25,10 @@
 		"fretboard",
 		"svg"
 	],
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/moonwave99/fretboard.js"
+	},
 	"author": "Diego Caponera <hello@diegocaponera.com>",
 	"license": "ISC",
 	"ava": {

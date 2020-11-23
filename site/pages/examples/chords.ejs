@@ -18,7 +18,13 @@
 	<%= partials.nav('tetrachords') %>
 	<main>
 		<section class="container">
-			<h1><%= examples.chords.title %></h1>
+			<header>
+				<h1><%= examples.chords.title %></h1>
+				<p>
+					<a href="<%= getExampleLink('chords') %>">See example source</a>
+				</p>				
+				<%= texts['examples.chords.description'] %>
+			</header>
 			<section class="example">
 				<header class="description"><%= texts['examples.chords.open'] %></header>
 				<div class="chords columns">

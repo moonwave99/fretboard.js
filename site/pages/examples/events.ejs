@@ -18,8 +18,13 @@
 	<%= partials.nav('events') %>
 	<main>
 		<section class="container">
-			<h1><%= examples.events.title %></h1>
-			<section class="description"><%= texts['examples.events'] %></section>
+			<header>
+				<h1><%= examples.events.title %></h1>
+				<p>
+					<a href="<%= getExampleLink('events') %>">See example source</a>
+				</p>				
+				<%= texts['examples.events'] %>
+			</header>
 			<div class="columns">
 				<figure class="column is-three-quarters" id="fretboard"></figure>
 			</div>

@@ -17,7 +17,12 @@
 <body>
 	<%= partials.nav('playback') %>
 	<main class="container">
-		<h1><%= examples.playback.title %></h1>
+		<header>
+			<h1><%= examples.playback.title %></h1>
+			<p>
+				<a href="<%= getExampleLink('playback') %>">See example source</a>
+			</p>
+		</header>			
 		<section class="columns">
 			<div class="column is-three-quarters">
 				<figure id="notation"></figure>

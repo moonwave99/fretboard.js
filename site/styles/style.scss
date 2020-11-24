@@ -188,8 +188,12 @@ footer.container {
   }
 }
 
+header > h1 {
+  margin-bottom: 0;
+}
+
 header > p {
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
 }
 
 .chords {

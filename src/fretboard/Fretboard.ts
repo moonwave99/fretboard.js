@@ -10,6 +10,7 @@ import { throttle } from 'throttle-debounce';
 import {
   generateStrings,
   generateFrets,
+  getStringThickness,
   dotClasses,
   getDimensions,
   getPositionFromMouseCoords,
@@ -76,7 +77,7 @@ export const defaultMuteStringsParams = {
 export type Options = {
   el: string | BaseType;
   stringCount: number;
-  stringWidth: number;
+  stringWidth: number | [number];
   stringColor: string;
   fretCount: number;
   fretWidth: number;
@@ -252,7 +253,7 @@ export class Fretboard {
         .attr('x2', '100%')
         .attr('y2', d => d)
         .attr('stroke', stringColor)
-        .attr('stroke-width', stringWidth);
+        .attr('stroke-width', (_d, i) => getStringThickness({ stringWidth, stringIndex: i }));
 
     const fretsGroup = wrapper
       .append('g')

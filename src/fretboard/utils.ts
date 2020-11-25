@@ -1,24 +1,39 @@
 import { Selection, BaseType } from 'd3-selection';
 import { Position, Options } from './Fretboard';
 
+export function getStringThickness({
+  stringWidth,
+  stringIndex
+}: {
+  stringWidth: number | [number];
+  stringIndex: number;
+}): number {
+  if (typeof stringWidth === 'number') {
+    return stringWidth;
+  }
+  return stringWidth[stringIndex] || 1;
+}
+
 export function generateStrings({
   stringCount,
   stringWidth,
   height
 }: {
   stringCount: number;
-  stringWidth: number;
+  stringWidth: number | [number];
   height: number;
 }): number[] {
   const strings = [];
+  let currentStringWidth = 0;
 
   for (let i = 0; i < stringCount; i++) {
+    currentStringWidth = getStringThickness({ stringWidth, stringIndex: i });
     let y = (height / (stringCount - 1)) * i;
     if (i === 0) {
-      y += stringWidth;
+      y += currentStringWidth / 2;
     }
     if (i === stringCount - 1) {
-      y -= stringWidth;
+      y -= currentStringWidth / 2;
     }
     strings.push(y);
   }

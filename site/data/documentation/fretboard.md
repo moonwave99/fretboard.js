@@ -73,10 +73,10 @@ fretboard.render([
 Parameter         | Type     | Default      | Description
 ------------------|----------|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 el                | string   | '#fretboard' | Container element selector
-stringCount       | string   | 6            | Number of instrument strings to display
-stringWidth       | string   | 1            | String line stroke width
+stringCount       | number   | 6            | Number of instrument strings to display
+stringWidth       | number \| \[number\]   | 1   | String line stroke width - an array of 6 numbers can be passed, e.g. `[1, 1, 1, 3, 4, 5]`
 stringColor       | string   | 'black'      | String color
-fretCount         | string   | 15           | Number of frets to display
+fretCount         | number   | 15           | Number of frets to display
 fretWidth         | string   | 1            | Fret line stroke width
 fretColor         | string   | 'black'      | Fret color
 nutWidth          | string   | 7            | Nut stroke width

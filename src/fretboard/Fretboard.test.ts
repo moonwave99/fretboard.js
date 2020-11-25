@@ -272,3 +272,16 @@ test('Fretboard removeEventListeners before adding listeners', t => {
 
   t.truthy(svg);
 });
+
+test('Fretboard with different stringWidths', t => {
+  const stringWidth = [1, 2, 3, 4, 5, 6];
+  const fretboard = new Fretboard({ stringWidth });
+  fretboard.render([]);
+
+  const svg = document.querySelector('#fretboard svg');
+
+  t.truthy(svg);
+  svg.querySelectorAll('.strings').forEach(
+    (el, i) => t.is(+el.getAttribute('stroke-width'), i)
+  );
+});

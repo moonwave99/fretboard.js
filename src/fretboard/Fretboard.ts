@@ -271,7 +271,7 @@ export class Fretboard {
           switch(i) {
             case 0:
               return nutColor;
-            case MIDDLE_FRET:
+            case MIDDLE_FRET + 1:
               return middleFretColor;
             default:
               return fretColor;
@@ -281,7 +281,7 @@ export class Fretboard {
           switch(i) {
             case 0:
               return nutWidth;
-            case MIDDLE_FRET:
+            case MIDDLE_FRET + 1:
               return middleFretWidth;
             default:
               return fretWidth;

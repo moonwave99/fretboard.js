@@ -161,7 +161,7 @@ fretboard.style({
 ### renderChord()
 
 ```typescript
-render(chord: string): Fretboard
+renderChord(chord: string): Fretboard
 ```
 
 Shorthand for rendering positions from a chord voicing string, e.g. `x32010` for a C Major in open position.

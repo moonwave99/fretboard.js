@@ -54,7 +54,7 @@ fretboard.style({
   text: ({ note }) =&gt; note, 
   // sets the value of the fill attribute
   fill: ({ interval }) =&gt; interval === &#39;1P&#39; ? &#39;red&#39; : &#39;white&#39; 
-})</code></pre><h3 id="renderchord">renderChord()</h3><pre><code class="language-typescript">render(chord: string): Fretboard</code></pre><p>Shorthand for rendering positions from a chord voicing string, e.g. <code>x32010</code> for a C Major in open position.</p><p>The string is mapped onto the fretboard starting from the bottom string, in this case:</p><ul><li><code>x</code>: 6th string muted;</li><li><code>3</code>: 5th string 3rd fret;</li><li><code>2</code>: 4th string 2nd fret;</li><li><code>0</code>: 3rd string open;</li><li><code>1</code>: 2nd string 1st fret;</li><li><code>0</code>: 1st string open.</li></ul><p>Examples:</p><pre><code class="language-typescript">// renders an open C major
+})</code></pre><h3 id="renderchord">renderChord()</h3><pre><code class="language-typescript">renderChord(chord: string): Fretboard</code></pre><p>Shorthand for rendering positions from a chord voicing string, e.g. <code>x32010</code> for a C Major in open position.</p><p>The string is mapped onto the fretboard starting from the bottom string, in this case:</p><ul><li><code>x</code>: 6th string muted;</li><li><code>3</code>: 5th string 3rd fret;</li><li><code>2</code>: 4th string 2nd fret;</li><li><code>0</code>: 3rd string open;</li><li><code>1</code>: 2nd string 1st fret;</li><li><code>0</code>: 1st string open.</li></ul><p>Examples:</p><pre><code class="language-typescript">// renders an open C major
 const fretboard = new Fretboard({
   fretCount: 3,
   showFretNumbers: false

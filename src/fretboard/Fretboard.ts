@@ -27,7 +27,7 @@ export type Position = {
   fret: number;
   note?: string;
   disabled?: boolean;
-  [key: string]: string|number|boolean;
+  [key: string]: string|number|boolean|Array<string|number>;
 }
 
 type FretboardHandler = (position: Position) => void;
@@ -352,7 +352,7 @@ export class Fretboard {
       .enter()
       .filter(({ fret }) => fret >= 0)
       .append('g')
-        .attr('class', ({ disabled }) => disabled ? 'dot dot-disabled' : 'dot')
+        .attr('class', (dot) => ['dot', dotClasses(dot, '')].join(' '))
         .attr('opacity', ({ disabled }) => disabled ? disabledOpacity : 1);
 
     dotsNodes.append('circle')

@@ -285,3 +285,32 @@ test('Fretboard with different stringWidths', t => {
     (el, i) => t.is(+el.getAttribute('stroke-width'), i)
   );
 });
+
+test('Fretboard with custom classes (scalar)', t => {
+  const fretboard = new Fretboard();
+  const dots = pentatonic({ box: 1, root: 'G2' });
+  dots[0].custom = true;
+  dots[2].custom = true;
+  dots[4].custom = true;
+  fretboard.render(dots);
+
+  const svg = document.querySelector('#fretboard svg');
+
+  t.truthy(svg);
+  t.is(svg.querySelectorAll('.dots .dot-custom').length, 3);
+});
+
+test('Fretboard with custom classes (array)', t => {
+  const fretboard = new Fretboard();
+  const dots = pentatonic({ box: 1, root: 'G2' });
+  dots[0].custom = 1;
+  dots[2].custom = [1, 2];
+  dots[4].custom = [2];
+  fretboard.render(dots);
+
+  const svg = document.querySelector('#fretboard svg');
+
+  t.truthy(svg);
+  t.is(svg.querySelectorAll('.dots .dot-custom-1').length, 2);
+  t.is(svg.querySelectorAll('.dots .dot-custom-2').length, 2);
+});

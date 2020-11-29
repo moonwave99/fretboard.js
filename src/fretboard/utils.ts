@@ -60,11 +60,28 @@ export function generateFrets({
   return frets.map(x => x / frets[frets.length - 1] * 100);
 }
 
+function classRenderer(prefix: string, key: string, value: string | number | boolean): string {
+  return [
+    'dot',
+    prefix,
+    key,
+    `${value}` !== 'true' ? value : null
+  ].filter(x => !!x).join('-');
+}
+
 export function dotClasses(dot: Position, prefix: string): string {
   return [
     `dot-${prefix}`,
       ...Object.entries(dot)
-        .map(([key, value]: [string, string]) => `dot-${prefix}-${key}-${value}`)
+        .map(([key, value]: [string, string|Array<string>]) => {
+          let valArray: string[];
+          if (!(value instanceof Array)) {
+            valArray = [value];
+          } else {
+            valArray = value;
+          }
+          return valArray.map(value => classRenderer(prefix, key, value)).join(' ');
+        })
   ].join(' ');
 }
 

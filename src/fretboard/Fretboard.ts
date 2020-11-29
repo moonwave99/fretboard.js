@@ -109,6 +109,8 @@ export type Options = {
   font: string;
 }
 
+type Rec = Record<string, string | number | boolean>;
+
 type Point = {
   x: number;
   y: number;
@@ -130,9 +132,7 @@ export class Fretboard {
   wrapper: Selection<BaseType, unknown, HTMLElement, unknown>;
   private baseRendered: boolean;
   private hoverDiv: HTMLDivElement;
-  private handlers: {
-    [key: string]: (event: MouseEvent) => void;
-  };
+  private handlers: Record<string, (event: MouseEvent) => void>;
   constructor (options = {}) {
     this.handlers = {};
     this.options = Object.assign({}, defaultOptions, options);
@@ -383,24 +383,31 @@ export class Fretboard {
     fontFill,
     ...opts
   }: {
-    filter?: ValueFn<BaseType, unknown, boolean>;
+    filter?: ValueFn<BaseType, unknown, boolean> | Rec;
     text?: ValueFn<BaseType, unknown, string>;
     fontSize?: number;
     fontFill?: string;
-    [key: string]: string | number | Function;
+    [key: string]: string | number | Function | Rec;
   }): Fretboard {
     const { wrapper } = this;
     const { dotTextSize } = this.options;
-    const dots = wrapper.selectAll('.dot-circle')
-      .filter(filter);
+    const filterFunction = filter instanceof Function
+      ? filter
+      : (dot: Position): boolean => {
+        const [key, value] = Object.entries(filter)[0];
+        return dot[key] === value;
+      };
 
+    const dots = wrapper.selectAll('.dot-circle')
+      .filter(filterFunction);
+    
     Object.keys(opts).forEach(
-      key => dots.attr(key, (opts as { [key: string]: string })[key])
+      key => dots.attr(key, (opts as Rec)[key])
     );
 
     if (text) {
       wrapper.selectAll('.dot-text')
-        .filter(filter)
+        .filter(filterFunction)
         .text(text)
         .attr('font-size', fontSize || dotTextSize)
         .attr('fill', fontFill || 'black');

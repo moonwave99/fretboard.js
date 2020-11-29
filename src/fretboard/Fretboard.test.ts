@@ -156,12 +156,16 @@ test('Fretboard style()', t => {
   });
 
   const svg = document.querySelector('#fretboard svg');
-
   svg.querySelectorAll('.dots .dot-text-note-G')
-    .forEach(node => t.is(node.innerHTML, 'G'))
+    .forEach(node => t.is(node.innerHTML, 'G'));
 
-  svg.querySelectorAll('.dots .dot-circle-note-G')
-    .forEach(node => t.is(node.getAttribute('fill'), 'red'))
+  const dotNodes = svg.querySelectorAll('.dots .dot-circle-note-G');
+  dotNodes.forEach(node => t.is(node.getAttribute('fill'), 'red'));
+
+  t.is(
+    dotNodes.length,
+    dots.filter(({ note }) => note === 'G').length
+  );    
 });
 
 test('Fretboard style() no text', t => {
@@ -176,7 +180,7 @@ test('Fretboard style() no text', t => {
   const svg = document.querySelector('#fretboard svg');
 
   svg.querySelectorAll('.dots .dot-circle-note-G')
-    .forEach(node => t.is(node.getAttribute('fill'), 'red'))
+    .forEach(node => t.is(node.getAttribute('fill'), 'red'));
 });
 
 test('Fretboard style() no filter', t => {
@@ -190,7 +194,27 @@ test('Fretboard style() no filter', t => {
   const svg = document.querySelector('#fretboard svg');
 
   svg.querySelectorAll('.dots .dot-text')
-    .forEach(node => t.truthy(node.innerHTML))
+    .forEach(node => t.truthy(node.innerHTML));
+});
+
+test('Fretboard style() filter shorthand', t => {
+  const fretboard = new Fretboard();
+  const dots = pentatonic({ box: 1, root: 'G2' });
+  fretboard.render(dots);
+  fretboard.style({
+    filter: ({ note: 'G' }),
+    text: ({ note }) => note
+  });
+
+  const svg = document.querySelector('#fretboard svg');
+
+  const dotNodes = svg.querySelectorAll('.dots .dot-circle-note-G');
+  dotNodes.forEach(node => console.log(node.innerHTML));
+
+  t.is(
+    dotNodes.length,
+    dots.filter(({ note }) => note === 'G').length
+  );
 });
 
 test('Fretboard muteStrings()', t => {

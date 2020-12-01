@@ -145,6 +145,18 @@ test('Fretboard render twice', t => {
   t.is(svg.querySelectorAll('.dots .dot').length, dots.length);
 });
 
+test('Fretboard clear', t => {
+  const fretboard = new Fretboard();
+  const dots = pentatonic({ box: 1, root: 'G2' });
+  fretboard.render(dots);
+
+  const svg = document.querySelector('#fretboard svg');
+
+  t.is(svg.querySelectorAll('.dots .dot').length, dots.length);
+  fretboard.clear();
+  t.is(svg.querySelectorAll('.dots .dot').length, 0);
+});
+
 test('Fretboard style()', t => {
   const fretboard = new Fretboard();
   const dots = pentatonic({ box: 1, root: 'G2' });

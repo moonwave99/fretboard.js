@@ -336,11 +336,11 @@ export class Fretboard {
       : 0;
     this._baseRender(dotOffset);
 
+    wrapper.select('.dots').remove();
+
     if (!dots.length) {
       return this;
     }
-
-    wrapper.select('.dots').remove();
 
     const dotGroup = wrapper
       .append('g')
@@ -373,6 +373,11 @@ export class Fretboard {
       .attr('font-size', dotTextSize)
       .text(dotText);
 
+    return this;
+  }
+
+  clear(): Fretboard {
+    this.wrapper.select('.dots').remove();
     return this;
   }
 

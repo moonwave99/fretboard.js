@@ -117,6 +117,14 @@ render(positions: Position[]): Fretboard
 
 Displays the passed positions on the fretboard. Returns the instance itself.
 
+### clear()
+
+```typescript
+clear(): Fretboard
+```
+
+Clears all positions from the fretboard. Returns the instance itself.
+
 ### style()
 
 ```typescript

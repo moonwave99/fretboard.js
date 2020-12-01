@@ -19,7 +19,10 @@
       "title": "Examples / Tetrachords"
     },
     "events": {
-      "title": "Examples / Events"
+      "title": "Examples / Events",
+      "buttons": {
+        "clear": "Clear Fretboard"
+      }
     },
     "chords": {
       "title": "Examples / Chords"

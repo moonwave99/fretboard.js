@@ -41,7 +41,7 @@ Same applies for the **3NPS** system. This system is more consistent: to every p
 E.g. if you play pattern 2 you get the **dorian** mode of the starting note, check it yourself down here.
 
 <!--examples.events-->
-The fretboard is an interactive place :cool:
+Click to add positions to the fretboard :cool:
 
 <!--examples.tetrachords-->
 An [heptatonic scale][1] is made up of two adjacent [tetrachords][2], a whole tone apart that is.

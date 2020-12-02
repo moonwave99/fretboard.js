@@ -236,6 +236,17 @@ header > p {
   }
 }
 
+.fretboard-events {
+  &.show-moving-dot {
+    .dot-moving {
+      visibility: visible;
+    }
+  }
+  .dot-moving {
+    visibility: hidden;
+  }
+}
+
 .code, .documentation {
   p, ul, ol {
     margin-bottom: 2rem;

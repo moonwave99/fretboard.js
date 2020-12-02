@@ -18,6 +18,8 @@ export default function events() {
     dotStrokeColor: ({ moving }) => moving ? 'red' : 'black'
   });
 
+  const $wrapper = document.querySelector('.fretboard-events');
+
   let dots = [];
   fretboard.render([]);
 
@@ -38,6 +40,16 @@ export default function events() {
 
     fretboard.render(dotsToRender);
   });
+
+  fretboard.on('mouseleave', () => {
+    $wrapper.classList.remove('show-moving-dot');
+    fretboard.render(dots);
+  });
+
+  fretboard.on('mouseenter', () => {
+    $wrapper.classList.add('show-moving-dot');
+    fretboard.render(dots);
+  });  
 
   fretboard.on('click', ({ fret, string }) => {
     const note = fretboardNotes[string - 1][fret];

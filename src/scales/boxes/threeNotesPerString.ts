@@ -98,12 +98,12 @@ export const boxes = [
   {
     modes: getModes('phrygian'),
     pattern: [
-      ...getStringPattern({ string: 6, patternIndex: 1, baseFret: 0 + 3 }),
-      ...getStringPattern({ string: 5, patternIndex: 2, baseFret: 0 + 3 }),
-      ...getStringPattern({ string: 4, patternIndex: 2, baseFret: 0 + 3 }),
-      ...getStringPattern({ string: 3, patternIndex: 0, baseFret: 0 + 3 }),
-      ...getStringPattern({ string: 2, patternIndex: 0, baseFret: 1 + 3 }),
-      ...getStringPattern({ string: 1, patternIndex: 0, baseFret: 1 + 3 })
+      ...getStringPattern({ string: 6, patternIndex: 1, baseFret: 0 + 4 }),
+      ...getStringPattern({ string: 5, patternIndex: 2, baseFret: 0 + 4 }),
+      ...getStringPattern({ string: 4, patternIndex: 2, baseFret: 0 + 4 }),
+      ...getStringPattern({ string: 3, patternIndex: 0, baseFret: 0 + 4 }),
+      ...getStringPattern({ string: 2, patternIndex: 0, baseFret: 1 + 4 }),
+      ...getStringPattern({ string: 1, patternIndex: 0, baseFret: 1 + 4 })
     ]
   },
   {

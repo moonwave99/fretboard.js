@@ -9,6 +9,7 @@ import boxes from './examples/boxes.js';
 import chords from './examples/chords.js';
 import events from './examples/events.js';
 import tetrachords from './examples/tetrachords.js';
+import systems from "./examples/systems.js";
 
 document.addEventListener('DOMContentLoaded', () => {
   ({
@@ -18,6 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     chords,
     events,
     tetrachords,
+    systems,
     documentation: () => {}
   })[document.documentElement.dataset.section]();
 });

@@ -69,3 +69,12 @@ Fretboard.js can render chord diagrams of course. Here you have some good old [o
 
 <!--examples.chords.jazz-->
 Want to become a jazz cat? No problem!
+
+<!--examples.systems.description-->
+The library supports the pentatonic and the CAGED scale systems.
+
+<!--examples.systems.pentatonic-->
+The pentatonic system is organised in five boxes. Here you can see the various ways of playing an **E minor pentatonic** scale across all the fretboard.
+
+<!--examples.systems.caged-->
+The CAGED system is organised in five boxes, named around the corresponding open chord shapes. Here the same **C major** scale is played in different positions.

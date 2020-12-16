@@ -1,6 +1,7 @@
 {
   "colors": {
     "defaultFill": "white",
+    "defaultActiveFill": "#F25116",
     "defaultStroke": "black",
     "disabled": "#aaa",
     "primaryFill": "#3273dc",

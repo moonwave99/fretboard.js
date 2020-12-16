@@ -2,7 +2,6 @@ import { get as getNote, chroma as getChroma } from '@tonaljs/note';
 import { get as getScale } from '@tonaljs/scale';
 
 import { Position } from '../fretboard/Fretboard';
-import { BoxBounds } from './systems/systems';
 
 export type FretboardPosition = {
     string: number;
@@ -38,7 +37,7 @@ export class FretboardSystem {
         system
     }: {
         name: string;
-        system?: BoxBounds;
+        system?: (p: Position) => boolean;
     }): Position[] {
         const { notes, empty, intervals } = getScale(name);
         if (empty) {
@@ -58,7 +57,7 @@ export class FretboardSystem {
             }))
             .map(x => ({
                 octave: this.getOctave(x),
-                disabled: system ? (x.fret < system[0] || x.fret > system[1]) : false,
+                disabled: system ? !system(x) : false,
                 ...x
             }));
     }    

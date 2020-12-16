@@ -1,5 +1,7 @@
 import { chroma as getChroma } from '@tonaljs/note';
-export type BoxBounds = [number, number];
+import { Position } from '../../fretboard/Fretboard';
+
+type BoxBounds = [number, number];
 
 type PentatonicScaleDefinition = {
     boxes: BoxBounds[];
@@ -19,7 +21,7 @@ type SystemParams = {
 
 const CAGEDDefinition: { [key: string]: CAGEDScaleDefinition } = {
     E: {
-        box: [7, 10],
+        box: [7, 11],
         baseChroma: 0
     },
     A: {
@@ -64,6 +66,10 @@ const pentatonicMajorDefinition: PentatonicScaleDefinition = {
     baseChroma: 7
 }
 
+function isPositionInSystem({ fret }: Position, bounds: BoxBounds): boolean {
+    return fret >= bounds[0] && fret <= bounds[1];
+}
+
 function getBoxBounds({
     root,
     box,
@@ -106,27 +112,30 @@ function pentatonic({
     });
 }
 
-export function pentatonicMinor(params: SystemParams): BoxBounds {
-    return pentatonic({
+export function pentatonicMinor(params: SystemParams): (p: Position) => boolean {
+    const bounds = pentatonic({
         ...params,
         ...pentatonicMinorDefinition
     });
+    return (position: Position): boolean => isPositionInSystem(position, bounds);
 }
 
-export function pentatonicMajor(params: SystemParams): BoxBounds {
-    return pentatonic({
+export function pentatonicMajor(params: SystemParams): (p: Position) => boolean {
+    const bounds = pentatonic({
         ...params,
         ...pentatonicMajorDefinition
     });
+    return (position: Position): boolean => isPositionInSystem(position, bounds);
 }
 
-export function CAGEDSystem({ root, box }: SystemParams): BoxBounds {
+export function CAGEDSystem({ root, box }: SystemParams): (p: Position) => boolean {
     const foundBox = CAGEDDefinition[box];
     if (!foundBox) {
         throw new Error(`Cannot find box ${box} in the ${root} CAGED system`);
     }
-    return getBoxBounds({
+    const bounds = getBoxBounds({
         root,
         ...foundBox
     });
+    return (position: Position): boolean => isPositionInSystem(position, bounds);
 }

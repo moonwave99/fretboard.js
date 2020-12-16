@@ -1,9 +1,7 @@
 import {
   Fretboard,
-  CAGED,
   FretboardSystem,
   pentatonicMinor,
-  pentatonicMajor,
   CAGEDSystem,
 } from "../../../dist/fretboard.esm.js";
 import { fretboardConfiguration, colors } from "../config.js";

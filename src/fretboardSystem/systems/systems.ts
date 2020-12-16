@@ -16,7 +16,7 @@ type CAGEDScaleDefinition = {
 
 type SystemParams = {
     root: string;
-    box: number;
+    box: number|string;
 }
 
 const CAGEDDefinition: { [key: string]: CAGEDScaleDefinition } = {
@@ -112,16 +112,18 @@ function pentatonic({
     });
 }
 
-export function pentatonicMinor(params: SystemParams): (p: Position) => boolean {
+export function pentatonicMinor({ box, ...params }: SystemParams): (p: Position) => boolean {
     const bounds = pentatonic({
+        box: +box,
         ...params,
         ...pentatonicMinorDefinition
     });
     return (position: Position): boolean => isPositionInSystem(position, bounds);
 }
 
-export function pentatonicMajor(params: SystemParams): (p: Position) => boolean {
+export function pentatonicMajor({ box, ...params }: SystemParams): (p: Position) => boolean {
     const bounds = pentatonic({
+        box: +box,
         ...params,
         ...pentatonicMajorDefinition
     });
@@ -131,7 +133,7 @@ export function pentatonicMajor(params: SystemParams): (p: Position) => boolean 
 export function CAGEDSystem({ root, box }: SystemParams): (p: Position) => boolean {
     const foundBox = CAGEDDefinition[box];
     if (!foundBox) {
-        throw new Error(`Cannot find box ${box} in the ${root} CAGED system`);
+        throw new Error(`Cannot find box ${box} in the CAGED system`);
     }
     const bounds = getBoxBounds({
         root,

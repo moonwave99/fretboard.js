@@ -3,7 +3,8 @@ import test from 'ava';
 import {
     pentatonicMinorSystem,
     pentatonicMajorSystem,
-    CAGEDSystem
+    CAGEDSystem,
+    ThreeNotesPerStringSystem
 } from './systems';
 
 test('pentatonic minor system', t => {
@@ -49,4 +50,13 @@ test('pentatonic system - box not found', t => {
     }));
 
     t.is(error.message, 'Cannot find box 6 in the E minor pentatonic scale system');
+});
+
+test('three notes per string system - box not found', t => {
+    const error = t.throws(() => ThreeNotesPerStringSystem({
+        root: 'E',
+        box: 8
+    }));
+
+    t.is(error.message, 'Cannot find box 8 in the TPNS system');
 });

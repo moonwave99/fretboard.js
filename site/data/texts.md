@@ -78,3 +78,6 @@ The pentatonic system is organised in five boxes. Here you can see the various w
 
 <!--examples.systems.caged-->
 The CAGED system is organised in five boxes, named around the corresponding open chord shapes. Here the same **C major** scale is played in different positions.
+
+<!--examples.systems.tnps-->
+The **three note per string** system is organised in seven boxes, each starting from corresponding scale degree. Les modes son fait!

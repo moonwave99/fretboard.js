@@ -35,7 +35,8 @@ import {
   Systems,
   pentatonicMinorSystem,
   pentatonicMajorSystem,
-  CAGEDSystem
+  CAGEDSystem,
+  ThreeNotesPerStringSystem
 } from '../fretboardSystem/systems/systems';
 
 export type Tuning = string[];
@@ -433,6 +434,9 @@ export class Fretboard {
         break;
       case Systems.CAGED:
         systemGenerator = CAGEDSystem;
+        break;
+      case Systems.TNPS:
+        systemGenerator = ThreeNotesPerStringSystem;
         break;
     }
     this.render(

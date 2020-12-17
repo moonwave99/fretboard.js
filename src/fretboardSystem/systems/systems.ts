@@ -4,8 +4,11 @@ import { Position } from '../../fretboard/Fretboard';
 export enum Systems {
     pentatonicMinor = 'pentatonicMinor',
     pentatonicMajor = 'pentatonicMajor',
-    CAGED = 'CAGED'
+    CAGED = 'CAGED',
+    TNPS = 'TNPS'
 }
+
+export type IncludeFunction = (p: Position) => boolean;
 
 type BoxBounds = [number, number];
 
@@ -28,23 +31,23 @@ type SystemParams = {
 const CAGEDDefinition: { [key: string]: CAGEDScaleDefinition } = {
     E: {
         box: [7, 11],
-        baseChroma: 0
+        baseChroma: getChroma('C')
     },
     A: {
         box: [2, 6],
-        baseChroma: 0
+        baseChroma: getChroma('C')
     },
     G: {
         box: [4, 8],
-        baseChroma: 0
+        baseChroma: getChroma('C')
     },
     C: {
         box: [0, 3],
-        baseChroma: 0
+        baseChroma: getChroma('C')
     },
     D: {
         box: [9, 13],
-        baseChroma: 0
+        baseChroma: getChroma('C')
     }
 }
 
@@ -57,7 +60,7 @@ const pentatonicMinorDefinition: PentatonicScaleDefinition = {
         [9, 12]        
     ],
     mode: 'minor',
-    baseChroma: 4
+    baseChroma: getChroma('E')
 }
 
 const pentatonicMajorDefinition: PentatonicScaleDefinition = {
@@ -69,7 +72,7 @@ const pentatonicMajorDefinition: PentatonicScaleDefinition = {
         [0, 3],        
     ],
     mode: 'major',
-    baseChroma: 7
+    baseChroma: getChroma('G')
 }
 
 function isPositionInSystem({ fret }: Position, bounds: BoxBounds): boolean {
@@ -118,7 +121,7 @@ function pentatonic({
     });
 }
 
-export function pentatonicMinorSystem({ box, ...params }: SystemParams): (p: Position) => boolean {
+export function pentatonicMinorSystem({ box, ...params }: SystemParams): IncludeFunction {
     const bounds = pentatonic({
         box: +box,
         ...params,
@@ -127,7 +130,7 @@ export function pentatonicMinorSystem({ box, ...params }: SystemParams): (p: Pos
     return (position: Position): boolean => isPositionInSystem(position, bounds);
 }
 
-export function pentatonicMajorSystem({ box, ...params }: SystemParams): (p: Position) => boolean {
+export function pentatonicMajorSystem({ box, ...params }: SystemParams): IncludeFunction {
     const bounds = pentatonic({
         box: +box,
         ...params,
@@ -136,7 +139,7 @@ export function pentatonicMajorSystem({ box, ...params }: SystemParams): (p: Pos
     return (position: Position): boolean => isPositionInSystem(position, bounds);
 }
 
-export function CAGEDSystem({ root, box }: SystemParams): (p: Position) => boolean {
+export function CAGEDSystem({ root, box }: SystemParams): IncludeFunction {
     const foundBox = CAGEDDefinition[box];
     if (!foundBox) {
         throw new Error(`Cannot find box ${box} in the CAGED system`);
@@ -146,4 +149,125 @@ export function CAGEDSystem({ root, box }: SystemParams): (p: Position) => boole
         ...foundBox
     });
     return (position: Position): boolean => isPositionInSystem(position, bounds);
+}
+
+type TNPSScaleDefinition = {
+    box: string[];
+    baseChroma: number;
+};
+
+const TNPSDefinition: TNPSScaleDefinition[] = [
+    {
+        box: [
+            '--2-34',
+            '--6-71',
+            '-34-5-',
+            '-71-2-',
+            '4-5-6-',
+            '1-2-3-'
+        ],
+        baseChroma: getChroma('E')
+    },
+    {
+        box: [
+            '--34-5',
+            '--71-2',
+            '4-5-6-',
+            '1-2-3-',
+            '5-6-7-',
+            '2-34--'
+        ],
+        baseChroma: getChroma('D')
+    },
+    {
+        box: [
+            '-4-5-6',
+            '-1-2-3',
+            '5-6-7-',
+            '2-34--',
+            '6-71--',
+            '34-5--'
+        ],
+        baseChroma: getChroma('C')
+    },
+    {
+        box: [
+            '--5-6-7',
+            '--2-34-',
+            '-6-71--',
+            '-34-5--',
+            '-71-2--',
+            '4-5-6--'
+        ],
+        baseChroma: getChroma('B')
+    },
+    {
+        box: [
+            '--6-71',
+            '--34-5',
+            '-71-2-',
+            '4-5-6-',
+            '1-2-3-',
+            '5-6-7-'
+        ],
+        baseChroma: getChroma('A')
+    },
+    {
+        box: [
+            '--71-2',
+            '-4-5-6',
+            '1-2-3-',
+            '5-6-7-',
+            '2-34--',
+            '6-71--'
+        ],
+        baseChroma: getChroma('G')
+    },
+    {
+        box: [
+            '-1-2-3',
+            '-5-6-7',
+            '2-34--',
+            '6-71--',
+            '34-5--',
+            '71-2--'
+        ],
+        baseChroma: getChroma('F')
+    }                      
+];
+
+function getTNPSPositions({
+    root,
+    box,
+    baseChroma
+}: {
+    root: string;
+    box: string[];
+    baseChroma: number;
+}): Position[] {
+    const delta = (getChroma(root) - baseChroma + 12) % 12;
+
+    return box.reduce((memo, item, string) => {
+        return [
+            ...memo,
+            ...item.split('').map((x, i) => {
+                if (x === '-') {
+                    return;
+                }
+                return {
+                    string: string + 1,
+                    fret: i + delta
+                };
+            }).filter(x => !!x)
+        ];
+    }, []);
+}
+
+export function ThreeNotesPerStringSystem({ root, box }: SystemParams): IncludeFunction {
+    const foundBox = TNPSDefinition[+box - 1];
+    if (!foundBox) {
+        throw new Error(`Cannot find box ${box} in the TPNS system`);
+    }
+    const positions = getTNPSPositions({ root, ...foundBox });
+    return ({ fret, string }: Position): boolean => !!positions.find(x => x.fret === fret && x.string === string);
 }

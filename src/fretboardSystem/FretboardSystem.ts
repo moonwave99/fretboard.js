@@ -1,6 +1,6 @@
 import { get as getNote, chroma as getChroma } from '@tonaljs/note';
 import { get as getScale } from '@tonaljs/scale';
-
+import { IncludeFunction } from './systems/systems';
 import { Position, Tuning } from '../fretboard/Fretboard';
 
 import {
@@ -38,7 +38,7 @@ export class FretboardSystem {
         system
     }: {
         name: string;
-        system?: (p: Position) => boolean;
+        system?: IncludeFunction;
     }): Position[] {
         const { notes, empty, intervals } = getScale(name);
         if (empty) {

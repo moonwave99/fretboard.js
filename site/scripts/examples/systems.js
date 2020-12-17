@@ -74,7 +74,45 @@ function CAGEDSystemExample() {
   });
 }
 
+function TNPSSystemExample() {
+  const fretboard = new Fretboard({
+    ...fretboardConfiguration,
+    el: "#fretboard-systems-tnps",
+    dotText: ({ note, octave, interval }) => note,
+    dotFill: ({ interval, disabled }) =>
+      disabled
+        ? colors.disabled
+        : interval === "1P"
+        ? colors.defaultActiveFill
+        : colors.defaultFill,
+  });
+
+  const root = "C";
+  const mode = "major";
+  const box = 1;
+
+  fretboard.renderScale({
+    scale: `${mode}`,
+    root,
+    box,
+    system: Systems.TNPS,
+  });
+
+  document.querySelectorAll("[data-tnps-box").forEach((el) => {
+    el.addEventListener("click", () => {
+      const { tnpsBox } = el.dataset;
+      fretboard.renderScale({
+        scale: `${mode}`,
+        root,
+        box: tnpsBox,
+        system: Systems.TNPS,
+      });
+    });
+  });
+}
+
 export default function systems() {
     pentatonicSystemExample();
     CAGEDSystemExample();
+    TNPSSystemExample();
 }

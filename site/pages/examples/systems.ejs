@@ -52,7 +52,21 @@
                         </p>
                     </aside>
                 </div>
-            </section>            
+            </section>
+            <section>
+                <h2><%= examples.systems.tnps %></h2>
+                <div class="columns">
+                    <figure class="column is-three-quarters" id="fretboard-systems-tnps"></figure>
+                    <aside class="column aside">
+                        <%= texts['examples.systems.tnps'] %>
+                        <p>
+                        <% [1,2,3,4,5,6,7].forEach(function(i){ %>
+                            <button data-tnps-box="<%= i %>"><%= i%></button>
+                        <%})%>
+                        </p>
+                    </aside>
+                </div>
+            </section>                        
 		</section>
 	</main>
 	<%= partials.footer() %>

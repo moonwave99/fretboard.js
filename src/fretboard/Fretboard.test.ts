@@ -342,6 +342,24 @@ test('Fretboard renderScale() - CAGED', t => {
   });
 });
 
+test('Fretboard renderScale() - TNPS', t => {
+  const fretboard = new Fretboard({
+    dotText: ({ note }: Position): string => note
+  });
+  fretboard.renderScale({
+    scale: 'major pentatonic',
+    root: 'C',
+    box: 1,
+    system: Systems.TNPS
+  });
+
+  const svg = document.querySelector('#fretboard svg');
+
+  svg.querySelectorAll('.dots .dot').forEach(dot => {
+    t.is('CDEFGAB'.split('').indexOf(dot.textContent) > -1, true);
+  });
+});
+
 test('Fretboard renderScale() - custom tuning warning', t => {
   const fretboard = new Fretboard({
     tuning: GUITAR_TUNINGS.openG,

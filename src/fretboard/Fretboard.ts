@@ -123,6 +123,48 @@ type MuteStringsParams = {
   stroke?: string;
 }
 
+function getDotCoords({
+  fret,
+  string,
+  frets,
+  strings  
+}: {
+  fret: number;
+  string: number;
+  frets: number[];  
+  strings: number[];
+}): Point {
+  let x = 0;
+  if (fret === 0) {
+    x = frets[0] / 2;
+  } else {
+    x = frets[fret] - (frets[fret] - frets[fret - 1]) / 2;
+  }
+  return { x, y: strings[string - 1] };
+}
+
+function generatePositions({
+  fretCount,
+  stringCount,
+  frets,
+  strings
+}: {
+  fretCount: number;
+  stringCount: number;
+  frets: number[];
+  strings: number[];
+}): Point[][] {
+  const positions = [];
+  for (let string = 1; string <= stringCount; string++) {
+    const currentString = [];
+    for (let fret = 0; fret <= fretCount; fret++) {
+      currentString.push(getDotCoords({ fret, string, frets, strings }))
+    }
+    positions.push(currentString);
+  }
+  return positions;
+}
+
 export class Fretboard {
   options: Options;
   strings: number[];
@@ -150,44 +192,12 @@ export class Fretboard {
 
     this.strings = generateStrings({ stringCount, height, stringWidth });
     this.frets = generateFrets({ fretCount, scaleFrets });
-    const { frets, strings } = this;
     const { totalWidth, totalHeight } = getDimensions(this.options);
 
-    function getDotCoords ({
-      fret,
-      string
-    }: {
-      fret: number;
-      string: number;
-    }): Point {
-      let x = 0;
-      if (fret === 0) {
-        x = frets[0] / 2;
-      } else {
-        x = frets[fret] - (frets[fret] - frets[fret - 1]) / 2;
-      }
-      return { x, y: strings[string - 1] };
-    }
-
-    function generatePositions({
-      fretCount,
-      stringCount
-    }: {
-      fretCount: number;
-      stringCount: number;
-    }): Point[][] {
-      const positions = [];
-      for (let string = 1; string <= stringCount; string++) {
-        const currentString = [];
-        for (let fret = 0; fret <= fretCount; fret++) {
-          currentString.push(getDotCoords({ fret, string }))
-        }
-        positions.push(currentString);
-      }
-      return positions;
-    }
-
-    this.positions = generatePositions(this.options);
+    this.positions = generatePositions({
+      ...this,
+      ...this.options
+    });
 
     this.svg = (
       typeof el === 'string'
@@ -207,109 +217,6 @@ export class Fretboard {
           'transform',
           `translate(${leftPadding}, ${topPadding}) scale(${width / totalWidth})`
         );
-  }
-
-  _baseRender(dotOffset: number): void {
-    if (this.baseRendered) {
-      return;
-    }
-
-    const {
-      wrapper,
-      frets,
-      strings
-    } = this;
-
-    const {
-      height,
-      font,
-      nutColor,
-      nutWidth,
-      stringColor,
-      stringWidth,
-      fretColor,
-      fretWidth,
-      middleFretWidth,
-      middleFretColor,
-      showFretNumbers,
-      fretNumbersMargin,
-      fretNumbersColor,
-      topPadding
-    } = this.options;
-
-    const { totalWidth } = getDimensions(this.options);
-
-    const stringGroup = wrapper
-      .append('g')
-        .attr('class', 'strings');
-
-    stringGroup
-      .selectAll('line')
-      .data(strings)
-      .enter()
-      .append('line')
-        .attr('x1', 0)
-        .attr('y1', d => d)
-        .attr('x2', '100%')
-        .attr('y2', d => d)
-        .attr('stroke', stringColor)
-        .attr('stroke-width', (_d, i) => getStringThickness({ stringWidth, stringIndex: i }));
-
-    const fretsGroup = wrapper
-      .append('g')
-      .attr('class', 'frets');
-
-    fretsGroup
-      .selectAll('line')
-      .data(frets)
-      .enter()
-      .append('line')
-        .attr('x1', d => `${d}%`)
-        .attr('y1', 1)
-        .attr('x2', d => `${d}%`)
-        .attr('y2', height - 1)
-        .attr('stroke', (_d, i) => {
-          switch(i) {
-            case 0:
-              return nutColor;
-            case MIDDLE_FRET + 1:
-              return middleFretColor;
-            default:
-              return fretColor;
-          }
-        })
-        .attr('stroke-width', (_d, i) => {
-          switch(i) {
-            case 0:
-              return nutWidth;
-            case MIDDLE_FRET + 1:
-              return middleFretWidth;
-            default:
-              return fretWidth;
-          }
-        });
-
-    if (showFretNumbers) {
-      const fretNumbersGroup = wrapper
-        .append('g')
-          .attr('class', 'fret-numbers')
-          .attr('font-family', font)
-          .attr('transform',
-            `translate(0 ${fretNumbersMargin + topPadding + strings[strings.length - 1]})`
-          );
-
-      fretNumbersGroup
-        .selectAll('text')
-        .data(frets.slice(1))
-        .enter()
-        .append('text')
-          .attr('text-anchor', 'middle')
-          .attr('x', (d, i) => totalWidth / 100 * (d - (d - frets[i]) / 2))
-          .attr('fill', (_d, i) => i === MIDDLE_FRET ? middleFretColor : fretNumbersColor)
-          .text((_d, i) => `${i + 1 + dotOffset}`)
-    }
-
-    this.baseRendered = true;
   }
 
   render(dots: Position[] = []): Fretboard {
@@ -334,7 +241,7 @@ export class Fretboard {
     const dotOffset = crop
       ? Math.max(0, Math.min(...dots.map(({ fret }) => fret)) - 1 - fretLeftPadding)
       : 0;
-    this._baseRender(dotOffset);
+    this.baseRender(dotOffset);
 
     wrapper.select('.dots').remove();
 
@@ -515,4 +422,107 @@ export class Fretboard {
       );
     return this;
   }
+
+  private baseRender(dotOffset: number): void {
+    if (this.baseRendered) {
+      return;
+    }
+
+    const {
+      wrapper,
+      frets,
+      strings
+    } = this;
+
+    const {
+      height,
+      font,
+      nutColor,
+      nutWidth,
+      stringColor,
+      stringWidth,
+      fretColor,
+      fretWidth,
+      middleFretWidth,
+      middleFretColor,
+      showFretNumbers,
+      fretNumbersMargin,
+      fretNumbersColor,
+      topPadding
+    } = this.options;
+
+    const { totalWidth } = getDimensions(this.options);
+
+    const stringGroup = wrapper
+      .append('g')
+      .attr('class', 'strings');
+
+    stringGroup
+      .selectAll('line')
+      .data(strings)
+      .enter()
+      .append('line')
+      .attr('x1', 0)
+      .attr('y1', d => d)
+      .attr('x2', '100%')
+      .attr('y2', d => d)
+      .attr('stroke', stringColor)
+      .attr('stroke-width', (_d, i) => getStringThickness({ stringWidth, stringIndex: i }));
+
+    const fretsGroup = wrapper
+      .append('g')
+      .attr('class', 'frets');
+
+    fretsGroup
+      .selectAll('line')
+      .data(frets)
+      .enter()
+      .append('line')
+      .attr('x1', d => `${d}%`)
+      .attr('y1', 1)
+      .attr('x2', d => `${d}%`)
+      .attr('y2', height - 1)
+      .attr('stroke', (_d, i) => {
+        switch (i) {
+          case 0:
+            return nutColor;
+          case MIDDLE_FRET + 1:
+            return middleFretColor;
+          default:
+            return fretColor;
+        }
+      })
+      .attr('stroke-width', (_d, i) => {
+        switch (i) {
+          case 0:
+            return nutWidth;
+          case MIDDLE_FRET + 1:
+            return middleFretWidth;
+          default:
+            return fretWidth;
+        }
+      });
+
+    if (showFretNumbers) {
+      const fretNumbersGroup = wrapper
+        .append('g')
+        .attr('class', 'fret-numbers')
+        .attr('font-family', font)
+        .attr('transform',
+          `translate(0 ${fretNumbersMargin + topPadding + strings[strings.length - 1]})`
+        );
+
+      fretNumbersGroup
+        .selectAll('text')
+        .data(frets.slice(1))
+        .enter()
+        .append('text')
+        .attr('text-anchor', 'middle')
+        .attr('x', (d, i) => totalWidth / 100 * (d - (d - frets[i]) / 2))
+        .attr('fill', (_d, i) => i === MIDDLE_FRET ? middleFretColor : fretNumbersColor)
+        .text((_d, i) => `${i + 1 + dotOffset}`)
+    }
+
+    this.baseRendered = true;
+  }  
 }

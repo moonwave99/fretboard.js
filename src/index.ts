@@ -10,3 +10,10 @@ export {
   disableDots,
   sliceBox
 } from './scales/tools';
+
+export { FretboardSystem } from './fretboardSystem/FretboardSystem';
+export {
+  CAGEDSystem,
+  pentatonicMinor,
+  pentatonicMajor
+} from './fretboardSystem/systems/systems';

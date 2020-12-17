@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en" class="has-navbar-fixed-top" data-section="systems">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport"
+	  content="width=device-width, initial-scale=1">
+	<title><%= htmlWebpackPlugin.options.title %></title>
+	<%= htmlWebpackPlugin
+		.tags
+		.headTags
+		.filter((tag) => tag.attributes.href.startsWith('index'))
+		.join('')
+	%>
+</head>
+
+<body>
+	<%= partials.nav('systems') %>
+	<main>
+		<section class="container">
+			<header>
+				<h1><%= examples.systems.title %></h1>
+				<p>
+					<a href="<%= getExampleLink('systems') %>">See example source</a>
+				</p>				
+				<%= texts['examples.systems.description'] %>
+            </header>
+            <section>
+                <h2><%= examples.systems.pentatonic %></h2>
+                <div class="columns">
+                    <figure class="column is-three-quarters" id="fretboard-systems-pentatonic-minor"></figure>
+                    <aside class="column aside">
+                        <%= texts['examples.systems.pentatonic'] %>
+                        <p>
+                        <% [1,2,3,4,5].forEach(function(i){ %>
+                            <button data-pentatonic-box="<%= i %>"><%= i%></button>
+                        <%})%>
+                        </p>
+                    </aside>
+                </div>
+            </section>
+            <section>
+                <h2><%= examples.systems.caged %></h2>
+                <div class="columns">
+                    <figure class="column is-three-quarters" id="fretboard-systems-caged"></figure>
+                    <aside class="column aside">
+                        <%= texts['examples.systems.caged'] %>
+                        <p>
+                        <% ['C', 'A', 'G', 'E', 'D'].forEach(function(i){ %>
+                            <button data-caged-box="<%= i %>"><%= i%></button>
+                        <%})%>
+                        </p>
+                    </aside>
+                </div>
+            </section>            
+		</section>
+	</main>
+	<%= partials.footer() %>
+	<%= htmlWebpackPlugin
+		.tags
+		.bodyTags
+		.filter((tag) => tag.attributes.src.startsWith('index'))
+		.join('')
+	%>
+</body>
+</html>

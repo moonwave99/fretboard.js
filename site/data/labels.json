@@ -5,6 +5,11 @@
     "author": "https://www.diegocaponera.com"
   },
   "examples": {
+    "systems": {
+      "title": "Examples / Systems",
+      "pentatonic": "Pentatonic system",
+      "caged": "CAGED System"
+    },
     "boxes": {
       "title": "Examples / Boxes",
       "connected": "Connected Boxes",

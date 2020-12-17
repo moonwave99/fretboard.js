@@ -36,7 +36,8 @@ import {
   pentatonicMinorSystem,
   pentatonicMajorSystem,
   CAGEDSystem,
-  ThreeNotesPerStringSystem
+  ThreeNotesPerStringSystem,
+  getModeFromScale
 } from '../fretboardSystem/systems/systems';
 
 export type Tuning = string[];
@@ -439,10 +440,11 @@ export class Fretboard {
         systemGenerator = ThreeNotesPerStringSystem;
         break;
     }
+    const mode = getModeFromScale(scale);
     this.render(
       this.system.getScale({
         name: `${root} ${scale}`,
-        system: system ? systemGenerator({ root, box }) : null
+        system: system ? systemGenerator({ root, box, mode }) : null
       })
     );
 

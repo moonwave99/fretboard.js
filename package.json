@@ -74,6 +74,7 @@
 		"webpack-dev-server": "^3.11.0"
 	},
 	"dependencies": {
+		"@tonaljs/mode": "^3.5.3",
 		"@tonaljs/note": "^3.5.3",
 		"@tonaljs/scale": "^3.5.6",
 		"@tonaljs/tonal": "^3.7.5",

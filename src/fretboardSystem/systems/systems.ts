@@ -1,4 +1,5 @@
 import { chroma as getChroma } from '@tonaljs/note';
+import { get as getMode } from '@tonaljs/mode';
 import { Position } from '../../fretboard/Fretboard';
 
 export enum Systems {
@@ -26,6 +27,7 @@ type CAGEDScaleDefinition = {
 type SystemParams = {
     root: string;
     box: number|string;
+    mode?: number;
 }
 
 const CAGEDDefinition: { [key: string]: CAGEDScaleDefinition } = {
@@ -73,6 +75,10 @@ const pentatonicMajorDefinition: PentatonicScaleDefinition = {
     ],
     mode: 'major',
     baseChroma: getChroma('G')
+}
+
+function getModeOffset(mode: number): number {
+    return getChroma('CDEFGAB'.split('')[mode]);
 }
 
 function isPositionInSystem({ fret }: Position, bounds: BoxBounds): boolean {
@@ -239,13 +245,15 @@ const TNPSDefinition: TNPSScaleDefinition[] = [
 function getTNPSPositions({
     root,
     box,
+    modeOffset,
     baseChroma
 }: {
     root: string;
     box: string[];
+    modeOffset: number;
     baseChroma: number;
 }): Position[] {
-    const delta = (getChroma(root) - baseChroma + 12) % 12;
+    const delta = (getChroma(root) - baseChroma - modeOffset + 12) % 12;
 
     return box.reduce((memo, item, string) => {
         return [
@@ -263,11 +271,16 @@ function getTNPSPositions({
     }, []);
 }
 
-export function ThreeNotesPerStringSystem({ root, box }: SystemParams): IncludeFunction {
+export function ThreeNotesPerStringSystem({ root, box, mode }: SystemParams): IncludeFunction {
     const foundBox = TNPSDefinition[+box - 1];
     if (!foundBox) {
         throw new Error(`Cannot find box ${box} in the TPNS system`);
     }
-    const positions = getTNPSPositions({ root, ...foundBox });
+    const positions = getTNPSPositions({ root, modeOffset: getModeOffset(mode), ...foundBox });
     return ({ fret, string }: Position): boolean => !!positions.find(x => x.fret === fret && x.string === string);
+}
+
+export function getModeFromScale(scale: string): number {
+    const { modeNum } = getMode(scale);
+    return modeNum;
 }

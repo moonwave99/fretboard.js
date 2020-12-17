@@ -4,7 +4,7 @@ import { get as getScale } from '@tonaljs/scale';
 import { Position, Tuning } from '../fretboard/Fretboard';
 
 import {
-    DEFAULT_GUITAR_TUNING,
+    GUITAR_TUNINGS,
     DEFAULT_FRET_COUNT
 } from '../constants';
 
@@ -20,7 +20,7 @@ type FretboardSystemParams = {
 }
 
 export class FretboardSystem {
-    private tuning: Tuning = DEFAULT_GUITAR_TUNING;
+    private tuning: Tuning = GUITAR_TUNINGS.default;
     private fretCount: number = DEFAULT_FRET_COUNT;
     private positions: FretboardPosition[];
     constructor(params?: FretboardSystemParams) {

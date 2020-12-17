@@ -1,6 +1,7 @@
 import test from 'ava';
 import { Position, Fretboard, defaultOptions } from './Fretboard';
 import { Systems } from '../fretboardSystem/systems/systems';
+import { GUITAR_TUNINGS } from '../constants';
 import { pentatonic } from '../scales/scales';
 import browserEnv from 'browser-env';
 
@@ -339,6 +340,19 @@ test('Fretboard renderScale() - CAGED', t => {
   svg.querySelectorAll('.dots .dot').forEach(dot => {
     t.is('CDEFGAB'.split('').indexOf(dot.textContent) > -1, true);
   });
+});
+
+test('Fretboard renderScale() - custom tuning warning', t => {
+  const fretboard = new Fretboard({
+    tuning: GUITAR_TUNINGS.openG,
+    dotText: ({ note }: Position): string => note
+  }).renderScale({
+    scale: 'major pentatonic',
+    root: 'C',
+    box: 'C',
+    system: Systems.CAGED
+  });
+  t.is(fretboard instanceof Fretboard, true);  
 });
 
 test('Fretboard event handlers', t => {

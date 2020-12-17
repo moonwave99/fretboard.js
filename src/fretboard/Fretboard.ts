@@ -22,7 +22,7 @@ import { parseChord } from '../chords/chords';
 import {
   MIDDLE_FRET,
   THROTTLE_INTERVAL,
-  DEFAULT_GUITAR_TUNING,
+  GUITAR_TUNINGS,
   DEFAULT_COLORS,
   DEFAULT_DIMENSIONS,
   DEFAULT_FRET_COUNT,
@@ -52,7 +52,7 @@ type FretboardHandler = (position: Position) => void;
 
 export const defaultOptions = {
   el: '#fretboard',
-  tuning: DEFAULT_GUITAR_TUNING,
+  tuning: GUITAR_TUNINGS.default,
   stringCount: 6,
   stringWidth: DEFAULT_DIMENSIONS.line,
   stringColor: DEFAULT_COLORS.line,
@@ -419,6 +419,10 @@ export class Fretboard {
     box?: string | number;
     system?: Systems;
   }): Fretboard {
+    if (system && this.options.tuning.toString() !== GUITAR_TUNINGS.default.toString()) {
+      console.warn('Selected scale system works for standard tuning. Wrong notes may be highlighted.');
+    }
+
     let systemGenerator;
     switch (system) {
       case Systems.pentatonicMinor:

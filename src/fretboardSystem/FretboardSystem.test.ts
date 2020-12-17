@@ -2,7 +2,7 @@ import test from 'ava';
 
 import { FretboardSystem } from './FretboardSystem';
 import {
-    DEFAULT_GUITAR_TUNING,
+    GUITAR_TUNINGS,
     DEFAULT_FRET_COUNT
 } from '../constants';
 
@@ -11,7 +11,7 @@ import { pentatonicMinorSystem } from './systems/systems';
 test('FretboardSystem - constructor with default options', t => {
     const system = new FretboardSystem();
     t.is(system instanceof FretboardSystem, true);
-    t.is(system.getTuning(), DEFAULT_GUITAR_TUNING);
+    t.is(system.getTuning(), GUITAR_TUNINGS.default);
     t.is(system.getFretCount(), DEFAULT_FRET_COUNT);
 });
 

@@ -12,3 +12,5 @@ export {
 } from './scales/tools';
 
 export { Systems } from './fretboardSystem/systems/systems';
+
+export { GUITAR_TUNINGS } from './constants';

@@ -1,6 +1,12 @@
 import { chroma as getChroma } from '@tonaljs/note';
 import { Position } from '../../fretboard/Fretboard';
 
+export enum Systems {
+    pentatonicMinor = 'pentatonicMinor',
+    pentatonicMajor = 'pentatonicMajor',
+    CAGED = 'CAGED'
+}
+
 type BoxBounds = [number, number];
 
 type PentatonicScaleDefinition = {
@@ -112,7 +118,7 @@ function pentatonic({
     });
 }
 
-export function pentatonicMinor({ box, ...params }: SystemParams): (p: Position) => boolean {
+export function pentatonicMinorSystem({ box, ...params }: SystemParams): (p: Position) => boolean {
     const bounds = pentatonic({
         box: +box,
         ...params,
@@ -121,7 +127,7 @@ export function pentatonicMinor({ box, ...params }: SystemParams): (p: Position)
     return (position: Position): boolean => isPositionInSystem(position, bounds);
 }
 
-export function pentatonicMajor({ box, ...params }: SystemParams): (p: Position) => boolean {
+export function pentatonicMajorSystem({ box, ...params }: SystemParams): (p: Position) => boolean {
     const bounds = pentatonic({
         box: +box,
         ...params,

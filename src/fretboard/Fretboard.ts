@@ -19,8 +19,26 @@ import {
 
 import { parseChord } from '../chords/chords';
 
-const MIDDLE_FRET = 11;
-const THROTTLE_INTERVAL = 50;
+import {
+  MIDDLE_FRET,
+  THROTTLE_INTERVAL,
+  DEFAULT_GUITAR_TUNING,
+  DEFAULT_COLORS,
+  DEFAULT_DIMENSIONS,
+  DEFAULT_FRET_COUNT,
+  DEFAULT_FONT_FAMILY,
+  DEFAULT_FONT_SIZE
+} from '../constants';
+
+import { FretboardSystem } from '../fretboardSystem/FretboardSystem';
+import {
+  Systems,
+  pentatonicMinorSystem,
+  pentatonicMajorSystem,
+  CAGEDSystem
+} from '../fretboardSystem/systems/systems';
+
+export type Tuning = string[];
 
 export type Position = {
   string: number;
@@ -34,48 +52,50 @@ type FretboardHandler = (position: Position) => void;
 
 export const defaultOptions = {
   el: '#fretboard',
+  tuning: DEFAULT_GUITAR_TUNING,
   stringCount: 6,
-  stringWidth: 1,
-  stringColor: '#666',
-  fretCount: 15,
-  fretWidth: 1,
-  fretColor: '#666',
-  nutWidth: 7,
-  nutColor: '#666',
-  middleFretColor: 'red',
-  middleFretWidth: 3,
+  stringWidth: DEFAULT_DIMENSIONS.line,
+  stringColor: DEFAULT_COLORS.line,
+  fretCount: DEFAULT_FRET_COUNT,
+  fretWidth: DEFAULT_DIMENSIONS.line,
+  fretColor: DEFAULT_COLORS.line,
+  nutWidth: DEFAULT_DIMENSIONS.nut,
+  nutColor: DEFAULT_COLORS.line,
+  middleFretColor: DEFAULT_COLORS.highlight,
+  middleFretWidth: 3 * DEFAULT_DIMENSIONS.line,
   scaleFrets: true,
   crop: false,
   fretLeftPadding: 0,
-  topPadding: 20,
-  bottomPadding: 15,
-  leftPadding: 20,
-  rightPadding: 20,
-  height: 150,
-  width: 960,
-  dotSize: 20,
-  dotStrokeColor: 'black',
-  dotStrokeWidth: 2,
-  dotTextSize: 12,
-  dotFill: 'white',
+  topPadding: DEFAULT_DIMENSIONS.unit,
+  bottomPadding: DEFAULT_DIMENSIONS.unit * .75,
+  leftPadding: DEFAULT_DIMENSIONS.unit,
+  rightPadding: DEFAULT_DIMENSIONS.unit,
+  height: DEFAULT_DIMENSIONS.height,
+  width: DEFAULT_DIMENSIONS.width,
+  dotSize: DEFAULT_DIMENSIONS.unit,
+  dotStrokeColor: DEFAULT_COLORS.dotStroke,
+  dotStrokeWidth: 2 * DEFAULT_DIMENSIONS.line,
+  dotTextSize: DEFAULT_FONT_SIZE,
+  dotFill: DEFAULT_COLORS.dotFill,
   dotText: (): string => '',
   disabledOpacity: 0.9,
   showFretNumbers: true,
-  fretNumbersHeight: 40,
-  fretNumbersMargin: 20,
-  fretNumbersColor: '#00000099',
-  font: 'Arial'
+  fretNumbersHeight: 2 * DEFAULT_DIMENSIONS.unit,
+  fretNumbersMargin: DEFAULT_DIMENSIONS.unit,
+  fretNumbersColor: DEFAULT_COLORS.line,
+  font: DEFAULT_FONT_FAMILY
 };
 
 export const defaultMuteStringsParams = {
   strings: [] as number[],
   width: 15,
   strokeWidth: 5,
-  stroke: '#333'
+  stroke: DEFAULT_COLORS.mutedString
 };
 
 export type Options = {
   el: string | BaseType;
+  tuning: Tuning;
   stringCount: number;
   stringWidth: number | [number];
   stringColor: string;
@@ -165,6 +185,13 @@ function generatePositions({
   return positions;
 }
 
+function validateOptions(options: Options): void {
+  const { stringCount, tuning } = options;
+  if (stringCount !== tuning.length) {
+    throw new Error(`stringCount (${stringCount}) and tuning size (${tuning.length}) do not match`);
+  }
+}
+
 export class Fretboard {
   options: Options;
   strings: number[];
@@ -174,10 +201,11 @@ export class Fretboard {
   wrapper: Selection<BaseType, unknown, HTMLElement, unknown>;
   private baseRendered: boolean;
   private hoverDiv: HTMLDivElement;
-  private handlers: Record<string, (event: MouseEvent) => void>;
+  private handlers: Record<string, (event: MouseEvent) => void> = {};
+  private system: FretboardSystem;
   constructor (options = {}) {
-    this.handlers = {};
     this.options = Object.assign({}, defaultOptions, options);
+    validateOptions(this.options);    
     const {
       el,
       height,
@@ -187,12 +215,18 @@ export class Fretboard {
       stringCount,
       stringWidth,
       fretCount,
-      scaleFrets
+      scaleFrets,
+      tuning
     } = this.options;
 
     this.strings = generateStrings({ stringCount, height, stringWidth });
     this.frets = generateFrets({ fretCount, scaleFrets });
     const { totalWidth, totalHeight } = getDimensions(this.options);
+
+    this.system = new FretboardSystem({
+      fretCount,
+      tuning
+    });
 
     this.positions = generatePositions({
       ...this,
@@ -371,6 +405,39 @@ export class Fretboard {
     this.muteStrings({
       strings: mutedStrings
     });
+    return this;
+  }
+
+  renderScale({
+    scale,
+    root,
+    system,
+    box
+  }: {
+    scale: string;
+    root: string;
+    box?: string | number;
+    system?: Systems;
+  }): Fretboard {
+    let systemGenerator;
+    switch (system) {
+      case Systems.pentatonicMinor:
+        systemGenerator = pentatonicMinorSystem;
+        break;
+      case Systems.pentatonicMajor:
+        systemGenerator = pentatonicMajorSystem;
+        break;
+      case Systems.CAGED:
+        systemGenerator = CAGEDSystem;
+        break;
+    }
+    this.render(
+      this.system.getScale({
+        name: `${root} ${scale}`,
+        system: system ? systemGenerator({ root, box }) : null
+      })
+    );
+
     return this;
   }
 

@@ -1,29 +1,29 @@
 import test from 'ava';
 
+import { FretboardSystem } from './FretboardSystem';
 import {
-    FretboardSystem,
     DEFAULT_GUITAR_TUNING,
-    DEFAULT_FRET_COUNT,
-} from './FretboardSystem';
+    DEFAULT_FRET_COUNT
+} from '../constants';
 
-import { pentatonicMinor } from './systems/systems';
+import { pentatonicMinorSystem } from './systems/systems';
 
 test('FretboardSystem - constructor with default options', t => {
     const system = new FretboardSystem();
     t.is(system instanceof FretboardSystem, true);
     t.is(system.getTuning(), DEFAULT_GUITAR_TUNING);
-    t.is(system.getFrets(), DEFAULT_FRET_COUNT);
+    t.is(system.getFretCount(), DEFAULT_FRET_COUNT);
 });
 
 test('FretboardSystem - constructor with custom options', t => {
     const customParams = {
         tuning: ['G2', 'B2', 'D3', 'G3', 'B3', 'D4'],
-        frets: 12
+        fretCount: 12
     };
     const system = new FretboardSystem(customParams);
     t.is(system instanceof FretboardSystem, true);
     t.is(system.getTuning(), customParams.tuning);
-    t.is(system.getFrets(), customParams.frets);
+    t.is(system.getFretCount(), customParams.fretCount);
 });
 
 test('FretboardSystem - getScale()', t => {
@@ -57,7 +57,7 @@ test('FretboardSystem - getScale() with system', t => {
     const system = new FretboardSystem();
     const scale = system.getScale({
         name: 'E minor pentatonic',
-        system: pentatonicMinor({
+        system: pentatonicMinorSystem({
             root: 'E',
             box: 1
         })
@@ -69,7 +69,7 @@ test('FretboardSystem - getScale() with system', t => {
 });
 
 test('FretboardSystem - getScale() - B#', t => {
-    const system = new FretboardSystem({ frets: 12 });
+    const system = new FretboardSystem({ fretCount: 12 });
     const scale = system.getScale({ name: 'B# major' });
     scale
         .map(({ note, octave }, index) => note === 'B#' ?  { octave, index }: null)
@@ -84,7 +84,7 @@ test('FretboardSystem - getScale() - B#', t => {
 });
 
 test('FretboardSystem - getScale() - Cb', t => {
-    const system = new FretboardSystem({ frets: 12 });
+    const system = new FretboardSystem({ fretCount: 12 });
     const scale = system.getScale({ name: 'Cb major' });
     scale
         .map(({ note, octave }, index) => note === 'Cb' ? { octave, index } : null)

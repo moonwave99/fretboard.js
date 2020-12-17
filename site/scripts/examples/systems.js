@@ -1,13 +1,7 @@
-import {
-  Fretboard,
-  FretboardSystem,
-  pentatonicMinor,
-  CAGEDSystem,
-} from "../../../dist/fretboard.esm.js";
+import { Fretboard, Systems} from "../../../dist/fretboard.esm.js";
 import { fretboardConfiguration, colors } from "../config.js";
 
 function pentatonicSystemExample() {
-  const system = new FretboardSystem();
   const fretboard = new Fretboard({
     ...fretboardConfiguration,
     el: "#fretboard-systems-pentatonic-minor",
@@ -23,34 +17,27 @@ function pentatonicSystemExample() {
   const mode = "minor";
   const box = 1;
 
-  fretboard.render(
-    system.getScale({
-      name: `${root} ${mode} pentatonic`,
-      system: pentatonicMinor({
-        root,
-        box,
-      }),
-    })
-  );
+  fretboard.renderScale({
+    scale: `${mode} pentatonic`,
+    root,
+    box,
+    system: Systems.pentatonicMinor,
+  });
 
   document.querySelectorAll("[data-pentatonic-box").forEach((el) => {
     el.addEventListener("click", () => {
       const { pentatonicBox } = el.dataset;
-      fretboard.render(
-        system.getScale({
-          name: `${root} ${mode} pentatonic`,
-          system: pentatonicMinor({
-            root,
-            box: pentatonicBox,
-          }),
-        })
-      );
+      fretboard.renderScale({
+        scale: `${mode} pentatonic`,
+        root,
+        box: pentatonicBox,
+        system: Systems.pentatonicMinor,
+      });
     });
   });
 }
 
 function CAGEDSystemExample() {
-  const system = new FretboardSystem();
   const fretboard = new Fretboard({
     ...fretboardConfiguration,
     el: "#fretboard-systems-caged",
@@ -67,28 +54,22 @@ function CAGEDSystemExample() {
   const mode = "major";
   const box = 'C';
 
-  fretboard.render(
-    system.getScale({
-      name: `${root} ${mode}`,
-      system: CAGEDSystem({
-        root,
-        box,
-      }),
-    })
-  );
+  fretboard.renderScale({
+    scale: `${mode}`,
+    root,
+    box,
+    system: Systems.CAGED,
+  });
 
   document.querySelectorAll("[data-caged-box").forEach((el) => {
     el.addEventListener("click", () => {
       const { cagedBox } = el.dataset;
-      fretboard.render(
-        system.getScale({
-          name: `${root} ${mode}`,
-          system: CAGEDSystem({
-            root,
-            box: cagedBox,
-          }),
-        })
-      );
+      fretboard.renderScale({
+        scale: `${mode}`,
+        root,
+        box: cagedBox,
+        system: Systems.CAGED,
+      });
     });
   });
 }

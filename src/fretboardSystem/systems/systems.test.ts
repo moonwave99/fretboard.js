@@ -1,13 +1,13 @@
 import test from 'ava';
 
 import {
-    pentatonicMinor,
-    pentatonicMajor,
+    pentatonicMinorSystem,
+    pentatonicMajorSystem,
     CAGEDSystem
 } from './systems';
 
 test('pentatonic minor system', t => {
-    const system = pentatonicMinor({
+    const system = pentatonicMinorSystem({
         root: 'E',
         box: 1
     });
@@ -16,7 +16,7 @@ test('pentatonic minor system', t => {
 });
 
 test('pentatonic major system', t => {
-    const system = pentatonicMajor({
+    const system = pentatonicMajorSystem({
         root: 'G',
         box: 1
     });
@@ -43,7 +43,7 @@ test('CAGED system - box not found', t => {
 });
 
 test('pentatonic system - box not found', t => {
-    const error = t.throws(() => pentatonicMinor({
+    const error = t.throws(() => pentatonicMinorSystem({
         root: 'E',
         box: 6
     }));

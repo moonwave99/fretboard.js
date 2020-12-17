@@ -1,7 +1,12 @@
 import { get as getNote, chroma as getChroma } from '@tonaljs/note';
 import { get as getScale } from '@tonaljs/scale';
 
-import { Position } from '../fretboard/Fretboard';
+import { Position, Tuning } from '../fretboard/Fretboard';
+
+import {
+    DEFAULT_GUITAR_TUNING,
+    DEFAULT_FRET_COUNT
+} from '../constants';
 
 export type FretboardPosition = {
     string: number;
@@ -9,18 +14,14 @@ export type FretboardPosition = {
     chroma: number;
 }
 
-export type Tuning = string[];
-export const DEFAULT_GUITAR_TUNING = ['E2', 'A2', 'D3', 'G3', 'B3', 'E4'];
-export const DEFAULT_FRET_COUNT = 15;
-
 type FretboardSystemParams = {
     tuning?: Tuning;
-    frets?: number;
+    fretCount?: number;
 }
 
 export class FretboardSystem {
     private tuning: Tuning = DEFAULT_GUITAR_TUNING;
-    private frets: number = DEFAULT_FRET_COUNT;
+    private fretCount: number = DEFAULT_FRET_COUNT;
     private positions: FretboardPosition[];
     constructor(params?: FretboardSystemParams) {
         Object.assign(this, params);
@@ -29,8 +30,8 @@ export class FretboardSystem {
     getTuning(): Tuning {
         return this.tuning;
     }
-    getFrets(): number {
-        return this.frets;
+    getFretCount(): number {
+        return this.fretCount;
     }
     getScale({
         name,
@@ -62,14 +63,14 @@ export class FretboardSystem {
             }));
     }    
     private populate(): void {
-        const { tuning, frets } = this;
+        const { tuning, fretCount } = this;
         this.positions = tuning
             .slice().reverse()
             .reduce((memo, note, index) => {
                 const string = index + 1;
                 const { chroma } = getNote(note);
                 const filledString = Array.from(
-                    { length: frets + 1 },
+                    { length: fretCount + 1 },
                     (_, fret) => ({
                         string,
                         fret,

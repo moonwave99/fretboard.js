@@ -177,20 +177,14 @@ function getBoxPositions({
     while (delta < -1) {
         delta += 12;
     }
-    return box.reduce((memo, item, string) => {
-        return [
-            ...memo,
-            ...item.split('').map((x, i) => {
-                if (x === '-') {
-                    return;
-                }
-                return {
-                    string: string + 1,
-                    fret: i + delta
-                };
-            }).filter(x => !!x)
-        ];
-    }, []);
+    return box.reduce((memo, item, string) => ([
+        ...memo,
+        ...item.split('').map(
+            (x, i) => x !== '-'
+                ? { string: string + 1, fret: i + delta }
+                : null
+            ).filter(x => !!x)
+    ]), []);
 }
 
 function getModeOffset(mode: number): number {
@@ -202,10 +196,15 @@ function isPositionInSystem({ fret, string }: Position, systemPositions: Positio
 }
 
 function getPentatonicBoxIndex(box: number, mode: number): number {
-    if (mode === 5) {
+    if (mode === DEFAULT_PENTATONIC_MODE) {
         return box - 1;
     }
     return box % 5;
+}
+
+export function getModeFromScale(scale: string): number {
+    const { modeNum } = getMode(scale.replace('pentatonic', '').trim());
+    return modeNum;
 }
 
 export function pentatonicSystem({ root, box, mode = DEFAULT_PENTATONIC_MODE }: SystemParams): IncludeFunction {
@@ -238,9 +237,4 @@ export function ThreeNotesPerStringSystem({ root, box, mode }: SystemParams): In
     }
     const positions = getBoxPositions({ root, modeOffset: getModeOffset(mode), ...foundBox });
     return (position: Position): boolean => isPositionInSystem(position, positions);
-}
-
-export function getModeFromScale(scale: string): number {
-    const { modeNum } = getMode(scale.replace('pentatonic', '').trim());
-    return modeNum;
 }

@@ -33,8 +33,7 @@ import {
 import { FretboardSystem } from '../fretboardSystem/FretboardSystem';
 import {
   Systems,
-  pentatonicMinorSystem,
-  pentatonicMajorSystem,
+  pentatonicSystem,
   CAGEDSystem,
   ThreeNotesPerStringSystem,
   getModeFromScale
@@ -427,11 +426,8 @@ export class Fretboard {
 
     let systemGenerator;
     switch (system) {
-      case Systems.pentatonicMinor:
-        systemGenerator = pentatonicMinorSystem;
-        break;
-      case Systems.pentatonicMajor:
-        systemGenerator = pentatonicMajorSystem;
+      case Systems.pentatonic:
+        systemGenerator = pentatonicSystem;
         break;
       case Systems.CAGED:
         systemGenerator = CAGEDSystem;

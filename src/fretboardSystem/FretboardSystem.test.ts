@@ -6,7 +6,7 @@ import {
     DEFAULT_FRET_COUNT
 } from '../constants';
 
-import { pentatonicMinorSystem } from './systems/systems';
+import { pentatonicSystem } from './systems/systems';
 
 test('FretboardSystem - constructor with default options', t => {
     const system = new FretboardSystem();
@@ -57,7 +57,7 @@ test('FretboardSystem - getScale() with system', t => {
     const system = new FretboardSystem();
     const scale = system.getScale({
         name: 'E minor pentatonic',
-        system: pentatonicMinorSystem({
+        system: pentatonicSystem({
             root: 'E',
             box: 1
         })

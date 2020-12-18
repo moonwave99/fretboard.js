@@ -3,24 +3,15 @@ import { get as getMode } from '@tonaljs/mode';
 import { Position } from '../../fretboard/Fretboard';
 
 export enum Systems {
-    pentatonicMinor = 'pentatonicMinor',
-    pentatonicMajor = 'pentatonicMajor',
+    pentatonic = 'pentatonic',
     CAGED = 'CAGED',
     TNPS = 'TNPS'
 }
 
 export type IncludeFunction = (p: Position) => boolean;
 
-type BoxBounds = [number, number];
-
-type PentatonicScaleDefinition = {
-    boxes: BoxBounds[];
-    mode: 'minor'|'major';
-    baseChroma: number;
-}
-
-type CAGEDScaleDefinition = {
-    box: BoxBounds;
+type ScaleDefinition = {
+    box: string[];
     baseChroma: number;
 }
 
@@ -30,139 +21,68 @@ type SystemParams = {
     mode?: number;
 }
 
-const CAGEDDefinition: { [key: string]: CAGEDScaleDefinition } = {
-    E: {
-        box: [7, 11],
+const DEFAULT_PENTATONIC_MODE = 5;
+const CAGED_ORDER = 'GEDCA';
+
+const CAGEDDefinition: ScaleDefinition[] = [
+    {
+        box: [
+            '-6-71',
+            '-34-5',
+            '71-2-',
+            '-5-6-',
+            '-2-34',
+            '-6-71'
+        ],
+        baseChroma: getChroma('G#')
+    },        
+    {
+        box: [
+            '71-2',
+            '-5-6',
+            '2-34',
+            '6-71',
+            '34-5',
+            '71-2'
+        ],
+        baseChroma: getChroma('E#')
+    },    
+    {
+        box: [
+            '-2-34',
+            '-6-71',
+            '34-5',
+            '71-2-',
+            '-5-6-',
+            '-2-34'
+        ],
+        baseChroma: getChroma('D#')
+    },    
+    {
+        box: [
+            '34-5',
+            '71-2',
+            '5-6-',
+            '2-34',
+            '6-71',
+            '34-5'
+        ],
         baseChroma: getChroma('C')
-    },
-    A: {
-        box: [2, 6],
-        baseChroma: getChroma('C')
-    },
-    G: {
-        box: [4, 8],
-        baseChroma: getChroma('C')
-    },
-    C: {
-        box: [0, 3],
-        baseChroma: getChroma('C')
-    },
-    D: {
-        box: [9, 13],
-        baseChroma: getChroma('C')
+    },    
+    {
+        box: [
+            '-5-6-',
+            '-2-34',
+            '6-71-',
+            '34-5-',
+            '71-2-',
+            '-5-6-'
+        ],
+        baseChroma: getChroma('A#')
     }
-}
+]
 
-const pentatonicMinorDefinition: PentatonicScaleDefinition = {
-    boxes: [
-        [0, 3],
-        [2, 5],
-        [4, 8],
-        [7, 10],
-        [9, 12]        
-    ],
-    mode: 'minor',
-    baseChroma: getChroma('E')
-}
-
-const pentatonicMajorDefinition: PentatonicScaleDefinition = {
-    boxes: [
-        [2, 5],
-        [4, 8],
-        [7, 10],
-        [9, 12],
-        [0, 3],        
-    ],
-    mode: 'major',
-    baseChroma: getChroma('G')
-}
-
-function getModeOffset(mode: number): number {
-    return getChroma('CDEFGAB'.split('')[mode]);
-}
-
-function isPositionInSystem({ fret }: Position, bounds: BoxBounds): boolean {
-    return fret >= bounds[0] && fret <= bounds[1];
-}
-
-function getBoxBounds({
-    root,
-    box,
-    baseChroma
-}: {
-    root: string;
-    box: BoxBounds;
-    baseChroma: number;
-}): BoxBounds {
-    const delta = (getChroma(root) - baseChroma + 12) % 12;
-    const [lowerBound, upperBound] = box;
-    const increment = lowerBound + delta >= 12 ? delta - 12 : delta;
-    return [
-        lowerBound + increment,
-        upperBound + increment
-    ];
-}
-
-function pentatonic({
-    root,
-    box,
-    mode,
-    boxes,
-    baseChroma
-}: {
-    root: string;
-    box: number;
-    mode: string;
-    boxes: BoxBounds[];
-    baseChroma: number;
-}): BoxBounds {
-    const foundBox = boxes[box - 1];
-    if (!foundBox) {
-        throw new Error(`Cannot find box ${box} in the ${root} ${mode} pentatonic scale system`);
-    }
-    return getBoxBounds({
-        root,
-        box: foundBox,
-        baseChroma
-    });
-}
-
-export function pentatonicMinorSystem({ box, ...params }: SystemParams): IncludeFunction {
-    const bounds = pentatonic({
-        box: +box,
-        ...params,
-        ...pentatonicMinorDefinition
-    });
-    return (position: Position): boolean => isPositionInSystem(position, bounds);
-}
-
-export function pentatonicMajorSystem({ box, ...params }: SystemParams): IncludeFunction {
-    const bounds = pentatonic({
-        box: +box,
-        ...params,
-        ...pentatonicMajorDefinition
-    });
-    return (position: Position): boolean => isPositionInSystem(position, bounds);
-}
-
-export function CAGEDSystem({ root, box }: SystemParams): IncludeFunction {
-    const foundBox = CAGEDDefinition[box];
-    if (!foundBox) {
-        throw new Error(`Cannot find box ${box} in the CAGED system`);
-    }
-    const bounds = getBoxBounds({
-        root,
-        ...foundBox
-    });
-    return (position: Position): boolean => isPositionInSystem(position, bounds);
-}
-
-type TNPSScaleDefinition = {
-    box: string[];
-    baseChroma: number;
-};
-
-const TNPSDefinition: TNPSScaleDefinition[] = [
+const TNPSDefinition: ScaleDefinition[] = [
     {
         box: [
             '--2-34',
@@ -239,13 +159,13 @@ const TNPSDefinition: TNPSScaleDefinition[] = [
             '71-2--'
         ],
         baseChroma: getChroma('F')
-    }                      
+    }
 ];
 
-function getTNPSPositions({
+function getBoxPositions({
     root,
     box,
-    modeOffset,
+    modeOffset = 0,
     baseChroma
 }: {
     root: string;
@@ -253,8 +173,10 @@ function getTNPSPositions({
     modeOffset: number;
     baseChroma: number;
 }): Position[] {
-    const delta = (getChroma(root) - baseChroma - modeOffset + 12) % 12;
-
+    let delta = getChroma(root) - baseChroma - modeOffset;
+    while (delta < -1) {
+        delta += 12;
+    }
     return box.reduce((memo, item, string) => {
         return [
             ...memo,
@@ -271,16 +193,54 @@ function getTNPSPositions({
     }, []);
 }
 
+function getModeOffset(mode: number): number {
+    return getChroma('CDEFGAB'.split('')[mode]);
+}
+
+function isPositionInSystem({ fret, string }: Position, systemPositions: Position[]): boolean {
+    return !!systemPositions.find(x => x.fret === fret && x.string === string);
+}
+
+function getPentatonicBoxIndex(box: number, mode: number): number {
+    if (mode === 5) {
+        return box - 1;
+    }
+    return box % 5;
+}
+
+export function pentatonicSystem({ root, box, mode = DEFAULT_PENTATONIC_MODE }: SystemParams): IncludeFunction {
+    const foundBox = CAGEDDefinition[getPentatonicBoxIndex(+box, mode)];
+    if (!foundBox) {
+        throw new Error(`Cannot find box ${box} in the ${root} pentatonic scale system`);
+    }    
+    const positions = getBoxPositions({
+        root,
+        modeOffset: getModeOffset(mode),
+        baseChroma: foundBox.baseChroma,
+        box: foundBox.box.slice().map(x => x.replace('4', '-').replace('7', '-'))
+    });
+    return (position: Position): boolean => isPositionInSystem(position, positions);
+}
+
+export function CAGEDSystem({ root, box, mode }: SystemParams): IncludeFunction {
+    const foundBox = CAGEDDefinition[CAGED_ORDER.indexOf(`${box}`)];
+    if (!foundBox) {
+        throw new Error(`Cannot find box ${box} in the CAGED system`);
+    }
+    const positions = getBoxPositions({ root, modeOffset: getModeOffset(mode), ...foundBox });
+    return (position: Position): boolean => isPositionInSystem(position, positions);
+}
+
 export function ThreeNotesPerStringSystem({ root, box, mode }: SystemParams): IncludeFunction {
     const foundBox = TNPSDefinition[+box - 1];
     if (!foundBox) {
         throw new Error(`Cannot find box ${box} in the TPNS system`);
     }
-    const positions = getTNPSPositions({ root, modeOffset: getModeOffset(mode), ...foundBox });
-    return ({ fret, string }: Position): boolean => !!positions.find(x => x.fret === fret && x.string === string);
+    const positions = getBoxPositions({ root, modeOffset: getModeOffset(mode), ...foundBox });
+    return (position: Position): boolean => isPositionInSystem(position, positions);
 }
 
 export function getModeFromScale(scale: string): number {
-    const { modeNum } = getMode(scale);
+    const { modeNum } = getMode(scale.replace('pentatonic', '').trim());
     return modeNum;
 }

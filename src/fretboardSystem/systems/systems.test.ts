@@ -1,28 +1,19 @@
 import test from 'ava';
 
 import {
-    pentatonicMinorSystem,
-    pentatonicMajorSystem,
+    pentatonicSystem,
     CAGEDSystem,
     ThreeNotesPerStringSystem
 } from './systems';
 
-test('pentatonic minor system', t => {
-    const system = pentatonicMinorSystem({
+test('pentatonic system', t => {
+    const system = pentatonicSystem({
         root: 'E',
-        box: 1
+        box: 1,
+        mode: 5
     });
     t.is(system({ string: 6, fret: 3 }), true);
     t.is(system({ string: 6, fret: 4 }), false);
-});
-
-test('pentatonic major system', t => {
-    const system = pentatonicMajorSystem({
-        root: 'G',
-        box: 1
-    });
-    t.is(system({ string: 6, fret: 3 }), true);
-    t.is(system({ string: 3, fret: 0 }), false);
 });
 
 test('CAGED system', t => {
@@ -44,12 +35,12 @@ test('CAGED system - box not found', t => {
 });
 
 test('pentatonic system - box not found', t => {
-    const error = t.throws(() => pentatonicMinorSystem({
+    const error = t.throws(() => pentatonicSystem({
         root: 'E',
         box: 6
     }));
 
-    t.is(error.message, 'Cannot find box 6 in the E minor pentatonic scale system');
+    t.is(error.message, 'Cannot find box 6 in the E pentatonic scale system');
 });
 
 test('three notes per string system - box not found', t => {

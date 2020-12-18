@@ -21,7 +21,7 @@ function pentatonicSystemExample() {
     scale: `${mode} pentatonic`,
     root,
     box,
-    system: Systems.pentatonicMinor,
+    system: Systems.pentatonic,
   });
 
   document.querySelectorAll("[data-pentatonic-box").forEach((el) => {
@@ -31,7 +31,7 @@ function pentatonicSystemExample() {
         scale: `${mode} pentatonic`,
         root,
         box: pentatonicBox,
-        system: Systems.pentatonicMinor,
+        system: Systems.pentatonic,
       });
     });
   });

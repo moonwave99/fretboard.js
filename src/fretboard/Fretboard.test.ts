@@ -288,7 +288,7 @@ test('Fretboard renderScale()', t => {
   });
 });
 
-test('Fretboard renderScale() - pentatonic minor', t => {
+test('Fretboard renderScale() - pentatonic', t => {
   const fretboard = new Fretboard({
     dotText: ({ note }: Position): string => note
   });
@@ -296,31 +296,13 @@ test('Fretboard renderScale() - pentatonic minor', t => {
     scale: 'minor pentatonic',
     root: 'E',
     box: 1,
-    system: Systems.pentatonicMinor
+    system: Systems.pentatonic
   });
 
   const svg = document.querySelector('#fretboard svg');
 
   svg.querySelectorAll('.dots .dot').forEach(dot => {
     t.is('EGABD'.split('').indexOf(dot.textContent) > -1, true);
-  });
-});
-
-test('Fretboard renderScale() - pentatonic major', t => {
-  const fretboard = new Fretboard({
-    dotText: ({ note }: Position): string => note
-  });
-  fretboard.renderScale({
-    scale: 'major pentatonic',
-    root: 'C',
-    box: 1,
-    system: Systems.pentatonicMajor
-  });
-
-  const svg = document.querySelector('#fretboard svg');
-
-  svg.querySelectorAll('.dots .dot').forEach(dot => {
-    t.is('CDEGA'.split('').indexOf(dot.textContent) > -1, true);
   });
 });
 

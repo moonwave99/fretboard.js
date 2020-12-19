@@ -186,6 +186,51 @@ fretboard
 })
 ```
 
+### renderScale()
+
+```typescript
+renderScale({
+  scale,
+  root,
+  system,
+  box
+ }: {
+  scale: string;
+  root: string;
+  box?: string | number;
+  system?: Systems;
+}): Fretboard
+```
+
+Populates the fretboard with all the notes of the given scale, e.g.:
+
+```javascript
+const fretboard = new Fretboard();
+
+// shows where all the C,D,E,F,G,A,B are across all strings
+fretboard.renderScale({
+  scale: 'major',
+  root: 'C'
+});
+```
+
+If `system` and `box` params are passed, the selected box of the corresponding system (pentatonic, CAGED, three notes per string) is highlighted:
+
+```javascript
+import { Fretboard, Systems } from '@moonwave99/fretboard.js';
+
+const fretboard = new Fretboard();
+
+// shows where all the A,B,C#,D,E,F#,G# are across all strings,
+// highlighting the C box of the CAGED system (between frets 9 and 12, that is)
+fretboard.renderScale({
+  scale: 'major',
+  root: 'A',
+  system: Systems.CAGED,
+  box: 'C'
+});
+```
+
 ### renderChord()
 
 ```typescript

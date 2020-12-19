@@ -55,7 +55,7 @@ function connectedCagedExample({
     ...fretboardConfiguration,
     fretCount: 18
   });
-  fretboard.render(connectedDots);
+  fretboard.setDots(connectedDots).render();
 }
 
 function connectedPentatonicExample({
@@ -82,7 +82,7 @@ function connectedPentatonicExample({
     ...fretboardConfiguration,
     fretCount: 18
   });
-  fretboard.render(commonDots);
+  fretboard.setDots(commonDots).render();
 }
 
 function cagedExample(boxes = []) {
@@ -94,9 +94,7 @@ function cagedExample(boxes = []) {
       ...fretboardConfiguration,
       fretCount: 17
     });
-    fretBoard.render(
-      CAGED({ box, root })
-    );
+    fretBoard.setDots(CAGED({ box, root })).render();
   });
 }
 
@@ -113,7 +111,7 @@ function TNPStringExample() {
     ...fretboardConfiguration,
     fretCount: 18
   });
-  fretboard.render(box);
+  fretboard.setDots(box).render();
 }
 
 function pentatonicExample(boxes = []) {
@@ -124,9 +122,9 @@ function pentatonicExample(boxes = []) {
       dotFill: ({ interval }) => interval === '1P' ? colors.intervals[interval] : colors.defaultFill,
       ...fretboardConfiguration
     });
-    fretBoard.render(
-      pentatonic({ box, root, mode: 'major' }),
-    );
+    fretBoard.setDots(
+      pentatonic({ box, root, mode: "major" })
+    ).render();
   });
 }
 

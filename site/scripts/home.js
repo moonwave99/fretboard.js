@@ -13,7 +13,10 @@ export default function home() {
     el: '#fretboard-api',
     ...fretboardConfiguration
   });
-  fretboard.render(box);
+  fretboard.renderScale({
+    scale: 'major',
+    root: 'C'
+  });
 
   document.querySelectorAll('.api-actions button')
     .forEach((button) => {
@@ -27,7 +30,7 @@ export default function home() {
             break;
           case 'show-notes-with-octave':
             fretboard.style({
-              text: ({ noteWithOctave }) => noteWithOctave,
+              text: ({ note, octave }) => `${note}${octave}`,
               fontSize: 10,
               fill: ({ octave }) => colors.octaves[octave]
             });

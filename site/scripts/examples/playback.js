@@ -15,10 +15,10 @@ import '../../styles/playback.scss';
 
 document.addEventListener('DOMContentLoaded', () => {
   const fretboard = new Fretboard(fretboardConfiguration)
-    .render(CAGED({
+    .setDots(CAGED({
       root: 'C3',
       box: 'E'
-    }));
+    })).render();
 
   const visualObj = ABCJS.renderAbc('notation', diatonicArpeggios, {
     program: 25,

@@ -35,7 +35,7 @@ test.beforeEach(() => {
 
 test('Fretboard with default options', t => {
   const fretboard = new Fretboard();
-  fretboard.render([]);
+  fretboard.render();
 
   const svg = document.querySelector('#fretboard svg');
 
@@ -60,7 +60,7 @@ test('Fretboard with existing DOM element', t => {
   el.id = 'fretboard';
   document.body.append(el);
   const fretboard = new Fretboard({ el });
-  fretboard.render([]);
+  fretboard.render();
 
   const svg = document.querySelector('#fretboard svg');
 
@@ -88,7 +88,7 @@ test('Fretboard with linear frets', t => {
   const fretboard = new Fretboard({
     scaleFrets: false
   });
-  fretboard.render([]);
+  fretboard.render();
 
   const svg = document.querySelector('#fretboard svg');
 
@@ -102,7 +102,7 @@ test('Fretboard with linear frets', t => {
 test('Fretboard with dots', t => {
   const fretboard = new Fretboard();
   const dots = pentatonic({ box: 1, root: 'G2' });
-  fretboard.render(dots);
+  fretboard.setDots(dots).render();
 
   const svg = document.querySelector('#fretboard svg');
 
@@ -122,7 +122,7 @@ test('Fretboard with cropping', t => {
     crop: true
   });
   const dots = pentatonic({ box: 1, root: 'C3' });
-  fretboard.render(dots);
+  fretboard.setDots(dots).render();
 
   const svg = document.querySelector('#fretboard svg');
   t.truthy(svg);
@@ -137,7 +137,7 @@ test('Fretboard with disabled dots', t => {
   const fretboard = new Fretboard();
   const dots = pentatonic({ box: 1, root: 'G2' })
     .map((dot, i) => i < 3 ? { ...dot, disabled: true } : dot);
-  fretboard.render(dots);
+  fretboard.setDots(dots).render();
 
   const svg = document.querySelector('#fretboard svg');
 
@@ -147,19 +147,19 @@ test('Fretboard with disabled dots', t => {
 test('Fretboard render twice', t => {
   const fretboard = new Fretboard();
   const dots = pentatonic({ box: 1, root: 'G2' });
-  fretboard.render(dots);
+  fretboard.setDots(dots).render();
 
   const svg = document.querySelector('#fretboard svg');
 
   t.is(svg.querySelectorAll('.dots .dot').length, dots.length);
-  fretboard.render(dots);
+  fretboard.setDots(dots).render();
   t.is(svg.querySelectorAll('.dots .dot').length, dots.length);
 });
 
 test('Fretboard clear', t => {
   const fretboard = new Fretboard();
   const dots = pentatonic({ box: 1, root: 'G2' });
-  fretboard.render(dots);
+  fretboard.setDots(dots).render();
 
   const svg = document.querySelector('#fretboard svg');
 
@@ -171,7 +171,7 @@ test('Fretboard clear', t => {
 test('Fretboard style()', t => {
   const fretboard = new Fretboard();
   const dots = pentatonic({ box: 1, root: 'G2' });
-  fretboard.render(dots);
+  fretboard.setDots(dots).render();
   fretboard.style({
     filter: ({ note }) => note === 'G',
     text: ({ note }) => note,
@@ -194,7 +194,7 @@ test('Fretboard style()', t => {
 test('Fretboard style() no text', t => {
   const fretboard = new Fretboard();
   const dots = pentatonic({ box: 1, root: 'G2' });
-  fretboard.render(dots);
+  fretboard.setDots(dots).render();
   fretboard.style({
     filter: ({ note }) => note === 'G',
     fill: 'red'
@@ -209,7 +209,7 @@ test('Fretboard style() no text', t => {
 test('Fretboard style() no filter', t => {
   const fretboard = new Fretboard();
   const dots = pentatonic({ box: 1, root: 'G2' });
-  fretboard.render(dots);
+  fretboard.setDots(dots).render();
   fretboard.style({
     text: ({ note }) => note
   });
@@ -223,7 +223,7 @@ test('Fretboard style() no filter', t => {
 test('Fretboard style() filter shorthand', t => {
   const fretboard = new Fretboard();
   const dots = pentatonic({ box: 1, root: 'G2' });
-  fretboard.render(dots);
+  fretboard.setDots(dots).render();
   fretboard.style({
     filter: ({ note: 'G' }),
     text: ({ note }) => note
@@ -242,7 +242,7 @@ test('Fretboard style() filter shorthand', t => {
 
 test('Fretboard muteStrings()', t => {
   const fretboard = new Fretboard();
-  fretboard.render([]);
+  fretboard.render();
   fretboard.muteStrings({
     strings: [6, 1]
   });
@@ -357,7 +357,7 @@ test('Fretboard renderScale() - custom tuning warning', t => {
 
 test('Fretboard event handlers', t => {
   new Fretboard()
-    .render([])
+    .render()
     .on('click', (position: Position) => t.deepEqual(position, { string: 1, fret: 0 }));
   const hoverDiv = document.querySelector('#fretboard .hoverDiv');
   hoverDiv.dispatchEvent(new MouseEvent('click'));
@@ -368,7 +368,7 @@ test('Fretboard add new event listener', t => {
   let count = 0;
   const handler = (): void => { count++ };
   const fretboard = new Fretboard()
-    .render([])
+    .render()
     .on('click', handler);
   const hoverDiv = document.querySelector('#fretboard .hoverDiv');
   hoverDiv.dispatchEvent(new MouseEvent('click'));
@@ -383,7 +383,7 @@ test('Fretboard removeEventListeners', t => {
   let count = 0;
   const handler = (): void => { count++ };
   const fretboard = new Fretboard()
-    .render([])
+    .render()
     .on('click', handler);
   const hoverDiv = document.querySelector('#fretboard .hoverDiv');
   hoverDiv.dispatchEvent(new MouseEvent('click'));
@@ -396,7 +396,7 @@ test('Fretboard removeEventListeners', t => {
 
 test('Fretboard removeEventListeners before adding listeners', t => {
   new Fretboard()
-    .render([])
+    .render()
     .removeEventListeners();
   const svg = document.querySelector('#fretboard svg');
 
@@ -406,7 +406,7 @@ test('Fretboard removeEventListeners before adding listeners', t => {
 test('Fretboard with different stringWidths', t => {
   const stringWidth = [1, 2, 3, 4, 5, 6];
   const fretboard = new Fretboard({ stringWidth });
-  fretboard.render([]);
+  fretboard.render();
 
   const svg = document.querySelector('#fretboard svg');
 
@@ -422,7 +422,7 @@ test('Fretboard with custom classes (scalar)', t => {
   dots[0].custom = true;
   dots[2].custom = true;
   dots[4].custom = true;
-  fretboard.render(dots);
+  fretboard.setDots(dots).render();
 
   const svg = document.querySelector('#fretboard svg');
 
@@ -436,7 +436,7 @@ test('Fretboard with custom classes (array)', t => {
   dots[0].custom = 1;
   dots[2].custom = [1, 2];
   dots[4].custom = [2];
-  fretboard.render(dots);
+  fretboard.setDots(dots).render();
 
   const svg = document.querySelector('#fretboard svg');
 

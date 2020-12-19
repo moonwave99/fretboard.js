@@ -38,11 +38,11 @@ function modesTNPString() {
   function updateFretboard() {
     const { root, color } = modeMap.find(({ mode }) => mode === selectedMode);
     selectedRoot = getRoot(selectedBox);
-    fretboard.render(TNPString({
+    fretboard.setDots(TNPString({
       root: selectedRoot,
       box: selectedBox,
       mode: selectedMode
-    })).style({
+    })).render().style({
       fill: ({ note }) => note === selectedRoot.match(/(.*)[\d]/)[1] ? color : 'white',
       text: ({ note }) => note
     });
@@ -119,11 +119,11 @@ function modesCAGED() {
   function updateFretboard() {
     const { root, color } = modeMap.find(({ mode }) => mode === selectedMode);
     selectedRoot = getRoot(root, selectedBox);
-    fretboard.render(CAGED({
+    fretboard.setDots(CAGED({
       root: selectedRoot,
       box: selectedBox,
       mode: selectedMode
-    })).style({
+    })).render().style({
       fill: ({ note }) => note === selectedRoot.match(/(.*)[\d]/)[1] ? color : 'white',
       text: ({ note }) => note
     });

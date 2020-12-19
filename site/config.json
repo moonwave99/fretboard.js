@@ -1,7 +1,7 @@
 {
   "colors": {
     "defaultFill": "white",
-    "defaultActiveFill": "#F25116",
+    "defaultActiveFill": "#ff636c",
     "defaultStroke": "black",
     "disabled": "#aaa",
     "primaryFill": "#3273dc",
@@ -13,10 +13,10 @@
     "octaves": [
       "blue",
       "magenta",
-      "red",
+      "#ff636c",
       "orange",
       "yellow",
-      "green"
+      "#6ae674"
     ],
     "chordTypes": {
       "maj7": "#00bbf9",

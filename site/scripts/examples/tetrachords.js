@@ -35,10 +35,12 @@ export default function tetrachords() {
     ...fretboardConfiguration,
     dotText: ({ note }) => note
   });
-  fretboard.render([
+  fretboard.setDots([
     ...lowerTetrachord,
     ...upperTetrachord
-  ]).style({
+  ])
+  .render()
+  .style({
     fill: (dot, index) => index < 4 ? 'yellow' : 'pink'
   });
 
@@ -49,7 +51,7 @@ export default function tetrachords() {
       const { name, value } = event.target;
       options[name] = value;
 
-      fretboard.render([
+      fretboard.setDots([
         ...tetrachord({
           root: 'E',
           string: 5,
@@ -64,7 +66,9 @@ export default function tetrachords() {
           type: options.upperTetrachordType,
           layout: +options.upperTetrachordLayout
         })
-      ]).style({
+      ])
+      .render()
+      .style({
         fill: (dot, index) => index < 4 ? 'yellow' : 'pink'
       });
     })

@@ -194,16 +194,17 @@ function validateOptions(options: Options): void {
 }
 
 export class Fretboard {
-  options: Options;
   strings: number[];
   frets: number[];
   positions: Point[][];
   svg: Selection<BaseType, unknown, HTMLElement, unknown>;
   wrapper: Selection<BaseType, unknown, HTMLElement, unknown>;
+  private options: Options;
   private baseRendered: boolean;
   private hoverDiv: HTMLDivElement;
   private handlers: Record<string, (event: MouseEvent) => void> = {};
   private system: FretboardSystem;
+  private dots: Position[] = [];
   constructor (options = {}) {
     this.options = Object.assign({}, defaultOptions, options);
     validateOptions(this.options);    
@@ -254,10 +255,11 @@ export class Fretboard {
         );
   }
 
-  render(dots: Position[] = []): Fretboard {
+  render(): Fretboard {
     const {
       wrapper,
-      positions
+      positions,
+      dots
     } = this;
 
     const {
@@ -318,7 +320,13 @@ export class Fretboard {
     return this;
   }
 
+  setDots(dots: Position[]): Fretboard {
+    this.dots = dots;
+    return this;
+  }
+
   clear(): Fretboard {
+    this.setDots([]);
     this.wrapper.select('.dots').remove();
     return this;
   }
@@ -402,7 +410,8 @@ export class Fretboard {
 
   renderChord(chord: string): Fretboard {
     const { positions, mutedStrings } = parseChord(chord);
-    this.render(positions);
+    this.setDots(positions);
+    this.render();
     this.muteStrings({
       strings: mutedStrings
     });
@@ -437,12 +446,13 @@ export class Fretboard {
         break;
     }
     const mode = getModeFromScale(scale);
-    this.render(
+    this.setDots(
       this.system.getScale({
         name: `${root} ${scale}`,
         system: system ? systemGenerator({ root, box, mode }) : null
-      })
+      })      
     );
+    this.render();
 
     return this;
   }

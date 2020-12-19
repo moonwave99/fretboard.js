@@ -38,17 +38,17 @@ export default function events() {
       dotsToRender.push(dot);
     }
 
-    fretboard.render(dotsToRender);
+    fretboard.setDots(dotsToRender).render();
   });
 
   fretboard.on('mouseleave', () => {
     $wrapper.classList.remove('show-moving-dot');
-    fretboard.render(dots);
+    fretboard.setDots(dots).render();
   });
 
   fretboard.on('mouseenter', () => {
     $wrapper.classList.add('show-moving-dot');
-    fretboard.render(dots);
+    fretboard.setDots(dots).render();
   });  
 
   fretboard.on('click', ({ fret, string }) => {
@@ -63,7 +63,7 @@ export default function events() {
       dots.push(dot);
     }
 
-    fretboard.render(dots);
+    fretboard.setDots(dots).render();
   });  
 
   document

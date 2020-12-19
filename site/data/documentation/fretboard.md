@@ -34,7 +34,7 @@ const fretboard = new Fretboard({
   ...
 });
 ```
-Call the render method with the information you want to display eventually:
+First set the dots with `setDots` and call the `render` method to display:
 
 ```javascript
 const box = CAGED({
@@ -43,14 +43,15 @@ const box = CAGED({
   box: 'C'
 });
 
-fretboard.render(box);
+fretboard.setDots(box);
+fretboard.render();
 ```
 
 In this case, the `CAGED` method returns an array of objects containing further musical information like the note name and the scale degree, but you can pass just an array of `{ string, fret }`:
 
 ```javascript
 // this would render an open C chord
-fretboard.render([
+fretboard.setDots([
   {
     string: 5,
     fret: 3
@@ -64,6 +65,14 @@ fretboard.render([
     fret: 1
   }
 ]);
+
+fretboard.render();
+```
+
+Since `setDots` returns the fretboard instance itself, you can chain the two calls as:
+
+```javascript
+fretboard.setDots(dots).render();
 ```
 
 ## Configuration options
@@ -73,6 +82,7 @@ fretboard.render([
 Parameter         | Type     | Default      | Description
 ------------------|----------|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 el                | string   | '#fretboard' | Container element selector
+tuning            | string[] | ["E2", "A2", "D3", "G3", "B3", "E4"] | Tuning of the instrument (see [tuning](#tuning))
 stringCount       | number   | 6            | Number of instrument strings to display
 stringWidth       | number \| \[number\]   | 1   | String line stroke width - an array of 6 numbers can be passed, e.g. `[1, 1, 1, 3, 4, 5]`
 stringColor       | string   | 'black'      | String color
@@ -109,13 +119,21 @@ fretLeftPadding   | number   | 0            | Amount of empty frets to display b
 
 The `Fretboard` object has the following methods:
 
+### setDots()
+
+```typescript
+setDots(dots: Position[]): Fretboard
+```
+
+Sets the passed dots. Returns the instance itself.
+
 ### render()
 
 ```typescript
-render(positions: Position[]): Fretboard
+render(): Fretboard
 ```
 
-Displays the passed positions on the fretboard. Returns the instance itself.
+Renders the fretboard. Returns the instance itself.
 
 ### clear()
 
@@ -155,14 +173,16 @@ const box = CAGED({
   box: 'C'
 });
 
-fretboard.render(box);
-fretboard.style({
-  // this gives us just the root notes
-  filter: ({ interval }) => interval === '1P',
-  // displays the note name
-  text: ({ note }) => note, 
-  // sets the value of the fill attribute
-  fill: ({ interval }) => interval === '1P' ? 'red' : 'white' 
+fretboard
+  .setDots(box)
+  .render()
+  .style({
+    // this gives us just the root notes
+    filter: ({ interval }) => interval === '1P',
+    // displays the note name
+    text: ({ note }) => note, 
+    // sets the value of the fill attribute
+    fill: ({ interval }) => interval === '1P' ? 'red' : 'white' 
 })
 ```
 
@@ -243,6 +263,37 @@ fretboard.on('mousemove', position => fretboard.render([position]));
 // you can remove the eventListeners with
 fretboard.removeEventListeners();
 ```
+
+## Tuning
+
+One can pass a custom tuning as an array of notes, e.g.:
+
+```javascript
+const fretboard = new Fretboard({
+  tuning: ["D2", "G2", "D3", "G3", "B3", "D4"]
+});
+```
+
+The options is used by `renderScale()` to populate the fretboard according to the tuning.
+
+A set of common used tuning can be imported from the library itself:
+
+```javascript
+import { GUITAR_TUNINGS } from '@moonwave99/fretboard.js';
+
+/*
+GUITAR_TUNINGS = {
+    default: ["E2", "A2", "D3", "G3", "B3", "E4"],
+    halfStepDown: ["Eb2", "Ab2", "Db3", "Gb3", "Bb3", "Eb4"],
+    dropD: ["D2", "A2", "D3", "G3", "B3", "E4"],
+    openG: ["D2", "G2", "D3", "G3", "B3", "D4"],
+    DADGAD: ["D2", "A2", "D3", "G3", "A3", "D4"]
+};
+*/
+}
+```
+
+**Note**: `tuning.length` and `stringCount` must match, so beware bassists, ukulelists and 7+stringers.
 
 ## FAQ
 

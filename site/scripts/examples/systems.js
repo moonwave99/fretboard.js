@@ -6,11 +6,12 @@ function pentatonicSystemExample() {
     ...fretboardConfiguration,
     el: "#fretboard-systems-pentatonic-minor",
     dotText: ({ note, octave, interval }) => note,
-    dotFill: ({ interval, disabled }) =>
-      disabled
+    dotFill: ({ interval, inSystem }) =>
+      !inSystem
         ? colors.disabled
-        : interval === '1P'
-        ? colors.defaultActiveFill : colors.defaultFill,
+        : interval === "1P"
+        ? colors.defaultActiveFill
+        : colors.defaultFill,
   });
 
   const root = "E";
@@ -42,8 +43,8 @@ function CAGEDSystemExample() {
     ...fretboardConfiguration,
     el: "#fretboard-systems-caged",
     dotText: ({ note, octave, interval }) => note,
-    dotFill: ({ interval, disabled }) =>
-      disabled
+    dotFill: ({ interval, inSystem }) =>
+      !inSystem
         ? colors.disabled
         : interval === "1P"
         ? colors.defaultActiveFill
@@ -79,8 +80,8 @@ function TNPSSystemExample() {
     ...fretboardConfiguration,
     el: "#fretboard-systems-tnps",
     dotText: ({ note, octave, interval }) => note,
-    dotFill: ({ interval, disabled }) =>
-      disabled
+    dotFill: ({ interval, inSystem }) =>
+      !inSystem
         ? colors.disabled
         : interval === "1P"
         ? colors.defaultActiveFill

@@ -58,7 +58,7 @@ export class FretboardSystem {
             }))
             .map(x => ({
                 octave: this.getOctave(x),
-                disabled: system ? !system(x) : false,
+                inSystem: system ? system(x) : false,
                 ...x
             }));
     }    

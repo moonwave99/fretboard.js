@@ -33,13 +33,13 @@ test('FretboardSystem - getScale()', t => {
     });
     t.deepEqual(scale[0], {
         octave: 4,
-        disabled: false,
         chroma: 4,
         note: 'E',
         interval: '1P',
         degree: 1,
         string: 1,
-        fret: 0
+        fret: 0,
+        inSystem: false
     });
 });
 
@@ -63,7 +63,7 @@ test('FretboardSystem - getScale() with system', t => {
         })
     });
     t.is(
-        scale.filter(({ disabled }) => !disabled).length,
+        scale.filter(({ inSystem }) => inSystem).length,
         12
     );
 });

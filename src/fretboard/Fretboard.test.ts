@@ -277,7 +277,7 @@ test('Fretboard renderScale()', t => {
     dotText: ({ note }: Position): string => note
   });
   fretboard.renderScale({
-    scale: 'major',
+    type: 'major',
     root: 'C'
   });
 
@@ -293,7 +293,7 @@ test('Fretboard renderScale() - pentatonic', t => {
     dotText: ({ note }: Position): string => note
   });
   fretboard.renderScale({
-    scale: 'minor pentatonic',
+    type: 'minor pentatonic',
     root: 'E',
     box: 1,
     system: Systems.pentatonic
@@ -311,7 +311,7 @@ test('Fretboard renderScale() - CAGED', t => {
     dotText: ({ note }: Position): string => note
   });
   fretboard.renderScale({
-    scale: 'major pentatonic',
+    type: 'major pentatonic',
     root: 'C',
     box: 'C',
     system: Systems.CAGED
@@ -329,7 +329,7 @@ test('Fretboard renderScale() - TNPS', t => {
     dotText: ({ note }: Position): string => note
   });
   fretboard.renderScale({
-    scale: 'major pentatonic',
+    type: 'major pentatonic',
     root: 'C',
     box: 1,
     system: Systems.TNPS
@@ -347,7 +347,7 @@ test('Fretboard renderScale() - custom tuning warning', t => {
     tuning: GUITAR_TUNINGS.openG,
     dotText: ({ note }: Position): string => note
   }).renderScale({
-    scale: 'major pentatonic',
+    type: 'major pentatonic',
     root: 'C',
     box: 'C',
     system: Systems.CAGED

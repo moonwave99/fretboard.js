@@ -14,7 +14,7 @@ export default function home() {
     ...fretboardConfiguration
   });
   fretboard.renderScale({
-    scale: 'major',
+    type: 'major',
     root: 'C'
   });
 

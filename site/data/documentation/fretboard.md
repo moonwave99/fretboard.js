@@ -190,12 +190,12 @@ fretboard
 
 ```typescript
 renderScale({
-  scale,
+  type,
   root,
   system,
   box
  }: {
-  scale: string;
+  type: string;
   root: string;
   box?: string | number;
   system?: Systems;
@@ -209,7 +209,7 @@ const fretboard = new Fretboard();
 
 // shows where all the C,D,E,F,G,A,B are across all strings
 fretboard.renderScale({
-  scale: 'major',
+  type: 'major',
   root: 'C'
 });
 ```
@@ -224,7 +224,7 @@ const fretboard = new Fretboard();
 // shows where all the A,B,C#,D,E,F#,G# are across all strings,
 // highlighting the C box of the CAGED system (between frets 9 and 12, that is)
 fretboard.renderScale({
-  scale: 'major',
+  type: 'major',
   root: 'A',
   system: Systems.CAGED,
   box: 'C'

@@ -1,6 +1,15 @@
 import { get as getNote, chroma as getChroma } from '@tonaljs/note';
 import { get as getScale } from '@tonaljs/scale';
-import { IncludeFunction } from './systems/systems';
+
+import {
+    IncludeFunction,
+    Systems,
+    pentatonicSystem,
+    CAGEDSystem,
+    ThreeNotesPerStringSystem,
+    getModeFromScaleType
+} from './systems/systems';
+
 import { Position, Tuning } from '../fretboard/Fretboard';
 
 import {
@@ -34,15 +43,36 @@ export class FretboardSystem {
         return this.fretCount;
     }
     getScale({
-        name,
+        type,
+        root,
+        box,
         system
     }: {
-        name: string;
-        system?: IncludeFunction;
+        type: string;
+        root: string;
+        box?: string | number;
+        system?: Systems;
     }): Position[] {
-        const { notes, empty, intervals } = getScale(name);
+        const scaleName = `${root} ${type}`;
+        const { notes, empty, intervals } = getScale(scaleName);
+
         if (empty) {
-            throw new Error(`Cannot find scale: ${name}`);
+            throw new Error(`Cannot find scale: ${scaleName}`);
+        }
+
+        const mode = getModeFromScaleType(type);
+
+        let systemGenerator: IncludeFunction;
+        switch(system) {
+            case Systems.pentatonic:
+                systemGenerator = pentatonicSystem({ root, box, mode });
+                break;
+            case Systems.CAGED:
+                systemGenerator = CAGEDSystem({ root, box, mode });
+                break;
+            case Systems.TNPS:
+                systemGenerator = ThreeNotesPerStringSystem({ root, box, mode });
+                break;
         }
         const reverseMap = notes.map((note, index) => ({
             chroma: getChroma(note),
@@ -56,11 +86,16 @@ export class FretboardSystem {
                 ...reverseMap.find(x => x.chroma === chroma),
                 ...rest
             }))
-            .map(x => ({
-                octave: this.getOctave(x),
-                inSystem: system ? system(x) : false,
-                ...x
-            }));
+            .map(x => {
+                const position: Position = {
+                    octave: this.getOctave(x),
+                    ...x
+                };
+                if (systemGenerator && systemGenerator(x)) {
+                    position.inSystem = true;
+                }
+                return position;
+            });
     }    
     private populate(): void {
         const { tuning, fretCount } = this;

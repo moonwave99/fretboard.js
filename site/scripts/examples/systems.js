@@ -19,7 +19,7 @@ function pentatonicSystemExample() {
   const box = 1;
 
   fretboard.renderScale({
-    scale: `${mode} pentatonic`,
+    type: `${mode} pentatonic`,
     root,
     box,
     system: Systems.pentatonic,
@@ -29,7 +29,7 @@ function pentatonicSystemExample() {
     el.addEventListener("click", () => {
       const { pentatonicBox } = el.dataset;
       fretboard.renderScale({
-        scale: `${mode} pentatonic`,
+        type: `${mode} pentatonic`,
         root,
         box: pentatonicBox,
         system: Systems.pentatonic,
@@ -56,7 +56,7 @@ function CAGEDSystemExample() {
   const box = 'C';
 
   fretboard.renderScale({
-    scale: `${mode}`,
+    type: `${mode}`,
     root,
     box,
     system: Systems.CAGED,
@@ -66,7 +66,7 @@ function CAGEDSystemExample() {
     el.addEventListener("click", () => {
       const { cagedBox } = el.dataset;
       fretboard.renderScale({
-        scale: `${mode}`,
+        type: `${mode}`,
         root,
         box: cagedBox,
         system: Systems.CAGED,
@@ -93,7 +93,7 @@ function TNPSSystemExample() {
   const box = 1;
 
   fretboard.renderScale({
-    scale: `${mode}`,
+    type: `${mode}`,
     root,
     box,
     system: Systems.TNPS,
@@ -103,7 +103,7 @@ function TNPSSystemExample() {
     el.addEventListener("click", () => {
       const { tnpsBox } = el.dataset;
       fretboard.renderScale({
-        scale: `${mode}`,
+        type: `${mode}`,
         root,
         box: tnpsBox,
         system: Systems.TNPS,

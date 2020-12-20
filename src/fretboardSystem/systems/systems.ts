@@ -202,8 +202,8 @@ function getPentatonicBoxIndex(box: number, mode: number): number {
     return box % 5;
 }
 
-export function getModeFromScale(scale: string): number {
-    const { modeNum } = getMode(scale.replace('pentatonic', '').trim());
+export function getModeFromScaleType(type: string): number {
+    const { modeNum } = getMode(type.replace('pentatonic', '').trim());
     return modeNum;
 }
 

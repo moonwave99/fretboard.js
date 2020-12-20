@@ -31,13 +31,7 @@ import {
 } from '../constants';
 
 import { FretboardSystem } from '../fretboardSystem/FretboardSystem';
-import {
-  Systems,
-  pentatonicSystem,
-  CAGEDSystem,
-  ThreeNotesPerStringSystem,
-  getModeFromScale
-} from '../fretboardSystem/systems/systems';
+import { Systems } from '../fretboardSystem/systems/systems';
 
 export type Tuning = string[];
 
@@ -419,12 +413,12 @@ export class Fretboard {
   }
 
   renderScale({
-    scale,
+    type,
     root,
     system,
     box
   }: {
-    scale: string;
+    type: string;
     root: string;
     box?: string | number;
     system?: Systems;
@@ -433,27 +427,16 @@ export class Fretboard {
       console.warn('Selected scale system works for standard tuning. Wrong notes may be highlighted.');
     }
 
-    let systemGenerator;
-    switch (system) {
-      case Systems.pentatonic:
-        systemGenerator = pentatonicSystem;
-        break;
-      case Systems.CAGED:
-        systemGenerator = CAGEDSystem;
-        break;
-      case Systems.TNPS:
-        systemGenerator = ThreeNotesPerStringSystem;
-        break;
-    }
-    const mode = getModeFromScale(scale);
     this.setDots(
       this.system.getScale({
-        name: `${root} ${scale}`,
-        system: system ? systemGenerator({ root, box, mode }) : null
+        type,
+        root,
+        system,
+        box
       })      
     );
-    this.render();
 
+    this.render();
     return this;
   }
 

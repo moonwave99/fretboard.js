@@ -6,7 +6,7 @@ import {
     DEFAULT_FRET_COUNT
 } from '../constants';
 
-import { pentatonicSystem } from './systems/systems';
+import { Systems } from './systems/systems';
 
 test('FretboardSystem - constructor with default options', t => {
     const system = new FretboardSystem();
@@ -29,7 +29,8 @@ test('FretboardSystem - constructor with custom options', t => {
 test('FretboardSystem - getScale()', t => {
     const system = new FretboardSystem();
     const scale = system.getScale({
-        name: 'E minor pentatonic',
+        type: 'minor pentatonic',
+        root: 'E'
     });
     t.deepEqual(scale[0], {
         octave: 4,
@@ -38,8 +39,7 @@ test('FretboardSystem - getScale()', t => {
         interval: '1P',
         degree: 1,
         string: 1,
-        fret: 0,
-        inSystem: false
+        fret: 0
     });
 });
 
@@ -47,7 +47,8 @@ test('FretboardSystem - getScale() - scale not found', t => {
     const system = new FretboardSystem();
     const error = t.throws(() => {
         system.getScale({
-            name: 'H augmented pentatronic',
+            type: 'augmented pentatronic',
+            root: 'H'
         });
     });
     t.is(error.message, 'Cannot find scale: H augmented pentatronic');
@@ -56,11 +57,10 @@ test('FretboardSystem - getScale() - scale not found', t => {
 test('FretboardSystem - getScale() with system', t => {
     const system = new FretboardSystem();
     const scale = system.getScale({
-        name: 'E minor pentatonic',
-        system: pentatonicSystem({
-            root: 'E',
-            box: 1
-        })
+        type: 'minor pentatonic',
+        root: 'E',
+        box: 1,
+        system: Systems.pentatonic
     });
     t.is(
         scale.filter(({ inSystem }) => inSystem).length,
@@ -70,7 +70,7 @@ test('FretboardSystem - getScale() with system', t => {
 
 test('FretboardSystem - getScale() - B#', t => {
     const system = new FretboardSystem({ fretCount: 12 });
-    const scale = system.getScale({ name: 'B# major' });
+    const scale = system.getScale({ root: 'B#', type: 'major' });
     scale
         .map(({ note, octave }, index) => note === 'B#' ?  { octave, index }: null)
         .filter(x => !!x)
@@ -85,7 +85,7 @@ test('FretboardSystem - getScale() - B#', t => {
 
 test('FretboardSystem - getScale() - Cb', t => {
     const system = new FretboardSystem({ fretCount: 12 });
-    const scale = system.getScale({ name: 'Cb major' });
+    const scale = system.getScale({ root: 'Cb', type: 'major' });
     scale
         .map(({ note, octave }, index) => note === 'Cb' ? { octave, index } : null)
         .filter(x => !!x)

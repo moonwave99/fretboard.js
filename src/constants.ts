@@ -4,8 +4,8 @@ export const DEFAULT_FRET_COUNT = 15;
 
 export const DEFAULT_COLORS = {
     line: '#666',
-    highlight: 'red',
-    dotStroke: 'black',
+    highlight: '#ff636c',
+    dotStroke: '#555',
     dotFill: 'white',
     fretNumber: '#00000099',
     mutedString: '#333'

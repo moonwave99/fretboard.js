@@ -31,7 +31,7 @@ test('CAGED system - box not found', t => {
         box: 'H'
     }));
 
-    t.is(error.message, 'Cannot find box H in the CAGED system');
+    t.is(error.message, 'Cannot find box H in the CAGED scale system');
 });
 
 test('pentatonic system - box not found', t => {
@@ -40,7 +40,7 @@ test('pentatonic system - box not found', t => {
         box: 6
     }));
 
-    t.is(error.message, 'Cannot find box 6 in the E pentatonic scale system');
+    t.is(error.message, 'Cannot find box 6 in the pentatonic scale system');
 });
 
 test('three notes per string system - box not found', t => {
@@ -49,5 +49,5 @@ test('three notes per string system - box not found', t => {
         box: 8
     }));
 
-    t.is(error.message, 'Cannot find box 8 in the TPNS system');
+    t.is(error.message, 'Cannot find box 8 in the TNPS scale system');
 });

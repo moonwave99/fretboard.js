@@ -28,6 +28,30 @@ type FretboardSystemParams = {
     fretCount?: number;
 }
 
+type ScaleParams = {
+    type: string;
+    root: string;
+    box?: string | number;
+    system?: Systems;
+}
+
+function parseNote(note: string): {
+    note: string;
+    octave: number;
+} {
+    let octave = +note.slice(-1);
+    let parsedNote = note;
+    if (isNaN(octave)) {
+        octave = 2;
+    } else {
+        parsedNote = note.slice(0, -1);
+    }
+    return {
+        octave,
+        note: parsedNote
+    };
+}
+
 export class FretboardSystem {
     private tuning: Tuning = GUITAR_TUNINGS.default;
     private fretCount: number = DEFAULT_FRET_COUNT;
@@ -43,16 +67,12 @@ export class FretboardSystem {
         return this.fretCount;
     }
     getScale({
-        type,
-        root,
+        type = 'major',
+        root: paramsRoot = 'C',
         box,
         system
-    }: {
-        type: string;
-        root: string;
-        box?: string | number;
-        system?: Systems;
-    }): Position[] {
+    }: ScaleParams): Position[] {
+        const { note: root } = parseNote(paramsRoot);
         const scaleName = `${root} ${type}`;
         const { notes, empty, intervals } = getScale(scaleName);
 
@@ -62,16 +82,16 @@ export class FretboardSystem {
 
         const mode = getModeFromScaleType(type);
 
-        let systemGenerator: IncludeFunction;
+        let isPositionInSystem: IncludeFunction;
         switch(system) {
             case Systems.pentatonic:
-                systemGenerator = pentatonicSystem({ root, box, mode });
+                isPositionInSystem = pentatonicSystem({ root, box, mode });
                 break;
             case Systems.CAGED:
-                systemGenerator = CAGEDSystem({ root, box, mode });
+                isPositionInSystem = CAGEDSystem({ root, box, mode });
                 break;
             case Systems.TNPS:
-                systemGenerator = ThreeNotesPerStringSystem({ root, box, mode });
+                isPositionInSystem = ThreeNotesPerStringSystem({ root, box, mode });
                 break;
         }
         const reverseMap = notes.map((note, index) => ({
@@ -91,7 +111,7 @@ export class FretboardSystem {
                     octave: this.getOctave(x),
                     ...x
                 };
-                if (systemGenerator && systemGenerator(x)) {
+                if (isPositionInSystem && isPositionInSystem(x)) {
                     position.inSystem = true;
                 }
                 return position;
@@ -123,8 +143,8 @@ export class FretboardSystem {
     }): number {
         const { tuning } = this;
         const baseNoteWithOctave = tuning[tuning.length - string];
-        const baseChroma = getChroma(baseNoteWithOctave.slice(0, -1));
-        const baseOctave = +baseNoteWithOctave.slice(-1);
+        const { note: baseNote, octave: baseOctave } = parseNote(baseNoteWithOctave);
+        const baseChroma = getChroma(baseNote);
         let octaveIncrement = chroma < baseChroma ? 1 : 0;
         if (note === 'B#' && octaveIncrement > 0) {
             octaveIncrement--;

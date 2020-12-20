@@ -21,6 +21,7 @@ type SystemParams = {
     mode?: number;
 }
 
+const DEFAULT_MODE = 0;
 const DEFAULT_PENTATONIC_MODE = 5;
 const CAGED_ORDER = 'GEDCA';
 
@@ -207,34 +208,78 @@ export function getModeFromScaleType(type: string): number {
     return modeNum;
 }
 
-export function pentatonicSystem({ root, box, mode = DEFAULT_PENTATONIC_MODE }: SystemParams): IncludeFunction {
-    const foundBox = CAGEDDefinition[getPentatonicBoxIndex(+box, mode)];
+export function getBox({
+    root,
+    mode,
+    system,
+    box
+}: {
+    root: string;
+    mode: number|string;
+    system: Systems;
+    box: string|number;
+}): Position[] {
+    let foundBox;
+    let modeNumber;
+
+    if (typeof mode === 'string') {
+        modeNumber = getModeFromScaleType(mode);
+    } else {
+        modeNumber = mode;
+    }
+
+    switch (system) {
+        case Systems.pentatonic:
+            foundBox = CAGEDDefinition[getPentatonicBoxIndex(+box, modeNumber)];
+            break;
+        case Systems.CAGED:
+            foundBox = CAGEDDefinition[CAGED_ORDER.indexOf(`${box}`)];
+            break;
+        case Systems.TNPS:
+            foundBox = TNPSDefinition[+box - 1];
+            break;
+    }
+    
     if (!foundBox) {
-        throw new Error(`Cannot find box ${box} in the ${root} pentatonic scale system`);
-    }    
-    const positions = getBoxPositions({
+        throw new Error(`Cannot find box ${box} in the ${Systems[system]} scale system`);
+    }
+    
+    return getBoxPositions({
         root,
-        modeOffset: getModeOffset(mode),
+        modeOffset: getModeOffset(modeNumber),
         baseChroma: foundBox.baseChroma,
-        box: foundBox.box.slice().map(x => x.replace('4', '-').replace('7', '-'))
+        box: system === Systems.pentatonic
+            ? foundBox.box.slice().map(x => x.replace('4', '-').replace('7', '-'))
+            : foundBox.box
+    });    
+}
+
+export function pentatonicSystem({ root, box, mode = DEFAULT_PENTATONIC_MODE }: SystemParams): IncludeFunction {
+    const positions = getBox({
+        root,
+        box,
+        mode,
+        system: Systems.pentatonic
     });
     return (position: Position): boolean => isPositionInSystem(position, positions);
 }
 
-export function CAGEDSystem({ root, box, mode }: SystemParams): IncludeFunction {
-    const foundBox = CAGEDDefinition[CAGED_ORDER.indexOf(`${box}`)];
-    if (!foundBox) {
-        throw new Error(`Cannot find box ${box} in the CAGED system`);
-    }
-    const positions = getBoxPositions({ root, modeOffset: getModeOffset(mode), ...foundBox });
+export function CAGEDSystem({ root, box, mode = DEFAULT_MODE }: SystemParams): IncludeFunction {
+    const positions = getBox({
+        root,
+        box,
+        mode,
+        system: Systems.CAGED
+    });
     return (position: Position): boolean => isPositionInSystem(position, positions);
 }
 
-export function ThreeNotesPerStringSystem({ root, box, mode }: SystemParams): IncludeFunction {
-    const foundBox = TNPSDefinition[+box - 1];
-    if (!foundBox) {
-        throw new Error(`Cannot find box ${box} in the TPNS system`);
-    }
-    const positions = getBoxPositions({ root, modeOffset: getModeOffset(mode), ...foundBox });
+export function ThreeNotesPerStringSystem({ root, box, mode = DEFAULT_MODE}: SystemParams): IncludeFunction {
+    const positions = getBox({
+        root,
+        box,
+        mode,
+        system: Systems.TNPS
+    });
     return (position: Position): boolean => isPositionInSystem(position, positions);
 }

@@ -272,6 +272,37 @@ test('Fretboard renderChord() above 9th fret', t => {
   t.is(svg.querySelectorAll('.dots .dot').length, 4);
 });
 
+test('Fretboard renderBox()', t => {
+  const fretboard = new Fretboard({
+    dotText: ({ note }: Position): string => note
+  });
+  fretboard.renderBox({
+    type: 'minor',
+    root: 'E',
+    box: 1,
+    system: Systems.pentatonic
+  });
+
+  const svg = document.querySelector('#fretboard svg');
+  const dots = svg.querySelectorAll('.dots .dot');
+  dots.forEach(dot => {
+    t.is('EGABD'.split('').indexOf(dot.textContent) > -1, true);
+  });
+  t.is(dots.length, 12);
+});
+
+test('Fretboard renderBox() - custom tuning warning', t => {
+  const fretboard = new Fretboard({
+    tuning: GUITAR_TUNINGS.openG
+  }).renderBox({
+    type: 'major pentatonic',
+    root: 'C',
+    box: 'C',
+    system: Systems.CAGED
+  });
+  t.is(fretboard instanceof Fretboard, true);
+});
+
 test('Fretboard renderScale()', t => {
   const fretboard = new Fretboard({
     dotText: ({ note }: Position): string => note
@@ -283,9 +314,9 @@ test('Fretboard renderScale()', t => {
 
   const svg = document.querySelector('#fretboard svg');
 
-  svg.querySelectorAll('.dots .dot').forEach(dot => {
-    t.is('CDEFGAB'.split('').indexOf(dot.textContent) > -1, true);
-  });
+  svg.querySelectorAll('.dots .dot').forEach(dot =>
+    t.is('CDEFGAB'.split('').indexOf(dot.textContent) > -1, true)
+  );
 });
 
 test('Fretboard renderScale() - pentatonic', t => {
@@ -301,9 +332,9 @@ test('Fretboard renderScale() - pentatonic', t => {
 
   const svg = document.querySelector('#fretboard svg');
 
-  svg.querySelectorAll('.dots .dot').forEach(dot => {
-    t.is('EGABD'.split('').indexOf(dot.textContent) > -1, true);
-  });
+  svg.querySelectorAll('.dots .dot').forEach(dot =>
+    t.is('EGABD'.split('').indexOf(dot.textContent) > -1, true)
+  );
 });
 
 test('Fretboard renderScale() - CAGED', t => {
@@ -319,9 +350,9 @@ test('Fretboard renderScale() - CAGED', t => {
 
   const svg = document.querySelector('#fretboard svg');
 
-  svg.querySelectorAll('.dots .dot').forEach(dot => {
-    t.is('CDEFGAB'.split('').indexOf(dot.textContent) > -1, true);
-  });
+  svg.querySelectorAll('.dots .dot').forEach(dot =>
+    t.is('CDEFGAB'.split('').indexOf(dot.textContent) > -1, true)
+  );
 });
 
 test('Fretboard renderScale() - TNPS', t => {
@@ -337,15 +368,14 @@ test('Fretboard renderScale() - TNPS', t => {
 
   const svg = document.querySelector('#fretboard svg');
 
-  svg.querySelectorAll('.dots .dot').forEach(dot => {
-    t.is('CDEFGAB'.split('').indexOf(dot.textContent) > -1, true);
-  });
+  svg.querySelectorAll('.dots .dot').forEach(dot =>
+    t.is('CDEFGAB'.split('').indexOf(dot.textContent) > -1, true)
+  );
 });
 
 test('Fretboard renderScale() - custom tuning warning', t => {
   const fretboard = new Fretboard({
-    tuning: GUITAR_TUNINGS.openG,
-    dotText: ({ note }: Position): string => note
+    tuning: GUITAR_TUNINGS.openG
   }).renderScale({
     type: 'major pentatonic',
     root: 'C',

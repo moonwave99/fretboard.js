@@ -440,6 +440,34 @@ export class Fretboard {
     return this;
   }
 
+  renderBox({
+    type,
+    root,
+    system,
+    box
+  }: {
+    type: string;
+    root: string;
+    box: string | number;
+    system: Systems;
+  }): Fretboard {
+    if (this.options.tuning.toString() !== GUITAR_TUNINGS.default.toString()) {
+      console.warn('Selected scale system works for standard tuning. Wrong notes may be highlighted.');
+    }
+
+    this.setDots(
+      this.system.getScale({
+        type,
+        root,
+        system,
+        box
+      }).filter(({ inSystem }) => inSystem)
+    );
+
+    this.render();
+    return this;
+  }  
+
   on(eventName: string, handler: FretboardHandler): Fretboard {
     const {
       svg,

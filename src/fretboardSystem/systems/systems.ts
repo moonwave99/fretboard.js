@@ -13,12 +13,14 @@ export type IncludeFunction = (p: Position) => boolean;
 type ScaleDefinition = {
     box: string[];
     baseChroma: number;
+    baseOctave: number;
 }
 
 type SystemParams = {
     root: string;
     box: number|string;
     mode?: number;
+    octave?: number;
 }
 
 const DEFAULT_MODE = 0;
@@ -35,7 +37,8 @@ const CAGEDDefinition: ScaleDefinition[] = [
             '-2-34',
             '-6-71'
         ],
-        baseChroma: getChroma('G#')
+        baseChroma: getChroma('G#'),
+        baseOctave: 2
     },        
     {
         box: [
@@ -46,7 +49,8 @@ const CAGEDDefinition: ScaleDefinition[] = [
             '34-5',
             '71-2'
         ],
-        baseChroma: getChroma('E#')
+        baseChroma: getChroma('E#'),
+        baseOctave: 2
     },    
     {
         box: [
@@ -57,7 +61,8 @@ const CAGEDDefinition: ScaleDefinition[] = [
             '-5-6-',
             '-2-34'
         ],
-        baseChroma: getChroma('D#')
+        baseChroma: getChroma('D#'),
+        baseOctave: 3
     },    
     {
         box: [
@@ -68,7 +73,8 @@ const CAGEDDefinition: ScaleDefinition[] = [
             '6-71',
             '34-5'
         ],
-        baseChroma: getChroma('C')
+        baseChroma: getChroma('C'),
+        baseOctave: 3
     },    
     {
         box: [
@@ -79,7 +85,8 @@ const CAGEDDefinition: ScaleDefinition[] = [
             '71-2-',
             '-5-6-'
         ],
-        baseChroma: getChroma('A#')
+        baseChroma: getChroma('A#'),
+        baseOctave: 2
     }
 ]
 
@@ -93,7 +100,8 @@ const TNPSDefinition: ScaleDefinition[] = [
             '4-5-6-',
             '1-2-3-'
         ],
-        baseChroma: getChroma('E')
+        baseChroma: getChroma('E'),
+        baseOctave: 2
     },
     {
         box: [
@@ -104,7 +112,8 @@ const TNPSDefinition: ScaleDefinition[] = [
             '5-6-7-',
             '2-34--'
         ],
-        baseChroma: getChroma('D')
+        baseChroma: getChroma('D'),
+        baseOctave: 3
     },
     {
         box: [
@@ -115,7 +124,8 @@ const TNPSDefinition: ScaleDefinition[] = [
             '6-71--',
             '34-5--'
         ],
-        baseChroma: getChroma('C')
+        baseChroma: getChroma('C'),
+        baseOctave: 3
     },
     {
         box: [
@@ -126,7 +136,8 @@ const TNPSDefinition: ScaleDefinition[] = [
             '-71-2--',
             '4-5-6--'
         ],
-        baseChroma: getChroma('B')
+        baseChroma: getChroma('B'),
+        baseOctave: 2
     },
     {
         box: [
@@ -137,7 +148,8 @@ const TNPSDefinition: ScaleDefinition[] = [
             '1-2-3-',
             '5-6-7-'
         ],
-        baseChroma: getChroma('A')
+        baseChroma: getChroma('A'),
+        baseOctave: 2
     },
     {
         box: [
@@ -148,7 +160,8 @@ const TNPSDefinition: ScaleDefinition[] = [
             '2-34--',
             '6-71--'
         ],
-        baseChroma: getChroma('G')
+        baseChroma: getChroma('G'),
+        baseOctave: 2
     },
     {
         box: [
@@ -159,7 +172,8 @@ const TNPSDefinition: ScaleDefinition[] = [
             '34-5--',
             '71-2--'
         ],
-        baseChroma: getChroma('F')
+        baseChroma: getChroma('F'),
+        baseOctave: 2
     }
 ];
 
@@ -167,15 +181,22 @@ function getBoxPositions({
     root,
     box,
     modeOffset = 0,
-    baseChroma
+    baseChroma,
+    baseOctave,
+    octave = 2
 }: {
     root: string;
     box: string[];
     modeOffset: number;
     baseChroma: number;
+    baseOctave: number;
+    octave?: number;
 }): Position[] {
     let delta = getChroma(root) - baseChroma - modeOffset;
     while (delta < -1) {
+        delta += 12;
+    }
+    if (octave > baseOctave && delta <= 0) {
         delta += 12;
     }
     return box.reduce((memo, item, string) => ([
@@ -212,12 +233,14 @@ export function getBox({
     root,
     mode,
     system,
-    box
+    box,
+    octave
 }: {
     root: string;
     mode: number|string;
     system: Systems;
     box: string|number;
+    octave?: number;
 }): Position[] {
     let foundBox;
     let modeNumber;
@@ -248,36 +271,41 @@ export function getBox({
         root,
         modeOffset: getModeOffset(modeNumber),
         baseChroma: foundBox.baseChroma,
+        baseOctave: foundBox.baseOctave,
+        octave,
         box: system === Systems.pentatonic
             ? foundBox.box.slice().map(x => x.replace('4', '-').replace('7', '-'))
             : foundBox.box
     });    
 }
 
-export function pentatonicSystem({ root, box, mode = DEFAULT_PENTATONIC_MODE }: SystemParams): IncludeFunction {
+export function pentatonicSystem({ root, box, octave, mode = DEFAULT_PENTATONIC_MODE }: SystemParams): IncludeFunction {
     const positions = getBox({
         root,
         box,
+        octave,
         mode,
         system: Systems.pentatonic
     });
     return (position: Position): boolean => isPositionInSystem(position, positions);
 }
 
-export function CAGEDSystem({ root, box, mode = DEFAULT_MODE }: SystemParams): IncludeFunction {
+export function CAGEDSystem({ root, box, octave, mode = DEFAULT_MODE }: SystemParams): IncludeFunction {
     const positions = getBox({
         root,
         box,
+        octave,
         mode,
         system: Systems.CAGED
     });
     return (position: Position): boolean => isPositionInSystem(position, positions);
 }
 
-export function ThreeNotesPerStringSystem({ root, box, mode = DEFAULT_MODE}: SystemParams): IncludeFunction {
+export function ThreeNotesPerStringSystem({ root, box, octave, mode = DEFAULT_MODE}: SystemParams): IncludeFunction {
     const positions = getBox({
         root,
         box,
+        octave,
         mode,
         system: Systems.TNPS
     });

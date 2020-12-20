@@ -30,8 +30,8 @@ function pentatonicSystemExample() {
       const { pentatonicBox } = el.dataset;
       fretboard.renderScale({
         type: `${mode} pentatonic`,
-        root,
-        box: pentatonicBox,
+        root: pentatonicBox.slice(-1) === "'" ? `${root}4` : root,
+        box: pentatonicBox[0],
         system: Systems.pentatonic,
       });
     });
@@ -67,8 +67,8 @@ function CAGEDSystemExample() {
       const { cagedBox } = el.dataset;
       fretboard.renderScale({
         type: `${mode}`,
-        root,
-        box: cagedBox,
+        root: cagedBox.slice(-1) === "'" ? `${root}4` : root,
+        box: cagedBox[0],
         system: Systems.CAGED,
       });
     });

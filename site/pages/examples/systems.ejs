@@ -32,7 +32,7 @@
                     <aside class="column aside">
                         <%= texts['examples.systems.pentatonic'] %>
                         <p>
-                        <% [1,2,3,4,5].forEach(function(i){ %>
+                        <% [1,2,3,4,5, "1'"].forEach(function(i){ %>
                             <button data-pentatonic-box="<%= i %>"><%= i%></button>
                         <%})%>
                         </p>
@@ -46,7 +46,7 @@
                     <aside class="column aside">
                         <%= texts['examples.systems.caged'] %>
                         <p>
-                        <% ['C', 'A', 'G', 'E', 'D'].forEach(function(i){ %>
+                        <% ['C', 'A', 'G', 'E', 'D', 'C\''].forEach(function(i){ %>
                             <button data-caged-box="<%= i %>"><%= i%></button>
                         <%})%>
                         </p>

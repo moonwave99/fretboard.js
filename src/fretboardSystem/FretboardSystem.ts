@@ -72,7 +72,7 @@ export class FretboardSystem {
         box,
         system
     }: ScaleParams): Position[] {
-        const { note: root } = parseNote(paramsRoot);
+        const { note: root, octave } = parseNote(paramsRoot);
         const scaleName = `${root} ${type}`;
         const { notes, empty, intervals } = getScale(scaleName);
 
@@ -85,13 +85,13 @@ export class FretboardSystem {
         let isPositionInSystem: IncludeFunction;
         switch(system) {
             case Systems.pentatonic:
-                isPositionInSystem = pentatonicSystem({ root, box, mode });
+                isPositionInSystem = pentatonicSystem({ root, box, mode, octave });
                 break;
             case Systems.CAGED:
-                isPositionInSystem = CAGEDSystem({ root, box, mode });
+                isPositionInSystem = CAGEDSystem({ root, box, mode, octave });
                 break;
             case Systems.TNPS:
-                isPositionInSystem = ThreeNotesPerStringSystem({ root, box, mode });
+                isPositionInSystem = ThreeNotesPerStringSystem({ root, box, mode, octave });
                 break;
         }
         const reverseMap = notes.map((note, index) => ({

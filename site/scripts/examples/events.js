@@ -15,7 +15,7 @@ export default function events() {
   const fretboard = new Fretboard({
     ...fretboardConfiguration,
     dotText: ({ note }) => note,
-    dotStrokeColor: ({ moving }) => moving ? 'red' : 'black'
+    dotStrokeColor: ({ moving }) => moving ? colors.defaultActiveStroke : colors.defaultStroke
   });
 
   const $wrapper = document.querySelector('.fretboard-events');

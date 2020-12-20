@@ -38,20 +38,23 @@ export default function home() {
           case 'show-intervals':
             fretboard.style({
               text: ({ interval }) => interval,
-              fill: colors.defaultFill
+              fill: ({ interval }) => colors.intervals[interval],
             });
             break;
           case 'highlight-triad':
             fretboard.style({
-              filter: ({ degree }) => [1, 3, 5].indexOf(degree) > -1,
-              stroke: 'red'
+              text: ({ degree, interval }) => [1, 3, 5].indexOf(degree) > -1 ? interval : null,
+              fill: ({ degree, interval }) =>
+                [1, 3, 5].indexOf(degree) > -1
+                  ? colors.intervals[interval]
+                  : colors.defaultFill,
             });
             break;
           default:
             fretboard.style({
               text: () => null,
               fill: colors.defaultFill,
-              stroke: 'black'
+              stroke: colors.defaultStroke
             });
             break;
       }

@@ -210,6 +210,9 @@ header > p {
   figcaption {
     text-align: center;
     font-weight: bold;
+    code {
+      background-color: transparent;
+    }
   }
 }
 

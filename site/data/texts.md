@@ -14,24 +14,6 @@ The UI ecosystem already has very good fretboard libraries, but my use case was 
 
 As I was moving from rhythm / mainly chord based playing to exploring lead guitar, the dev process helped me in getting a deeper understanding of the fretboard structure.
 
-<!--examples.boxes.description-->
-The library comes with many scale systems and boxes.
-
-<!--examples.boxes.1-->
-This example shows two adjacent **E minor pentatonic** boxes.
-
-<!--examples.boxes.2-->
-This example shows the connection between the **C-shaped box** and the **A-shaped box** of the D major scale.
-
-<!--examples.boxes.3-->
-The G major scale in all five CAGED boxes. See how they share fret positions vertically!
-
-<!--examples.boxes.4-->
-Same as above, but with the G major pentatonic.
-
-<!--examples.boxes.threeNotesPerString-->
-The three note per string system is very consistent and allows quick runs with alternate picking over all six strings, as opposed to other systems that have strings with just two notes on them.
-
 <!--examples.modes.caged-->
 A different starting note inside a box corresponds to a different mode.  
 For instance, if we play the **C-shaped** box starting from the first box note - E that is -, we get the corrisponding **phrygian** mode.
@@ -71,13 +53,22 @@ Fretboard.js can render chord diagrams of course. Here you have some good old [o
 Want to become a jazz cat? No problem!
 
 <!--examples.systems.description-->
-The library supports the pentatonic and the CAGED scale systems.
+The library supports the **pentatonic**, the **CAGED** and the **three notes per string (TNPS)** scale systems.
 
 <!--examples.systems.pentatonic-->
-The pentatonic system is organised in five boxes. Here you can see the various ways of playing an **E minor pentatonic** scale across all the fretboard.
+The pentatonic system is organised in five boxes.  
+Here you can see the various ways of playing an **E minor pentatonic** scale across all the fretboard.
 
 <!--examples.systems.caged-->
-The CAGED system is organised in five boxes, named around the corresponding open chord shapes. Here the same **C major** scale is played in different positions.
+The CAGED system is organised in five boxes, named around the corresponding open chord shapes.  
+Here the same **C major** scale is played in different positions.
 
 <!--examples.systems.tnps-->
-The **three note per string** system is organised in seven boxes, each starting from corresponding scale degree. Les modes son fait!
+The three notes per string system is organised in seven boxes, each starting from corresponding scale degree.  
+_Et les modes son fait!_
+
+<!--examples.systems.boxes.1-->
+This example shows two adjacent **E minor pentatonic** boxes.
+
+<!--examples.systems.boxes.2-->
+This example shows the connection between the **C-shaped box** and the **A-shaped box** of the D major scale.

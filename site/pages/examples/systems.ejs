@@ -25,48 +25,47 @@
 				</p>				
 				<%= texts['examples.systems.description'] %>
             </header>
-            <section>
-                <h2><%= examples.systems.pentatonic %></h2>
+            <section class="fretboard-systems-pentatonic">
+                <header>
+                    <h2><%= examples.systems.pentatonic %></h2>
+                    <%= texts['examples.systems.pentatonic'] %>
+                </header>
                 <div class="columns">
-                    <figure class="column is-three-quarters" id="fretboard-systems-pentatonic-minor"></figure>
-                    <aside class="column aside">
-                        <%= texts['examples.systems.pentatonic'] %>
-                        <p>
-                        <% [1,2,3,4,5, "1'"].forEach(function(i){ %>
-                            <button data-pentatonic-box="<%= i %>"><%= i%></button>
-                        <%})%>
-                        </p>
-                    </aside>
+                    <figure class="column is-three-quarters"></figure>
+                    <aside class="column aside form-wrapper"></aside>
+                </div>
+            </section>
+            <section class="fretboard-systems-caged">
+                <header>
+                    <h2><%= examples.systems.caged %></h2>
+                    <%= texts['examples.systems.caged'] %>
+                </header>
+                <div class="columns">
+                    <figure class="column is-three-quarters"></figure>
+                    <aside class="column aside form-wrapper"></aside>
+                </div>
+            </section>
+            <section class="fretboard-systems-tnps">
+                <header>
+                    <h2><%= examples.systems.tnps %></h2>
+                    <%= texts['examples.systems.tnps'] %>
+                </header>
+                <div class="columns">
+                    <figure class="column is-three-quarters"></figure>
+                    <aside class="column aside form-wrapper"></aside>
                 </div>
             </section>
             <section>
-                <h2><%= examples.systems.caged %></h2>
+                <h2><%= examples.systems.boxes %></h2>
                 <div class="columns">
-                    <figure class="column is-three-quarters" id="fretboard-systems-caged"></figure>
-                    <aside class="column aside">
-                        <%= texts['examples.systems.caged'] %>
-                        <p>
-                        <% ['C', 'A', 'G', 'E', 'D', 'C\''].forEach(function(i){ %>
-                            <button data-caged-box="<%= i %>"><%= i%></button>
-                        <%})%>
-                        </p>
-                    </aside>
+                    <figure class="column is-three-quarters" id="fretboard-connected-pentatonic"></figure>
+                    <aside class="column aside"><%= texts['examples.systems.boxes.1'] %></aside>
+                </div>
+                <div class="columns">
+                    <figure class="column is-three-quarters" id="fretboard-connected-caged"></figure>
+                    <aside class="column aside"><%= texts['examples.systems.boxes.2'] %></aside>
                 </div>
             </section>
-            <section>
-                <h2><%= examples.systems.tnps %></h2>
-                <div class="columns">
-                    <figure class="column is-three-quarters" id="fretboard-systems-tnps"></figure>
-                    <aside class="column aside">
-                        <%= texts['examples.systems.tnps'] %>
-                        <p>
-                        <% [1,2,3,4,5,6,7].forEach(function(i){ %>
-                            <button data-tnps-box="<%= i %>"><%= i%></button>
-                        <%})%>
-                        </p>
-                    </aside>
-                </div>
-            </section>                        
 		</section>
 	</main>
 	<%= partials.footer() %>

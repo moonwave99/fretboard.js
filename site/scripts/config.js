@@ -12,6 +12,7 @@ export const fretboardConfiguration = {
 
 export const soundFontUrl = 'https://paulrosen.github.io/midi-js-soundfonts/MusyngKite/';
 
+export const notesWithAccidentals = 'CDEFGAB'.split('').map(x => 'EB'.indexOf(x) > -1 ? x : [x, `${x}#`] ).flat();
 export const modes = ['ionian', 'dorian', 'phrygian', 'lydian', 'mixolydian', 'aeolian', 'locrian'];
 
 const notes = 'CDEFGAB'.split('');

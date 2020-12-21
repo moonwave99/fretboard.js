@@ -11,6 +11,7 @@ export {
   sliceBox
 } from './scales/tools';
 
+export { FretboardSystem } from './fretboardSystem/FretboardSystem';
 export { Systems } from './fretboardSystem/systems/systems';
 
 export { GUITAR_TUNINGS } from './constants';

@@ -8,19 +8,18 @@ export enum Systems {
     TNPS = 'TNPS'
 }
 
-export type IncludeFunction = (p: Position) => boolean;
-
 type ScaleDefinition = {
     box: string[];
     baseChroma: number;
     baseOctave: number;
 }
 
-type SystemParams = {
+type GetBoxParams = {
     root: string;
     box: number|string;
-    mode?: number;
+    mode?: number|string;
     octave?: number;
+    system: Systems;
 }
 
 const DEFAULT_MODE = 0;
@@ -177,6 +176,22 @@ const TNPSDefinition: ScaleDefinition[] = [
     }
 ];
 
+export function getModeFromScaleType(type: string): number {
+    const { modeNum } = getMode(type.replace('pentatonic', '').trim());
+    return modeNum;
+}
+
+function getModeOffset(mode: number): number {
+    return getChroma('CDEFGAB'.split('')[mode]);
+}
+
+function getPentatonicBoxIndex(box: number, mode: number): number {
+    if (mode === DEFAULT_PENTATONIC_MODE) {
+        return box - 1;
+    }
+    return box % 5;
+}
+
 function getBoxPositions({
     root,
     box,
@@ -196,7 +211,7 @@ function getBoxPositions({
     while (delta < -1) {
         delta += 12;
     }
-    if (octave > baseOctave && delta <= 0) {
+    if (octave > baseOctave) {
         delta += 12;
     }
     return box.reduce((memo, item, string) => ([
@@ -209,45 +224,21 @@ function getBoxPositions({
     ]), []);
 }
 
-function getModeOffset(mode: number): number {
-    return getChroma('CDEFGAB'.split('')[mode]);
-}
-
-function isPositionInSystem({ fret, string }: Position, systemPositions: Position[]): boolean {
-    return !!systemPositions.find(x => x.fret === fret && x.string === string);
-}
-
-function getPentatonicBoxIndex(box: number, mode: number): number {
-    if (mode === DEFAULT_PENTATONIC_MODE) {
-        return box - 1;
-    }
-    return box % 5;
-}
-
-export function getModeFromScaleType(type: string): number {
-    const { modeNum } = getMode(type.replace('pentatonic', '').trim());
-    return modeNum;
-}
-
 export function getBox({
     root,
-    mode,
+    mode = -1,
     system,
     box,
     octave
-}: {
-    root: string;
-    mode: number|string;
-    system: Systems;
-    box: string|number;
-    octave?: number;
-}): Position[] {
+}: GetBoxParams): Position[] {
     let foundBox;
-    let modeNumber;
+    let modeNumber = system === Systems.pentatonic
+        ? DEFAULT_PENTATONIC_MODE
+        : DEFAULT_MODE;        
 
     if (typeof mode === 'string') {
         modeNumber = getModeFromScaleType(mode);
-    } else {
+    } else if (mode > -1) {
         modeNumber = mode;
     }
 
@@ -277,37 +268,4 @@ export function getBox({
             ? foundBox.box.slice().map(x => x.replace('4', '-').replace('7', '-'))
             : foundBox.box
     });    
-}
-
-export function pentatonicSystem({ root, box, octave, mode = DEFAULT_PENTATONIC_MODE }: SystemParams): IncludeFunction {
-    const positions = getBox({
-        root,
-        box,
-        octave,
-        mode,
-        system: Systems.pentatonic
-    });
-    return (position: Position): boolean => isPositionInSystem(position, positions);
-}
-
-export function CAGEDSystem({ root, box, octave, mode = DEFAULT_MODE }: SystemParams): IncludeFunction {
-    const positions = getBox({
-        root,
-        box,
-        octave,
-        mode,
-        system: Systems.CAGED
-    });
-    return (position: Position): boolean => isPositionInSystem(position, positions);
-}
-
-export function ThreeNotesPerStringSystem({ root, box, octave, mode = DEFAULT_MODE}: SystemParams): IncludeFunction {
-    const positions = getBox({
-        root,
-        box,
-        octave,
-        mode,
-        system: Systems.TNPS
-    });
-    return (position: Position): boolean => isPositionInSystem(position, positions);
 }

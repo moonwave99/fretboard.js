@@ -1,32 +1,52 @@
 import test from 'ava';
 
-import {
-    pentatonicSystem,
-    CAGEDSystem,
-    ThreeNotesPerStringSystem
-} from './systems';
+import { getBox, Systems } from './systems';
+import { isPositionInBox } from '../FretboardSystem';
 
 test('pentatonic system', t => {
-    const system = pentatonicSystem({
+    const positions = getBox({
+        system: Systems.pentatonic,
         root: 'E',
-        box: 1,
-        mode: 5
+        box: 1
     });
-    t.is(system({ string: 6, fret: 3 }), true);
-    t.is(system({ string: 6, fret: 4 }), false);
+    t.is(isPositionInBox({ string: 6, fret: 3 }, positions), true);
+    t.is(isPositionInBox({ string: 6, fret: 4 }, positions), false);
+});
+
+test('pentatonic system - upper octave', t => {
+    const positions = getBox({
+        system: Systems.pentatonic,
+        root: 'E',
+        octave: 3,
+        box: 1
+    });
+    t.is(isPositionInBox({ string: 6, fret: 12 }, positions), true);
+});
+
+test('pentatonic system - major pentatonic', t => {
+    const positions = getBox({
+        system: Systems.pentatonic,
+        root: 'G',
+        box: 1,
+        mode: 'major'
+    });
+    t.is(isPositionInBox({ string: 6, fret: 3 }, positions), true);
+    t.is(isPositionInBox({ string: 6, fret: 5 }, positions), true);
 });
 
 test('CAGED system', t => {
-    const system = CAGEDSystem({
+    const positions = getBox({
+        system: Systems.CAGED,
         root: 'C',
         box: 'A'
     });
-    t.is(system({ string: 6, fret: 3 }), true);
-    t.is(system({ string: 2, fret: 1 }), false);
+    t.is(isPositionInBox({ string: 6, fret: 3 }, positions), true);
+    t.is(isPositionInBox({ string: 2, fret: 1 }, positions), false);
 });
 
 test('CAGED system - box not found', t => {
-    const error = t.throws(() => CAGEDSystem({
+    const error = t.throws(() => getBox({
+        system: Systems.CAGED,
         root: 'E',
         box: 'H'
     }));
@@ -35,7 +55,8 @@ test('CAGED system - box not found', t => {
 });
 
 test('pentatonic system - box not found', t => {
-    const error = t.throws(() => pentatonicSystem({
+    const error = t.throws(() => getBox({
+        system: Systems.pentatonic,
         root: 'E',
         box: 6
     }));
@@ -44,7 +65,8 @@ test('pentatonic system - box not found', t => {
 });
 
 test('three notes per string system - box not found', t => {
-    const error = t.throws(() => ThreeNotesPerStringSystem({
+    const error = t.throws(() => getBox({
+        system: Systems.TNPS,
         root: 'E',
         box: 8
     }));

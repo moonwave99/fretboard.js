@@ -2,11 +2,8 @@ import { get as getNote, chroma as getChroma } from '@tonaljs/note';
 import { get as getScale } from '@tonaljs/scale';
 
 import {
-    IncludeFunction,
     Systems,
-    pentatonicSystem,
-    CAGEDSystem,
-    ThreeNotesPerStringSystem,
+    getBox,
     getModeFromScaleType
 } from './systems/systems';
 
@@ -52,6 +49,10 @@ function parseNote(note: string): {
     };
 }
 
+export function isPositionInBox({ fret, string }: Position, systemPositions: Position[]): boolean {
+    return !!systemPositions.find(x => x.fret === fret && x.string === string);
+}
+
 export class FretboardSystem {
     private tuning: Tuning = GUITAR_TUNINGS.default;
     private fretCount: number = DEFAULT_FRET_COUNT;
@@ -82,18 +83,10 @@ export class FretboardSystem {
 
         const mode = getModeFromScaleType(type);
 
-        let isPositionInSystem: IncludeFunction;
-        switch(system) {
-            case Systems.pentatonic:
-                isPositionInSystem = pentatonicSystem({ root, box, mode, octave });
-                break;
-            case Systems.CAGED:
-                isPositionInSystem = CAGEDSystem({ root, box, mode, octave });
-                break;
-            case Systems.TNPS:
-                isPositionInSystem = ThreeNotesPerStringSystem({ root, box, mode, octave });
-                break;
-        }
+        const boxPositions: Position[] = system ? getBox({
+            root, box, mode, octave, system
+        }) : [];
+
         const reverseMap = notes.map((note, index) => ({
             chroma: getChroma(note),
             note,
@@ -111,7 +104,7 @@ export class FretboardSystem {
                     octave: this.getOctave(x),
                     ...x
                 };
-                if (isPositionInSystem && isPositionInSystem(x)) {
+                if (boxPositions.length && isPositionInBox(x, boxPositions)) {
                     position.inSystem = true;
                 }
                 return position;

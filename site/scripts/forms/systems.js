@@ -1,6 +1,7 @@
 import { modes as defaultModes, notesWithAccidentals } from '../config.js';
 
 export default function Form({
+  prefix,
   el,
   onChange,
   boxes = [],
@@ -17,10 +18,10 @@ export default function Form({
   el.innerHTML = `
     <form>
         <div class="field">
-            <label for="root" class="label">Root Note</label>
+            <label for="${prefix}-root" class="label">Root Note</label>
 		    <div class="control">
 		        <div class="select is-small">
-                    <select name="root" id="root">
+                    <select name="root" id="${prefix}-root">
                     ${notesWithAccidentals
                       .map(
                         (x) =>
@@ -34,14 +35,16 @@ export default function Form({
             </div>
         </div>
         <div class="field">
-            <label for="mode" class="label">Mode</label>
-		    <div class="control">
-		        <div class="select is-small">
-                <select name="mode" id="mode">
+            <label for="${prefix}-mode" class="label">Mode</label>
+		        <div class="control">
+		          <div class="select is-small">
+                <select name="mode" id="${prefix}-mode">
                 ${modes
                   .map(
                     (x) =>
-                      `<option value="${x}" ${x === defaultState.mode && 'selected'}>${x}</option>`
+                      `<option value="${x}" ${
+                        x === defaultState.mode && 'selected'
+                      }>${x}</option>`
                   )
                   .join('\n')}
                 </select>
@@ -50,12 +53,14 @@ export default function Form({
         </div>        
         <div class="field">
           <label class="label">Box</label>
-		  <div class="control">
+		        <div class="control">
             ${boxes
               .map(
                 (x, i) => `
-            <input id="${x}" value="${x}" name="box" type="radio" ${i === 0 && 'checked' }>
-            <label for="${x}">${x}</label>
+            <input id="${prefix}-${x}" value="${x}" name="box" type="radio" ${
+                  i === 0 && 'checked'
+                }>
+            <label for="${prefix}-${x}">${x}</label>
             `
               )
               .join('\n')}

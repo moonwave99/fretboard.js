@@ -22,25 +22,30 @@ function pentatonicSystemExample() {
         : colors.defaultFill,
   });
 
-  fretboard.renderScale({
-    type: 'minor pentatonic',
+  const defaultScale = {
     root: 'E',
+    type: 'minor pentatonic'
+  };
+
+  fretboard.renderScale({
+    ...defaultScale,
     box: 1,
     system: Systems.pentatonic,
   });
 
   SystemForm({
+    prefix: 'pentatonic',
     el: $wrapper.querySelector('.form-wrapper'),
     boxes: ['1', '2', '3', '4', '5', "1'"],
     modes: ['minor pentatonic', 'major pentatonic'],
     defaultState: {
-      root: 'E',
-      mode: 'minor pentatonic'
+      root: defaultScale.root,
+      mode: defaultScale.type,
     },
     onChange: ({ mode, box, root }) => {
       fretboard.renderScale({
         type: mode,
-        root: box.slice(-1) === "'" ? `${root}4` : root,
+        root: box.slice(-1) === "'" ? `${root}3` : root,
         box: box[0],
         system: Systems.pentatonic,
       });
@@ -70,6 +75,7 @@ function CAGEDSystemExample() {
   });
 
   SystemForm({
+    prefix: 'caged',
     el: $wrapper.querySelector('.form-wrapper'),
     boxes: 'CAGED'.split(''),
     onChange: ({ mode, box, root }) => {
@@ -105,16 +111,17 @@ function TNPSSystemExample() {
   });
 
   SystemForm({
+    prefix: 'tnps',
     el: $wrapper.querySelector('.form-wrapper'),
-    boxes: [1,2,3,4,5,6,7],
+    boxes: [1, 2, 3, 4, 5, 6, 7],
     onChange: ({ mode, box, root }) => {
       fretboard.renderScale({
         type: mode,
         root,
         box,
-        system: Systems.TNPS
+        system: Systems.TNPS,
       });
-    }
+    },
   });
 }
 
@@ -157,8 +164,7 @@ function connectedCagedExample({ box1, box2 } = {}) {
 
   const fretboard = new Fretboard({
     el: '#fretboard-connected-caged',
-    dotText: ({ note, interval, disabled }) =>
-      !disabled && interval === '1P' ? note : '',
+    dotText: ({ note, disabled }) => !disabled ? note : '',
     dotFill: ({ interval, disabled }) => {
       if (disabled) {
         return colors.disabled;
@@ -207,10 +213,10 @@ function connectedBoxesExample() {
   const system = new FretboardSystem();
   connectedCagedExample({
     box1: system
-      .getScale({ root: 'D3', box: 'C', system: Systems.CAGED })
+      .getScale({ root: 'D', box: 'C', system: Systems.CAGED })
       .filter(({ inSystem }) => inSystem),
     box2: system
-      .getScale({ root: 'D3', box: 'A', system: Systems.CAGED })
+      .getScale({ root: 'D', box: 'A', system: Systems.CAGED })
       .filter(({ inSystem }) => inSystem),
   });
   connectedPentatonicExample({

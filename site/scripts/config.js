@@ -10,7 +10,12 @@ export const fretboardConfiguration = {
   font: 'Futura'
 };
 
-export const soundFontUrl = 'https://paulrosen.github.io/midi-js-soundfonts/MusyngKite/';
+export const abcjsConfig = {
+  program: 25,
+  responsive: 'resize',
+  add_classes: true,
+  soundFontUrl: 'https://paulrosen.github.io/midi-js-soundfonts/MusyngKite/'
+};
 
 export const notesWithAccidentals = 'CDEFGAB'.split('').map(x => 'EB'.indexOf(x) > -1 ? x : [x, `${x}#`] ).flat();
 export const modes = ['ionian', 'dorian', 'phrygian', 'lydian', 'mixolydian', 'aeolian', 'locrian'];

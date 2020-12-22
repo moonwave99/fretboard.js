@@ -43,23 +43,34 @@ export function sliceBox({
   from = { string: 6, fret: 0 },
   to = { string: 1, fret: 100 }
 } = {}): Position[] {
+  const sortedBox = box.slice().sort((a, b) => {
+    if (a.string > b.string) {
+      return -1;
+    }
+    if (a.fret > b.fret) {
+      return 1;
+    }
+    return -1;
+  });
+
   function findIndex(key: {
     string: number;
     fret: number;
   }): number {
-    return box.findIndex(({ string, fret }) =>
+    return sortedBox.findIndex(({ string, fret }) =>
       string === key.string && fret === key.fret
     );
   }
+
   let fromIndex = findIndex(from);
   if (fromIndex === -1) {
     fromIndex = 0;
   }
   let toIndex = findIndex(to);
   if (toIndex === -1) {
-    toIndex = box.length;
+    toIndex = sortedBox.length;
   }
-  return box.slice(fromIndex, toIndex);
+  return sortedBox.slice(fromIndex, toIndex);
 }
 
 export function disableDots({

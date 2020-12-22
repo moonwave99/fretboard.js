@@ -4,12 +4,13 @@ import {
   disableDots,
   disableStrings
 } from './tools';
-import { CAGED } from './scales';
+import { Systems, getBox } from '../fretboardSystem/systems/systems';
 
-const box = CAGED({
+const box = getBox({
   mode: 'major',
-  root: 'C3',
-  box: 'C'
+  root: 'C',
+  box: 'C',
+  system: Systems.CAGED
 });
 
 test('disableStrings', t => {

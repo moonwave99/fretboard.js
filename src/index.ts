@@ -4,13 +4,13 @@ export {
   tetrachord,
   TetrachordTypes,
   TetrachordLayouts
-} from './scales/tetrachords';
+} from './tetrachords/tetrachords';
 
 export {
   disableStrings,
   disableDots,
   sliceBox
-} from './scales/tools';
+} from './tools/tools';
 
 export { FretboardSystem } from './fretboardSystem/FretboardSystem';
 export { Systems } from './fretboardSystem/systems/systems';

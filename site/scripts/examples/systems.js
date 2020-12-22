@@ -222,7 +222,7 @@ function connectedBoxesExample() {
   connectedPentatonicExample({
     box1: system
       .getScale({
-        root: 'E3',
+        root: 'E2',
         type: 'minor pentatonic',
         box: 5,
         system: Systems.pentatonic,
@@ -230,7 +230,7 @@ function connectedBoxesExample() {
       .filter(({ inSystem }) => inSystem),
     box2: system
       .getScale({
-        root: 'E4',
+        root: 'E3',
         type: 'minor pentatonic',
         box: 1,
         system: Systems.pentatonic,

@@ -1,14 +1,8 @@
 import { isEqual, uniqWith } from 'lodash';
-import { Fretboard, CAGED } from '../../dist/fretboard.esm.js';
+import { Fretboard } from '../../dist/fretboard.esm.js';
 import { fretboardConfiguration, colors } from './config.js';
 
 export default function home() {
-  const box = CAGED({
-    mode: 'major',
-    root: 'C3',
-    box: 'C'
-  });
-
   const fretboard = new Fretboard({
     el: '#fretboard-api',
     ...fretboardConfiguration
@@ -19,7 +13,7 @@ export default function home() {
   });
 
   document.querySelectorAll('.api-actions button')
-    .forEach((button) => {
+    .forEach(button => {
       button.addEventListener('click', ({ currentTarget }) => {
         switch (currentTarget.dataset.action) {
           case 'show-notes':

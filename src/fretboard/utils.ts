@@ -1,3 +1,4 @@
+import { paramCase } from 'change-case';
 import { Selection, BaseType } from 'd3-selection';
 import { Position, Options } from './Fretboard';
 
@@ -60,29 +61,59 @@ export function generateFrets({
   return frets.map(x => x / frets[frets.length - 1] * 100);
 }
 
+const accidentalMap: { symbol: string; replacement: string }[] = [{
+  symbol: '##',
+  replacement: 'double-sharp'
+}, {
+  symbol: 'bb',
+  replacement: 'double-flat'
+}, {
+  symbol: '#',
+  replacement: 'sharp'
+}, {
+  symbol: 'b',
+  replacement: 'flat'
+}];
+
+function valueRenderer(key: string, value: string | number | boolean): string {
+  if (typeof value === 'boolean') {
+    return !value ? 'false' : null;
+  }
+  if (key === 'note') {
+    for (let i = 0; i < accidentalMap.length; i++) {
+      const { symbol, replacement } = accidentalMap[i];
+      if (`${value}`.endsWith(symbol)) {
+        return `${`${value}`[0]}-${replacement}`;
+      }
+    }
+    return `${value}`;
+  }
+  return `${value}`;
+}
+
 function classRenderer(prefix: string, key: string, value: string | number | boolean): string {
   return [
     'dot',
     prefix,
-    key,
-    `${value}` !== 'true' ? value : null
+    paramCase(key),
+    valueRenderer(key, value),
   ].filter(x => !!x).join('-');
 }
 
-export function dotClasses(dot: Position, prefix: string): string {
+export function dotClasses(dot: Position, prefix = ''): string {
   return [
-    `dot-${prefix}`,
-      ...Object.entries(dot)
-        .map(([key, value]: [string, string|Array<string>]) => {
-          let valArray: string[];
-          if (!(value instanceof Array)) {
-            valArray = [value];
-          } else {
-            valArray = value;
-          }
-          return valArray.map(value => classRenderer(prefix, key, value)).join(' ');
-        })
-  ].join(' ');
+    prefix ? `dot-${prefix}` : null,
+    ...Object.entries(dot)
+      .map(([key, value]: [string, string|Array<string>]) => {
+        let valArray: string[];
+        if (!(value instanceof Array)) {
+          valArray = [value];
+        } else {
+          valArray = value;
+        }
+        return valArray.map(value => classRenderer(prefix, key, value)).join(' ');
+      })
+  ].filter(x => !!x).join(' ');
 }
 
 export function getDimensions({

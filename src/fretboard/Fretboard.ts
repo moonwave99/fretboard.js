@@ -290,22 +290,22 @@ export class Fretboard {
       .enter()
       .filter(({ fret }) => fret >= 0)
       .append('g')
-        .attr('class', (dot) => ['dot', dotClasses(dot, '')].join(' '))
+        .attr('class', dot => ['dot', dotClasses(dot, '')].join(' '))
         .attr('opacity', ({ disabled }) => disabled ? disabledOpacity : 1);
 
     dotsNodes.append('circle')
+      .attr('class', 'dot-circle')
       .attr('cx', ({ string, fret }) => `${positions[string - 1][fret - dotOffset].x}%`)
       .attr('cy', ({ string, fret }) => positions[string - 1][fret - dotOffset].y)
       .attr('r', dotSize * 0.5)
-      .attr('class', (dot: Position) => dotClasses(dot, 'circle'))
       .attr('stroke', dotStrokeColor)
       .attr('stroke-width', dotStrokeWidth)
       .attr('fill', dotFill);
 
     dotsNodes.append('text')
+      .attr('class', 'dot-text')
       .attr('x', ({ string, fret }) => `${positions[string - 1][fret - dotOffset].x}%`)
       .attr('y', ({ string, fret }) => positions[string - 1][fret - dotOffset].y)
-      .attr('class', (dot: Position) => dotClasses(dot, 'text'))
       .attr('text-anchor', 'middle')
       .attr('dominant-baseline', 'central')
       .attr('font-size', dotTextSize)
@@ -359,7 +359,7 @@ export class Fretboard {
         .filter(filterFunction)
         .text(text)
         .attr('font-size', fontSize || dotTextSize)
-        .attr('fill', fontFill || 'black');
+        .attr('fill', fontFill || DEFAULT_COLORS.dotText);
     }
 
     return this;

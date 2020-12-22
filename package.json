@@ -78,6 +78,7 @@
 		"@tonaljs/note": "^3.5.3",
 		"@tonaljs/scale": "^3.5.6",
 		"@tonaljs/tonal": "^3.7.5",
+		"change-case": "^4.1.2",
 		"d3-selection": "^1.4.1",
 		"throttle-debounce": "^2.2.1"
 	}

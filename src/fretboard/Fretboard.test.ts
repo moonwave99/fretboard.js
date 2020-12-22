@@ -181,10 +181,10 @@ test('Fretboard style()', t => {
   });
 
   const svg = document.querySelector('#fretboard svg');
-  svg.querySelectorAll('.dots .dot-text-note-G')
+  svg.querySelectorAll('.dots .dot-note-G .dot-text')
     .forEach(node => t.is(node.innerHTML, 'G'));
 
-  const dotNodes = svg.querySelectorAll('.dots .dot-circle-note-G');
+  const dotNodes = svg.querySelectorAll('.dots .dot-note-G .dot-circle');
   dotNodes.forEach(node => t.is(node.getAttribute('fill'), 'red'));
 
   t.is(
@@ -203,7 +203,7 @@ test('Fretboard style() no text', t => {
 
   const svg = document.querySelector('#fretboard svg');
 
-  svg.querySelectorAll('.dots .dot-circle-note-G')
+  svg.querySelectorAll('.dots .dot-note-G .dot-circle')
     .forEach(node => t.is(node.getAttribute('fill'), 'red'));
 });
 
@@ -230,7 +230,7 @@ test('Fretboard style() filter shorthand', t => {
 
   const svg = document.querySelector('#fretboard svg');
 
-  const dotNodes = svg.querySelectorAll('.dots .dot-circle-note-G');
+  const dotNodes = svg.querySelectorAll('.dots .dot-note-G .dot-circle');
   dotNodes.forEach(node => console.log(node.innerHTML));
 
   t.is(

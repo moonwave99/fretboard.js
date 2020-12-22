@@ -13,16 +13,6 @@ test('pentatonic system', t => {
     t.is(isPositionInBox({ string: 6, fret: 4 }, positions), false);
 });
 
-test('pentatonic system - upper octave', t => {
-    const positions = getBox({
-        system: Systems.pentatonic,
-        root: 'E',
-        octave: 3,
-        box: 1
-    });
-    t.is(isPositionInBox({ string: 6, fret: 12 }, positions), true);
-});
-
 test('pentatonic system - major pentatonic', t => {
     const positions = getBox({
         system: Systems.pentatonic,

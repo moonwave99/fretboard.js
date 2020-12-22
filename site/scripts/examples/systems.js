@@ -13,7 +13,7 @@ function pentatonicSystemExample() {
   const fretboard = new Fretboard({
     ...fretboardConfiguration,
     el: $wrapper.querySelector('figure'),
-    dotText: ({ note, octave, interval }) => note,
+    dotText: ({ note, octave, interval }) => note + octave,
     dotFill: ({ interval, inBox }) =>
       !inBox
         ? colors.disabled

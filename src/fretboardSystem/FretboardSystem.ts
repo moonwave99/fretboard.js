@@ -1,4 +1,5 @@
 import { get as getNote, chroma as getChroma } from '@tonaljs/note';
+import { distance, semitones } from '@tonaljs/interval';
 import { get as getScale } from '@tonaljs/scale';
 
 import {
@@ -74,7 +75,7 @@ export class FretboardSystem {
         root: paramsRoot = 'C',
         box
     }: ScaleParams): Position[] {
-        const { note: root, octave } = parseNote(paramsRoot);
+        const { note: root } = parseNote(paramsRoot);
         const scaleName = `${root} ${type}`;
         const { notes, empty, intervals } = getScale(scaleName);
 
@@ -83,10 +84,9 @@ export class FretboardSystem {
         }
 
         const mode = getModeFromScaleType(type);
-
-        const boxPositions: Position[] = box ? getBox({
-            root, mode, octave, ...box
-        }) : [];
+        const boxPositions: Position[] = box ? this.adjustOctave(getBox({
+            root, mode, ...box
+        }), paramsRoot) : [];
 
         const reverseMap = notes.map((note, index) => ({
             chroma: getChroma(note),
@@ -111,6 +111,16 @@ export class FretboardSystem {
                 return position;
             });
     }    
+    private adjustOctave(positions: Position[], root: string): Position[] {
+        const { tuning } = this;
+        const rootOffset = semitones(distance(tuning[0], root)) >= 12;
+        const negativeFrets = positions.filter(x => x.fret < 0).length > 0;
+        return positions.map(({ string, fret }) => ({
+            string,
+            fret: rootOffset || negativeFrets ? fret + 12 : fret
+        }));
+    }
+
     private populate(): void {
         const { tuning, fretCount } = this;
         this.positions = tuning
@@ -139,11 +149,14 @@ export class FretboardSystem {
         const baseNoteWithOctave = tuning[tuning.length - string];
         const { note: baseNote, octave: baseOctave } = parseNote(baseNoteWithOctave);
         const baseChroma = getChroma(baseNote);
+
         let octaveIncrement = chroma < baseChroma ? 1 : 0;
+
         if (note === 'B#' && octaveIncrement > 0) {
             octaveIncrement--;
         } else if (note === 'Cb' && octaveIncrement === 0) {
             octaveIncrement++;
+
         }
         octaveIncrement += Math.floor(fret / 12);
         return baseOctave + octaveIncrement;

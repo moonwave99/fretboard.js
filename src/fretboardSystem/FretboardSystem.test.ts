@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import { FretboardSystem } from './FretboardSystem';
+import { FretboardSystem, isPositionInBox } from './FretboardSystem';
 import {
     GUITAR_TUNINGS,
     DEFAULT_FRET_COUNT
@@ -68,6 +68,19 @@ test('FretboardSystem - getScale() with system', t => {
         scale.filter(({ inBox }) => inBox).length,
         12
     );
+});
+
+test('FretboardSystem - getScale() with system - upper octave', t => {
+    const system = new FretboardSystem();
+    const scale = system.getScale({
+        type: 'minor pentatonic',
+        root: 'E3',
+        box: {
+            system: Systems.pentatonic,
+            box: 1
+        }
+    });
+    t.is(isPositionInBox({ string: 6, fret: 12 }, scale), true);
 });
 
 test('FretboardSystem - getScale() - B#', t => {

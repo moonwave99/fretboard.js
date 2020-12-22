@@ -18,7 +18,6 @@ type GetBoxParams = {
     root: string;
     box: number|string;
     mode?: number|string;
-    octave?: number;
     system: Systems;
 }
 
@@ -196,22 +195,15 @@ function getBoxPositions({
     root,
     box,
     modeOffset = 0,
-    baseChroma,
-    baseOctave,
-    octave = 2
+    baseChroma
 }: {
     root: string;
     box: string[];
     modeOffset: number;
     baseChroma: number;
-    baseOctave: number;
-    octave?: number;
 }): Position[] {
     let delta = getChroma(root) - baseChroma - modeOffset;
     while (delta < -1) {
-        delta += 12;
-    }
-    if (octave > baseOctave) {
         delta += 12;
     }
     return box.reduce((memo, item, string) => ([
@@ -228,8 +220,7 @@ export function getBox({
     root,
     mode = -1,
     system,
-    box,
-    octave
+    box
 }: GetBoxParams): Position[] {
     let foundBox;
     let modeNumber = system === Systems.pentatonic
@@ -257,15 +248,15 @@ export function getBox({
     if (!foundBox) {
         throw new Error(`Cannot find box ${box} in the ${Systems[system]} scale system`);
     }
+
+    const { baseChroma, box: boxDefinition } = foundBox;
     
     return getBoxPositions({
         root,
         modeOffset: getModeOffset(modeNumber),
-        baseChroma: foundBox.baseChroma,
-        baseOctave: foundBox.baseOctave,
-        octave,
+        baseChroma,
         box: system === Systems.pentatonic
-            ? foundBox.box.slice().map(x => x.replace('4', '-').replace('7', '-'))
-            : foundBox.box
+            ? boxDefinition.slice().map(x => x.replace('4', '-').replace('7', '-'))
+            : boxDefinition
     });    
 }

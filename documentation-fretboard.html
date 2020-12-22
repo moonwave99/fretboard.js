@@ -1,18 +1,19 @@
-<!doctype html><html lang="en" class="has-navbar-fixed-top" data-section="documentation"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fretboard.js | Documentation | Fretboard</title><link href="index.css" rel="stylesheet"></head><body><nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation"><div class="navbar-brand"><a class="navbar-item" href="index.html"><span class="navbar-icon" id="icon" title="I am client generated as well of course!"></span> <strong>Fretboard.js</strong> </a><a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar"><span aria-hidden="true"></span> <span aria-hidden="true"></span> <span aria-hidden="true"></span></a></div><div id="navbar" class="navbar-menu"><div class="navbar-start"><div class="navbar-item has-dropdown is-hoverable"><span class="navbar-link is-current">Documentation</span><div class="navbar-dropdown"><a class="navbar-item is-current" href="documentation-fretboard.html">Fretboard</a> <a class="navbar-item" href="documentation-music-tools.html">Music tools</a></div></div><div class="navbar-item has-dropdown is-hoverable"><span class="navbar-link">Examples</span><div class="navbar-dropdown"><a class="navbar-item" href="examples-systems.html">Systems</a> <a class="navbar-item" href="examples-boxes.html">Boxes</a> <a class="navbar-item" href="examples-modes.html">Modes</a> <a class="navbar-item" href="examples-chords.html">Chords</a> <a class="navbar-item" href="examples-tetrachords.html">Tetrachords</a> <a class="navbar-item" href="examples-events.html">Events</a> <a class="navbar-item" href="examples-playback.html">Playback</a></div></div></div><div class="navbar-end"><div class="navbar-item"><a href="https://github.com/moonwave99/fretboard.js">See on Github</a></div></div></div></nav><main><section class="documentation text container"><h1 id="documentation---fretboard">Documentation - Fretboard</h1><h2 id="installation">Installation</h2><p>Use <code>npm</code>/<code>yarn</code>:</p><pre><code class="language-bash">$ npm i @moonwave99/fretboard.js --save</code></pre><h2 id="usage">Usage</h2><p>Given an existing DOM element:</p><pre><code class="language-html">&lt;figure id=&quot;fretboard&quot;&gt;&lt;/figure&gt;</code></pre><p><code>require</code> / <code>import</code> the library accordingly:</p><pre><code class="language-javascript">const { Fretboard, CAGED } = require(&#39;@moonwave99/fretboard.js&#39;);
+<!doctype html><html lang="en" class="has-navbar-fixed-top" data-section="documentation"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fretboard.js | Documentation | Fretboard</title><link href="index.css" rel="stylesheet"></head><body><nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation"><div class="navbar-brand"><a class="navbar-item" href="index.html"><span class="navbar-icon" id="icon" title="I am client generated as well of course!"></span> <strong>Fretboard.js</strong> </a><a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar"><span aria-hidden="true"></span> <span aria-hidden="true"></span> <span aria-hidden="true"></span></a></div><div id="navbar" class="navbar-menu"><div class="navbar-start"><div class="navbar-item has-dropdown is-hoverable"><span class="navbar-link is-current">Documentation</span><div class="navbar-dropdown"><a class="navbar-item is-current" href="documentation-fretboard.html">Fretboard</a> <a class="navbar-item" href="documentation-music-tools.html">Music tools</a></div></div><div class="navbar-item has-dropdown is-hoverable"><span class="navbar-link">Examples</span><div class="navbar-dropdown"><a class="navbar-item" href="examples-systems.html">Systems</a> <a class="navbar-item" href="examples-modes.html">Modes</a> <a class="navbar-item" href="examples-chords.html">Chords</a> <a class="navbar-item" href="examples-tetrachords.html">Tetrachords</a> <a class="navbar-item" href="examples-events.html">Events</a> <a class="navbar-item" href="examples-playback.html">Playback</a></div></div></div><div class="navbar-end"><div class="navbar-item"><a href="https://github.com/moonwave99/fretboard.js">See on Github</a></div></div></div></nav><main><section class="documentation text container"><h1 id="documentation---fretboard">Documentation - Fretboard</h1><h2 id="installation">Installation</h2><p>Use <code>npm</code>/<code>yarn</code>:</p><pre><code class="language-bash">$ npm i @moonwave99/fretboard.js --save</code></pre><h2 id="usage">Usage</h2><p>Given an existing DOM element:</p><pre><code class="language-html">&lt;figure id=&quot;fretboard&quot;&gt;&lt;/figure&gt;</code></pre><p><code>require</code> / <code>import</code> the library accordingly:</p><pre><code class="language-javascript">const { Fretboard, CAGED } = require(&#39;@moonwave99/fretboard.js&#39;);
 // OR
 import { Fretboard, CAGED } from &#39;@moonwave99/fretboard.js&#39;;</code></pre><p>Then initialise a <code>Fretboard</code> instance with desired options:</p><pre><code class="language-javascript">const fretboard = new Fretboard({
   el: &#39;#fretboard&#39;,
   fretColor: &#39;blue&#39;,
   dotFill: &#39;red&#39;,
   ...
-});</code></pre><p>Call the render method with the information you want to display eventually:</p><pre><code class="language-javascript">const box = CAGED({
+});</code></pre><p>First set the dots with <code>setDots</code> and call the <code>render</code> method to display:</p><pre><code class="language-javascript">const box = CAGED({
   mode: &#39;major&#39;,
   root: &#39;C3&#39;,
   box: &#39;C&#39;
 });
 
-fretboard.render(box);</code></pre><p>In this case, the <code>CAGED</code> method returns an array of objects containing further musical information like the note name and the scale degree, but you can pass just an array of <code>{ string, fret }</code>:</p><pre><code class="language-javascript">// this would render an open C chord
-fretboard.render([
+fretboard.setDots(box);
+fretboard.render();</code></pre><p>In this case, the <code>CAGED</code> method returns an array of objects containing further musical information like the note name and the scale degree, but you can pass just an array of <code>{ string, fret }</code>:</p><pre><code class="language-javascript">// this would render an open C chord
+fretboard.setDots([
   {
     string: 5,
     fret: 3
@@ -25,7 +26,9 @@ fretboard.render([
     string: 2,
     fret: 1
   }
-]);</code></pre><h2 id="configuration-options">Configuration options</h2><p><strong>Note</strong>: even though the context should provide enough disambiguation, the word <em>string</em> refers to both the instrument ones and the programming data type!</p><table><thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td>el</td><td>string</td><td>&#39;#fretboard&#39;</td><td>Container element selector</td></tr><tr><td>stringCount</td><td>number</td><td>6</td><td>Number of instrument strings to display</td></tr><tr><td>stringWidth</td><td>number | [number]</td><td>1</td><td>String line stroke width - an array of 6 numbers can be passed, e.g. <code>[1, 1, 1, 3, 4, 5]</code></td></tr><tr><td>stringColor</td><td>string</td><td>&#39;black&#39;</td><td>String color</td></tr><tr><td>fretCount</td><td>number</td><td>15</td><td>Number of frets to display</td></tr><tr><td>fretWidth</td><td>string</td><td>1</td><td>Fret line stroke width</td></tr><tr><td>fretColor</td><td>string</td><td>&#39;black&#39;</td><td>Fret color</td></tr><tr><td>nutWidth</td><td>string</td><td>7</td><td>Nut stroke width</td></tr><tr><td>nutColor</td><td>string</td><td>&#39;black&#39;</td><td>Nut color</td></tr><tr><td>middleFretColor</td><td>string</td><td>&#39;red&#39;</td><td>Middle fret color</td></tr><tr><td>middleFretWidth</td><td>string</td><td>3</td><td>Middle fret stroke width</td></tr><tr><td>scaleFrets</td><td>string</td><td>true</td><td>If <code>true</code>, spaces frets logarithmically, otherwise linear</td></tr><tr><td>topPadding</td><td>string</td><td>20</td><td>Top padding (relative to SVG container)</td></tr><tr><td>bottomPadding</td><td>string</td><td>15</td><td>Bottom padding</td></tr><tr><td>leftPadding</td><td>string</td><td>20</td><td>Left padding</td></tr><tr><td>rightPadding</td><td>string</td><td>20</td><td>Right padding</td></tr><tr><td>height</td><td>string</td><td>150</td><td>SVG element height</td></tr><tr><td>width</td><td>string</td><td>960</td><td>SVG element width</td></tr><tr><td>dotSize</td><td>string</td><td>20</td><td>Dot diameter</td></tr><tr><td>dotStrokeColor</td><td>string</td><td>&#39;black&#39;</td><td>Dot stroke color</td></tr><tr><td>dotStrokeWidth</td><td>string</td><td>2</td><td>Dot stroke width</td></tr><tr><td>dotTextSize</td><td>string</td><td>12</td><td>Dot text size</td></tr><tr><td>dotFill</td><td>string</td><td>&#39;white&#39;</td><td>Dot fill color</td></tr><tr><td>dotText</td><td>Function</td><td>(dot) =&gt; &#39;&#39;</td><td>Returns the text for given dot</td></tr><tr><td>disabledOpacity</td><td>string</td><td>0.9</td><td>Opacity level for disabled dots</td></tr><tr><td>showFretNumbers</td><td>string</td><td>true</td><td>Show fret numbers if true</td></tr><tr><td>fretNumbersHeight</td><td>string</td><td>40</td><td>Fret numbers container height</td></tr><tr><td>fretNumbersMargin</td><td>string</td><td>20</td><td>Fret number container top margin</td></tr><tr><td>fretNumbersColor</td><td>string</td><td>&#39;#00000099&#39;</td><td>Fret numbers color</td></tr><tr><td>font</td><td>string</td><td>&#39;Arial&#39;</td><td>Text font</td></tr><tr><td>crop</td><td>boolean</td><td>false</td><td>If <code>true</code>, crops the rendering. Must be used in conjunction with <code>fretCount</code>, so set it to a value enough to contain your diagram (3/4 for a chord, 5/6 for a scale box for instance)</td></tr><tr><td>fretLeftPadding</td><td>number</td><td>0</td><td>Amount of empty frets to display before dots.</td></tr></tbody></table><h2 id="fretboard-api">Fretboard API</h2><p>The <code>Fretboard</code> object has the following methods:</p><h3 id="render">render()</h3><pre><code class="language-typescript">render(positions: Position[]): Fretboard</code></pre><p>Displays the passed positions on the fretboard. Returns the instance itself.</p><h3 id="clear">clear()</h3><pre><code class="language-typescript">clear(): Fretboard</code></pre><p>Clears all positions from the fretboard. Returns the instance itself.</p><h3 id="style">style()</h3><pre><code class="language-typescript">style({
+]);
+
+fretboard.render();</code></pre><p>Since <code>setDots</code> returns the fretboard instance itself, you can chain the two calls as:</p><pre><code class="language-javascript">fretboard.setDots(dots).render();</code></pre><h2 id="configuration-options">Configuration options</h2><p><strong>Note</strong>: even though the context should provide enough disambiguation, the word <em>string</em> refers to both the instrument ones and the programming data type!</p><table><thead><tr><th>Parameter</th><th>Type</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td>el</td><td>string</td><td>&#39;#fretboard&#39;</td><td>Container element selector</td></tr><tr><td>tuning</td><td>string[]</td><td>[&quot;E2&quot;, &quot;A2&quot;, &quot;D3&quot;, &quot;G3&quot;, &quot;B3&quot;, &quot;E4&quot;]</td><td>Tuning of the instrument (see <a href="#tuning">tuning</a>)</td></tr><tr><td>stringCount</td><td>number</td><td>6</td><td>Number of instrument strings to display</td></tr><tr><td>stringWidth</td><td>number | [number]</td><td>1</td><td>String line stroke width - an array of 6 numbers can be passed, e.g. <code>[1, 1, 1, 3, 4, 5]</code></td></tr><tr><td>stringColor</td><td>string</td><td>&#39;black&#39;</td><td>String color</td></tr><tr><td>fretCount</td><td>number</td><td>15</td><td>Number of frets to display</td></tr><tr><td>fretWidth</td><td>string</td><td>1</td><td>Fret line stroke width</td></tr><tr><td>fretColor</td><td>string</td><td>&#39;black&#39;</td><td>Fret color</td></tr><tr><td>nutWidth</td><td>string</td><td>7</td><td>Nut stroke width</td></tr><tr><td>nutColor</td><td>string</td><td>&#39;black&#39;</td><td>Nut color</td></tr><tr><td>middleFretColor</td><td>string</td><td>&#39;red&#39;</td><td>Middle fret color</td></tr><tr><td>middleFretWidth</td><td>string</td><td>3</td><td>Middle fret stroke width</td></tr><tr><td>scaleFrets</td><td>string</td><td>true</td><td>If <code>true</code>, spaces frets logarithmically, otherwise linear</td></tr><tr><td>topPadding</td><td>string</td><td>20</td><td>Top padding (relative to SVG container)</td></tr><tr><td>bottomPadding</td><td>string</td><td>15</td><td>Bottom padding</td></tr><tr><td>leftPadding</td><td>string</td><td>20</td><td>Left padding</td></tr><tr><td>rightPadding</td><td>string</td><td>20</td><td>Right padding</td></tr><tr><td>height</td><td>string</td><td>150</td><td>SVG element height</td></tr><tr><td>width</td><td>string</td><td>960</td><td>SVG element width</td></tr><tr><td>dotSize</td><td>string</td><td>20</td><td>Dot diameter</td></tr><tr><td>dotStrokeColor</td><td>string</td><td>&#39;black&#39;</td><td>Dot stroke color</td></tr><tr><td>dotStrokeWidth</td><td>string</td><td>2</td><td>Dot stroke width</td></tr><tr><td>dotTextSize</td><td>string</td><td>12</td><td>Dot text size</td></tr><tr><td>dotFill</td><td>string</td><td>&#39;white&#39;</td><td>Dot fill color</td></tr><tr><td>dotText</td><td>Function</td><td>(dot) =&gt; &#39;&#39;</td><td>Returns the text for given dot</td></tr><tr><td>disabledOpacity</td><td>string</td><td>0.9</td><td>Opacity level for disabled dots</td></tr><tr><td>showFretNumbers</td><td>string</td><td>true</td><td>Show fret numbers if true</td></tr><tr><td>fretNumbersHeight</td><td>string</td><td>40</td><td>Fret numbers container height</td></tr><tr><td>fretNumbersMargin</td><td>string</td><td>20</td><td>Fret number container top margin</td></tr><tr><td>fretNumbersColor</td><td>string</td><td>&#39;#00000099&#39;</td><td>Fret numbers color</td></tr><tr><td>font</td><td>string</td><td>&#39;Arial&#39;</td><td>Text font</td></tr><tr><td>crop</td><td>boolean</td><td>false</td><td>If <code>true</code>, crops the rendering. Must be used in conjunction with <code>fretCount</code>, so set it to a value enough to contain your diagram (3/4 for a chord, 5/6 for a scale box for instance)</td></tr><tr><td>fretLeftPadding</td><td>number</td><td>0</td><td>Amount of empty frets to display before dots.</td></tr></tbody></table><h2 id="fretboard-api">Fretboard API</h2><p>The <code>Fretboard</code> object has the following methods:</p><h3 id="setdots">setDots()</h3><pre><code class="language-typescript">setDots(dots: Position[]): Fretboard</code></pre><p>Sets the passed dots. Returns the instance itself.</p><h3 id="render">render()</h3><pre><code class="language-typescript">render(): Fretboard</code></pre><p>Renders the fretboard. Returns the instance itself.</p><h3 id="clear">clear()</h3><pre><code class="language-typescript">clear(): Fretboard</code></pre><p>Clears all positions from the fretboard. Returns the instance itself.</p><h3 id="style">style()</h3><pre><code class="language-typescript">style({
   filter = (): boolean =&gt; true,
   text,
   fontSize,
@@ -46,15 +49,47 @@ const box = CAGED({
   box: &#39;C&#39;
 });
 
-fretboard.render(box);
-fretboard.style({
-  // this gives us just the root notes
-  filter: ({ interval }) =&gt; interval === &#39;1P&#39;,
-  // displays the note name
-  text: ({ note }) =&gt; note, 
-  // sets the value of the fill attribute
-  fill: ({ interval }) =&gt; interval === &#39;1P&#39; ? &#39;red&#39; : &#39;white&#39; 
-})</code></pre><h3 id="renderchord">renderChord()</h3><pre><code class="language-typescript">renderChord(chord: string): Fretboard</code></pre><p>Shorthand for rendering positions from a chord voicing string, e.g. <code>x32010</code> for a C Major in open position.</p><p>The string is mapped onto the fretboard starting from the bottom string, in this case:</p><ul><li><code>x</code>: 6th string muted;</li><li><code>3</code>: 5th string 3rd fret;</li><li><code>2</code>: 4th string 2nd fret;</li><li><code>0</code>: 3rd string open;</li><li><code>1</code>: 2nd string 1st fret;</li><li><code>0</code>: 1st string open.</li></ul><p>Examples:</p><pre><code class="language-typescript">// renders an open C major
+fretboard
+  .setDots(box)
+  .render()
+  .style({
+    // this gives us just the root notes
+    filter: ({ interval }) =&gt; interval === &#39;1P&#39;,
+    // displays the note name
+    text: ({ note }) =&gt; note, 
+    // sets the value of the fill attribute
+    fill: ({ interval }) =&gt; interval === &#39;1P&#39; ? &#39;red&#39; : &#39;white&#39; 
+})</code></pre><h3 id="renderscale">renderScale()</h3><pre><code class="language-typescript">renderScale({
+  type,
+  root,
+  box
+ }: {
+  type: string;
+  root: string;
+  box?: {
+    box: string | number;
+    system: Systems;
+  }
+}): Fretboard</code></pre><p>Populates the fretboard with all the notes of the given scale, e.g.:</p><pre><code class="language-javascript">const fretboard = new Fretboard();
+
+// shows where all the C,D,E,F,G,A,B are across all strings
+fretboard.renderScale({
+  type: &#39;major&#39;,
+  root: &#39;C&#39;
+});</code></pre><p>To highlight a specific box, use the optional <code>box</code> param:</p><pre><code class="language-javascript">import { Fretboard, Systems } from &#39;@moonwave99/fretboard.js&#39;;
+
+const fretboard = new Fretboard();
+
+// shows where all the A,B,C#,D,E,F#,G# are across all strings,
+// highlighting the C box of the CAGED system (between frets 9 and 12, that is)
+fretboard.renderScale({
+  type: &#39;major&#39;,
+  root: &#39;A&#39;,
+  box: {
+    system: Systems.CAGED,
+    box: &#39;C&#39;
+  }
+});</code></pre><p>For more information, see <a href="/documentation-music-tools.html#fretboard-systems">Fretboard Systems</a>.</p><h3 id="renderchord">renderChord()</h3><pre><code class="language-typescript">renderChord(chord: string): Fretboard</code></pre><p>Shorthand for rendering positions from a chord voicing string, e.g. <code>x32010</code> for a C Major in open position.</p><p>The string is mapped onto the fretboard starting from the bottom string, in this case:</p><ul><li><code>x</code>: 6th string muted;</li><li><code>3</code>: 5th string 3rd fret;</li><li><code>2</code>: 4th string 2nd fret;</li><li><code>0</code>: 3rd string open;</li><li><code>1</code>: 2nd string 1st fret;</li><li><code>0</code>: 1st string open.</li></ul><p>Examples:</p><pre><code class="language-typescript">// renders an open C major
 const fretboard = new Fretboard({
   fretCount: 3,
   showFretNumbers: false
@@ -85,4 +120,17 @@ fretboard.render([]);
 fretboard.on(&#39;mousemove&#39;, position =&gt; fretboard.render([position]));
 
 // you can remove the eventListeners with
-fretboard.removeEventListeners();</code></pre><h2 id="faq">FAQ</h2><blockquote><p>Why don&#39;t you provide a more expressive API like .highlightMajorTriads()?</p></blockquote><p>The aim of this library is to be as abstract as possible, and to make no assumptions besides the bare string/fret positioning. Since you can pass as many properties as you want to the position entries, you can provide full controlled and rich visualisations.</p></section></main><footer class="container text"><p>&copy; 2020 <a href="https://www.diegocaponera.com">mwlabs</a>. | <a href="https://github.com/moonwave99/fretboard.js">github</a></p></footer><script src="index-bundle.js"></script></body></html>
+fretboard.removeEventListeners();</code></pre><h2 id="tuning">Tuning</h2><p>One can pass a custom tuning as an array of notes, e.g.:</p><pre><code class="language-javascript">const fretboard = new Fretboard({
+  tuning: [&quot;D2&quot;, &quot;G2&quot;, &quot;D3&quot;, &quot;G3&quot;, &quot;B3&quot;, &quot;D4&quot;]
+});</code></pre><p><strong>Note:</strong> the tuning starts from the lower note as per naming convention.</p><p>The option is used by <code>renderScale()</code> to populate the fretboard according to the tuning.<br>A set of common used tuning can be imported from the library itself:</p><pre><code class="language-javascript">import { GUITAR_TUNINGS } from &#39;@moonwave99/fretboard.js&#39;;
+
+/*
+GUITAR_TUNINGS = {
+    default: [&quot;E2&quot;, &quot;A2&quot;, &quot;D3&quot;, &quot;G3&quot;, &quot;B3&quot;, &quot;E4&quot;],
+    halfStepDown: [&quot;Eb2&quot;, &quot;Ab2&quot;, &quot;Db3&quot;, &quot;Gb3&quot;, &quot;Bb3&quot;, &quot;Eb4&quot;],
+    dropD: [&quot;D2&quot;, &quot;A2&quot;, &quot;D3&quot;, &quot;G3&quot;, &quot;B3&quot;, &quot;E4&quot;],
+    openG: [&quot;D2&quot;, &quot;G2&quot;, &quot;D3&quot;, &quot;G3&quot;, &quot;B3&quot;, &quot;D4&quot;],
+    DADGAD: [&quot;D2&quot;, &quot;A2&quot;, &quot;D3&quot;, &quot;G3&quot;, &quot;A3&quot;, &quot;D4&quot;]
+};
+*/
+}</code></pre><p><strong>Note</strong>: <code>tuning.length</code> and <code>stringCount</code> must match, so beware bassists, ukulelists and 7+stringers.</p><h2 id="faq">FAQ</h2><blockquote><p>Why don&#39;t you provide a more expressive API like .highlightMajorTriads()?</p></blockquote><p>The aim of this library is to be as abstract as possible, and to make no assumptions besides the bare string/fret positioning. Since you can pass as many properties as you want to the position entries, you can provide full controlled and rich visualisations.</p></section></main><footer class="container text"><p>&copy; 2020 <a href="https://www.diegocaponera.com">mwlabs</a>. | <a href="https://github.com/moonwave99/fretboard.js">github</a></p></footer><script src="index-bundle.js"></script></body></html>

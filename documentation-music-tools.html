@@ -1,22 +1,63 @@
-<!doctype html><html lang="en" class="has-navbar-fixed-top" data-section="documentation"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fretboard.js | Documentation | Music Tools</title><link href="index.css" rel="stylesheet"></head><body><nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation"><div class="navbar-brand"><a class="navbar-item" href="index.html"><span class="navbar-icon" id="icon" title="I am client generated as well of course!"></span> <strong>Fretboard.js</strong> </a><a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar"><span aria-hidden="true"></span> <span aria-hidden="true"></span> <span aria-hidden="true"></span></a></div><div id="navbar" class="navbar-menu"><div class="navbar-start"><div class="navbar-item has-dropdown is-hoverable"><span class="navbar-link is-current">Documentation</span><div class="navbar-dropdown"><a class="navbar-item" href="documentation-fretboard.html">Fretboard</a> <a class="navbar-item is-current" href="documentation-music-tools.html">Music tools</a></div></div><div class="navbar-item has-dropdown is-hoverable"><span class="navbar-link">Examples</span><div class="navbar-dropdown"><a class="navbar-item" href="examples-systems.html">Systems</a> <a class="navbar-item" href="examples-boxes.html">Boxes</a> <a class="navbar-item" href="examples-modes.html">Modes</a> <a class="navbar-item" href="examples-chords.html">Chords</a> <a class="navbar-item" href="examples-tetrachords.html">Tetrachords</a> <a class="navbar-item" href="examples-events.html">Events</a> <a class="navbar-item" href="examples-playback.html">Playback</a></div></div></div><div class="navbar-end"><div class="navbar-item"><a href="https://github.com/moonwave99/fretboard.js">See on Github</a></div></div></div></nav><main><section class="documentation text container"><h1 id="documentation---music-tools">Documentation - Music Tools</h1><p>The library includes some helpers in order to populate the fretboard with existing patterns.<br>They all return an array of <code>{ string, fret, ...various }</code>, that can be passed to <code>Fretboard.render()</code> (or to your own function as well!).</p><h2 id="scales">Scales</h2><h3 id="pentatonic">Pentatonic</h3><p>Returns the positions for one of the five <a href="https://en.wikipedia.org/wiki/Pentatonic_scale">pentatonic</a> boxes.</p><pre><code class="language-typescript">import { pentatonic } from &#39;@moonwave99/fretboard.js&#39;;
+<!doctype html><html lang="en" class="has-navbar-fixed-top" data-section="documentation"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fretboard.js | Documentation | Music Tools</title><link href="index.css" rel="stylesheet"></head><body><nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation"><div class="navbar-brand"><a class="navbar-item" href="index.html"><span class="navbar-icon" id="icon" title="I am client generated as well of course!"></span> <strong>Fretboard.js</strong> </a><a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbar"><span aria-hidden="true"></span> <span aria-hidden="true"></span> <span aria-hidden="true"></span></a></div><div id="navbar" class="navbar-menu"><div class="navbar-start"><div class="navbar-item has-dropdown is-hoverable"><span class="navbar-link is-current">Documentation</span><div class="navbar-dropdown"><a class="navbar-item" href="documentation-fretboard.html">Fretboard</a> <a class="navbar-item is-current" href="documentation-music-tools.html">Music tools</a></div></div><div class="navbar-item has-dropdown is-hoverable"><span class="navbar-link">Examples</span><div class="navbar-dropdown"><a class="navbar-item" href="examples-systems.html">Systems</a> <a class="navbar-item" href="examples-modes.html">Modes</a> <a class="navbar-item" href="examples-chords.html">Chords</a> <a class="navbar-item" href="examples-tetrachords.html">Tetrachords</a> <a class="navbar-item" href="examples-events.html">Events</a> <a class="navbar-item" href="examples-playback.html">Playback</a></div></div></div><div class="navbar-end"><div class="navbar-item"><a href="https://github.com/moonwave99/fretboard.js">See on Github</a></div></div></div></nav><main><section class="documentation text container"><h1 id="documentation---music-tools">Documentation - Music Tools</h1><p>The library includes some helpers in order to populate the fretboard with existing patterns.</p><h2 id="fretboard-system">Fretboard System</h2><p>A <strong>fretboard system</strong> is an abstract representation of the fretboard, based on a given <strong>tuning</strong> (collection of notes to which the open strings are tuned) and the <strong>number of frets</strong> of the instrument.</p><p>It allows the depiction of a musical scale across all the fretboard, and the highlight of vertical boxes like the <strong>CAGED</strong> system and the <strong>Three Notes per String (TNPS)</strong> system.</p><pre><code class="language-typescript">import { FretboardSystem } from &#39;@moonwave99/fretboard.js&#39;;
 
-pentatonic ({
-  box = 1,
-  root = &#39;C3&#39;,
-  mode = &#39;major&#39;,
-}): Position[]</code></pre><p>Accepts:</p><ul><li><strong>box</strong>: 1-5;</li><li><strong>root</strong>: the root, relative to the box;</li><li><strong>mode</strong>: the mode of the pentatonic scale - major or minor.</li></ul><h3 id="three-note-per-string">Three-Note-Per-String</h3><p>Returns the positions for one of the five <strong>3NPS</strong> boxes.</p><pre><code class="language-typescript">import { TNPString } from &#39;@moonwave99/fretboard.js&#39;;
+// defaults to standard tuning and 15 frets
+const system = new FretboardSystem();
 
-TNPString ({
-  box = 1,
-  root = &#39;E3&#39;,
-  mode = &#39;major&#39;,
-}): Position[]</code></pre><p>Accepts:</p><ul><li><strong>box</strong>: 1-7;</li><li><strong>root</strong>: the root, relative to the box;</li><li><strong>mode</strong>: the mode of the box itself.</li></ul><h3 id="caged">CAGED</h3><p>Returns the positions for one of the five <a href="https://appliedguitartheory.com/lessons/caged-guitar-theory-system/">CAGED</a> system boxes.</p><pre><code class="language-typescript">import { CAGED } from &#39;@moonwave99/fretboard.js&#39;;
+// creates a long neck drop D guitar
+const system = new FretboardSystem({
+  tuning: [&#39;D2&#39;, &#39;A2&#39;, &#39;D3&#39;, &#39;G3&#39;, &#39;B3&#39;, &#39;E4&#39;],
+  fretCount: 24
+});</code></pre><p>For more information about included alternate tunings see the <a href="/fretboard.html#tunings">fretboard page</a>. They are just an array of notes though.</p><p>The system provides the <code>getScale(): Position[]</code> method:</p><pre><code class="language-typescript">const system = new FretboardSystem();
 
-CAGED ({
-  box = &#39;C&#39;,
-  root = &#39;C3&#39;,
-  mode = &#39;major&#39;,
-}): Position[]</code></pre><p>Accepts:</p><ul><li><strong>box</strong>: one of C-A-G-E-D;</li><li><strong>root</strong>: the root, relative to the box;</li><li><strong>mode</strong>: the mode of the box itself.</li></ul><h2 id="tetrachords">Tetrachords</h2><p>Returns the positions for the required <a href="https://en.wikipedia.org/wiki/Tetrachord">tetrachord</a>.</p><pre><code class="language-typescript">import {
+// returns all the E,G,A,B,D occurrences across all strings
+const scale = system.getScale({
+  type: &#39;pentatonic minor&#39;,
+  root: &#39;E&#39;
+});</code></pre><p>The <code>type</code> parameter can be a mode (e.g. <code>ionian</code>), a mode alias (<code>major</code>) or a pentatonic mode (<code>pentatonic minor</code> or <code>pentatonic major</code>).</p><h3 id="boxes">Boxes</h3><p>The optional <code>box</code> parameter controls the vertical box visualisation:</p><pre><code class="language-typescript">import { FretboardSystem, Systems } from &#39;@moonwave99/fretboard.js&#39;;
+
+const system = new FretboardSystem();
+
+// returns all the E,G,A,B,D occurrences across all strings, and highlights the first position pentatonic box
+const scale = system.getScale({
+  type: &#39;pentatonic minor&#39;,
+  root: &#39;E&#39;,
+  box: {
+    box: 1,
+    system: Systems.pentatonic
+  }
+});</code></pre><p>In this case, notes between frets 0 and 3 of the E minor pentatonic scale will have the <code>inBox</code> property set to <code>true</code>, that can be used in the <code>Fretboard</code> renderer for styling purposes.</p><p>In order to display the box up to the 12th position, the <code>root</code> can include the corrisponding octave:</p><pre><code class="language-typescript">import { FretboardSystem, Systems } from &#39;@moonwave99/fretboard.js&#39;;
+
+const system = new FretboardSystem();
+const scale = system.getScale({
+  type: &#39;pentatonic minor&#39;,
+  root: &#39;E3&#39;,
+  box: {
+    box: 1,
+    system: Systems.pentatonic
+  }
+});</code></pre><p>This time, the box will be between frets 12 and 15.</p><p>Other supported systems:</p><pre><code class="language-typescript">import { FretboardSystem, Systems } from &#39;@moonwave99/fretboard.js&#39;;
+
+const system = new FretboardSystem();
+
+// returns the C-shaped box of the D major scale, starting on the F# in second position
+system.getScale({
+  type: &#39;major&#39;,
+  root: &#39;D&#39;,
+  box: {
+    box: &#39;C&#39;,
+    system: Systems.CAGED
+  }
+});
+
+// returns the D major scale starting on the D in tenth position following the TNPS scheme
+system.getScale({
+  type: &#39;major&#39;,
+  root: &#39;D&#39;,
+  box: {
+    box: 1,
+    system: Systems.TNPS
+  }
+});</code></pre><p><strong>Note:</strong> the scale naming detection is offered by <a href="https://github.com/tonaljs/tonal/tree/master/packages/scale-type">tonaljs</a>, check their knowledge!</p><h2 id="tetrachords">Tetrachords</h2><p>Returns the positions for the required <a href="https://en.wikipedia.org/wiki/Tetrachord">tetrachord</a>.</p><pre><code class="language-typescript">import {
   tetrachord,
   TetrachordTypes,
   TetrachordLayouts

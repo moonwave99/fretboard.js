@@ -1,5 +1,5 @@
 import { Position } from '../fretboard/Fretboard';
-import { interval } from '@tonaljs/tonal';
+import { get as getInterval } from '@tonaljs/interval';
 import { transpose } from '@tonaljs/note';
 
 export enum TetrachordTypes {
@@ -57,7 +57,7 @@ export function tetrachord({
   let currentNote = root;
   if (layout === TetrachordLayouts.Linear) {
     tetrachord.forEach(x => {
-      const { semitones } = interval(x);
+      const { semitones } = getInterval(x);
       currentNote = transpose(currentNote, x);
       partial += semitones;
       pattern.push({
@@ -87,7 +87,7 @@ export function tetrachord({
   })();
 
   tetrachord.forEach((x, i) => {
-    const { semitones } = interval(x);
+    const { semitones } = getInterval(x);
     currentNote = transpose(currentNote, x);
     if (i === splitIndex) {
       currentString -= 1;

@@ -1,22 +1,33 @@
 {
   "colors": {
     "defaultFill": "white",
-    "defaultActiveFill": "#F25116",
+    "defaultActiveFill": "#ff636c",
     "defaultStroke": "black",
+    "defaultActiveStroke": "#ff636c",
     "disabled": "#aaa",
     "primaryFill": "#3273dc",
     "intervals": {
       "1P": "#F25116",
+      "2M": "#FCFF6C",
+      "2m": "#FCFF6C",
+      "3m": "#F29727",
       "3M": "#F29727",
-      "5P": "#F2E96B"
+      "4P": "#2FABEE",
+      "4A": "#2FABEE",
+      "5P": "#D89D6A",
+      "5A": "#D89D6A",
+      "6M": "#D7FFAB",
+      "6m": "#D7FFAB",
+      "7M": "#96ADC8",
+      "7m": "#96ADC8"
     },
     "octaves": [
       "blue",
       "magenta",
-      "red",
+      "#ff636c",
       "orange",
       "yellow",
-      "green"
+      "#6ae674"
     ],
     "chordTypes": {
       "maj7": "#00bbf9",

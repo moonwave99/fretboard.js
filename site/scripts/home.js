@@ -1,22 +1,19 @@
 import { isEqual, uniqWith } from 'lodash';
-import { Fretboard, CAGED } from '../../dist/fretboard.esm.js';
+import { Fretboard } from '../../dist/fretboard.esm.js';
 import { fretboardConfiguration, colors } from './config.js';
 
 export default function home() {
-  const box = CAGED({
-    mode: 'major',
-    root: 'C3',
-    box: 'C'
-  });
-
   const fretboard = new Fretboard({
     el: '#fretboard-api',
     ...fretboardConfiguration
   });
-  fretboard.render(box);
+  fretboard.renderScale({
+    type: 'major',
+    root: 'C'
+  });
 
   document.querySelectorAll('.api-actions button')
-    .forEach((button) => {
+    .forEach(button => {
       button.addEventListener('click', ({ currentTarget }) => {
         switch (currentTarget.dataset.action) {
           case 'show-notes':
@@ -27,7 +24,7 @@ export default function home() {
             break;
           case 'show-notes-with-octave':
             fretboard.style({
-              text: ({ noteWithOctave }) => noteWithOctave,
+              text: ({ note, octave }) => `${note}${octave}`,
               fontSize: 10,
               fill: ({ octave }) => colors.octaves[octave]
             });
@@ -35,20 +32,23 @@ export default function home() {
           case 'show-intervals':
             fretboard.style({
               text: ({ interval }) => interval,
-              fill: colors.defaultFill
+              fill: ({ interval }) => colors.intervals[interval],
             });
             break;
           case 'highlight-triad':
             fretboard.style({
-              filter: ({ degree }) => [1, 3, 5].indexOf(degree) > -1,
-              stroke: 'red'
+              text: ({ degree, interval }) => [1, 3, 5].indexOf(degree) > -1 ? interval : null,
+              fill: ({ degree, interval }) =>
+                [1, 3, 5].indexOf(degree) > -1
+                  ? colors.intervals[interval]
+                  : colors.defaultFill,
             });
             break;
           default:
             fretboard.style({
               text: () => null,
               fill: colors.defaultFill,
-              stroke: 'black'
+              stroke: colors.defaultStroke
             });
             break;
       }

@@ -10,7 +10,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const targetPath = path.resolve(__dirname, '_site');
 
 const documentation = ['fretboard', 'musicTools'];
-const examples = ['systems', 'boxes', 'modes', 'chords', 'tetrachords', 'events'];
+const examples = ['systems', 'modes', 'chords', 'tetrachords', 'events'];
 
 const labels = require('./site/data/labels.json');
 const textsFile = fs.readFileSync('./site/data/texts.md', 'utf8');

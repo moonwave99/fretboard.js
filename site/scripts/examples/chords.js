@@ -31,7 +31,7 @@ export default function chords() {
     }).renderChord(chord);
 
     const figCaption = document.createElement('figcaption');
-    figCaption.innerHTML = name;
+    figCaption.innerHTML = `${name}<br><code>${chord}</code>`;
     el.append(figCaption);
   });
 }

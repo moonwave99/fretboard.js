@@ -6,16 +6,11 @@
   },
   "examples": {
     "systems": {
-      "title": "Examples / Systems",
+      "title": "Examples / Systems and Boxes",
       "pentatonic": "Pentatonic system",
-      "caged": "CAGED System"
-    },
-    "boxes": {
-      "title": "Examples / Boxes",
-      "connected": "Connected Boxes",
       "caged": "CAGED System",
-      "threeNotesPerString": "3 Notes per String",
-      "pentatonic": "Pentatonic boxes"
+      "tnps": "Three Notes per String",
+      "boxes": "Connected Boxes"
     },
     "modes": {
       "title": "Examples / Modes"

@@ -35,10 +35,12 @@ test.beforeEach(() => {
 
 const system = new FretboardSystem();
 const pentaDots = system.getScale({
-  box: 1,
   root: 'G',
   type: 'minor pentatonic',
-  system: Systems.pentatonic
+  box: {
+    system: Systems.pentatonic,
+    box: 1
+  }
 });
 
 test('Fretboard with default options', t => {
@@ -110,10 +112,12 @@ test('Fretboard with linear frets', t => {
 test('Fretboard with dots', t => {
   const fretboard = new Fretboard();
   fretboard.renderScale({
-    box: 1,
     root: 'G2',
     type: 'minor pentatonic',
-    system: Systems.pentatonic
+    box: {
+      system: Systems.pentatonic,
+      box: 1
+    }
   });
 
   const svg = document.querySelector('#fretboard svg');
@@ -129,10 +133,12 @@ test('Fretboard with dots', t => {
 
 test('Fretboard with cropping', t => {
   const dots = system.getScale({
-    box: 1,
     root: 'C',
     type: 'minor pentatonic',
-    system: Systems.pentatonic
+    box: {
+      system: Systems.pentatonic,
+      box: 1
+    }
   }).filter(({ inBox }) => inBox);
   new Fretboard({
     scaleFrets: false,
@@ -278,8 +284,10 @@ test('Fretboard renderBox()', t => {
   fretboard.renderBox({
     type: 'minor',
     root: 'E',
-    box: 1,
-    system: Systems.pentatonic
+    box: {
+      system: Systems.pentatonic,
+      box: 1
+    }
   });
 
   const svg = document.querySelector('#fretboard svg');
@@ -296,8 +304,10 @@ test('Fretboard renderBox() - custom tuning warning', t => {
   }).renderBox({
     type: 'major pentatonic',
     root: 'C',
-    box: 'C',
-    system: Systems.CAGED
+    box: {
+      system: Systems.CAGED,
+      box: 'C'
+    }
   });
   t.is(fretboard instanceof Fretboard, true);
 });
@@ -325,8 +335,10 @@ test('Fretboard renderScale() - pentatonic', t => {
   fretboard.renderScale({
     type: 'minor pentatonic',
     root: 'E',
-    box: 1,
-    system: Systems.pentatonic
+    box: {
+      system: Systems.pentatonic,
+      box: 1
+    }
   });
 
   const svg = document.querySelector('#fretboard svg');
@@ -343,8 +355,10 @@ test('Fretboard renderScale() - CAGED', t => {
   fretboard.renderScale({
     type: 'major pentatonic',
     root: 'C',
-    box: 'C',
-    system: Systems.CAGED
+    box: {
+      system: Systems.CAGED,
+      box: 'C'
+    }
   });
 
   const svg = document.querySelector('#fretboard svg');
@@ -361,8 +375,10 @@ test('Fretboard renderScale() - TNPS', t => {
   fretboard.renderScale({
     type: 'major pentatonic',
     root: 'C',
-    box: 1,
-    system: Systems.TNPS
+    box: {
+      system: Systems.TNPS,
+      box: 1
+    }
   });
 
   const svg = document.querySelector('#fretboard svg');
@@ -378,8 +394,10 @@ test('Fretboard renderScale() - custom tuning warning', t => {
   }).renderScale({
     type: 'major pentatonic',
     root: 'C',
-    box: 'C',
-    system: Systems.CAGED
+    box: {
+      system: Systems.CAGED,
+      box: 'C'
+    }
   });
   t.is(fretboard instanceof Fretboard, true);  
 });
@@ -448,10 +466,12 @@ test('Fretboard with different stringWidths', t => {
 test('Fretboard with custom classes (scalar)', t => {
   const fretboard = new Fretboard();
   const dots = system.getScale({
-    box: 1,
     root: 'G',
     type: 'minor pentatonic',
-    system: Systems.pentatonic
+    box: {
+      system: Systems.pentatonic,
+      box: 1
+    }
   });
   dots[0].custom = true;
   dots[2].custom = true;
@@ -467,10 +487,12 @@ test('Fretboard with custom classes (scalar)', t => {
 test('Fretboard with custom classes (array)', t => {
   const fretboard = new Fretboard();
   const dots = system.getScale({
-    box: 1,
     root: 'G',
     type: 'minor pentatonic',
-    system: Systems.pentatonic
+    box: {
+      system: Systems.pentatonic,
+      box: 1
+    }
   });
   dots[0].custom = 1;
   dots[2].custom = [1, 2];

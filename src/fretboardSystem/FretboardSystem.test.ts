@@ -59,8 +59,10 @@ test('FretboardSystem - getScale() with system', t => {
     const scale = system.getScale({
         type: 'minor pentatonic',
         root: 'E',
-        box: 1,
-        system: Systems.pentatonic
+        box: {
+            system: Systems.pentatonic,
+            box: 1
+        }
     });
     t.is(
         scale.filter(({ inBox }) => inBox).length,

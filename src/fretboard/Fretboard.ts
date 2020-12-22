@@ -415,57 +415,40 @@ export class Fretboard {
   renderScale({
     type,
     root,
-    system,
     box
   }: {
     type: string;
     root: string;
-    box?: string | number;
-    system?: Systems;
+    box?: {
+      system: Systems;
+      box: string|number;
+    };
   }): Fretboard {
-    if (system && this.options.tuning.toString() !== GUITAR_TUNINGS.default.toString()) {
+    if (box && this.options.tuning.toString() !== GUITAR_TUNINGS.default.toString()) {
       console.warn('Selected scale system works for standard tuning. Wrong notes may be highlighted.');
     }
-
-    this.setDots(
-      this.system.getScale({
-        type,
-        root,
-        system,
-        box
-      })      
-    );
-
-    this.render();
-    return this;
+    const dots = this.system.getScale({ type, root, box });
+    return this.setDots(dots).render();
   }
 
   renderBox({
     type,
     root,
-    system,
     box
   }: {
     type: string;
     root: string;
-    box: string | number;
-    system: Systems;
+    box?: {
+      system: Systems;
+      box: string | number;
+    };
   }): Fretboard {
     if (this.options.tuning.toString() !== GUITAR_TUNINGS.default.toString()) {
       console.warn('Selected scale system works for standard tuning. Wrong notes may be highlighted.');
     }
 
-    this.setDots(
-      this.system.getScale({
-        type,
-        root,
-        system,
-        box
-      }).filter(({ inBox }) => inBox)
-    );
-
-    this.render();
-    return this;
+    const dots = this.system.getScale({ type, root, box }).filter(({ inBox }) => inBox);
+    return this.setDots(dots).render();
   }  
 
   on(eventName: string, handler: FretboardHandler): Fretboard {

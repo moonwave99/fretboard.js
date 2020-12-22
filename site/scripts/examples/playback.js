@@ -13,11 +13,13 @@ import '../../styles/playback.scss';
 document.addEventListener('DOMContentLoaded', () => {
   const fretboard = new Fretboard({
     ...fretboardConfiguration,
-    dotFill: ({ inBox }) => inBox ? colors.defaultFill : colors.disabled
+    dotFill: ({ inBox }) => (inBox ? colors.defaultFill : colors.disabled),
   }).renderScale({
     root: 'C',
-    box: 'E',
-    system: Systems.CAGED,
+    box: {
+      box: 'E',
+      system: Systems.CAGED,
+    },
   });
 
   const visualObj = ABCJS.renderAbc('notation', diatonicArpeggios, {

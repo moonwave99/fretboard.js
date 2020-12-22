@@ -28,8 +28,10 @@ type FretboardSystemParams = {
 type ScaleParams = {
     type: string;
     root: string;
-    box?: string | number;
-    system?: Systems;
+    box?: {
+        system: Systems;
+        box: string | number;
+    };
 }
 
 function parseNote(note: string): {
@@ -70,8 +72,7 @@ export class FretboardSystem {
     getScale({
         type = 'major',
         root: paramsRoot = 'C',
-        box,
-        system
+        box
     }: ScaleParams): Position[] {
         const { note: root, octave } = parseNote(paramsRoot);
         const scaleName = `${root} ${type}`;
@@ -83,8 +84,8 @@ export class FretboardSystem {
 
         const mode = getModeFromScaleType(type);
 
-        const boxPositions: Position[] = system ? getBox({
-            root, box, mode, octave, system
+        const boxPositions: Position[] = box ? getBox({
+            root, mode, octave, ...box
         }) : [];
 
         const reverseMap = notes.map((note, index) => ({

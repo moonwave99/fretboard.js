@@ -192,13 +192,14 @@ fretboard
 renderScale({
   type,
   root,
-  system,
   box
  }: {
   type: string;
   root: string;
-  box?: string | number;
-  system?: Systems;
+  box?: {
+    box: string | number;
+    system: Systems;
+  }
 }): Fretboard
 ```
 
@@ -214,7 +215,7 @@ fretboard.renderScale({
 });
 ```
 
-If `system` and `box` params are passed, the selected box of the corresponding system (pentatonic, CAGED, three notes per string) is highlighted:
+To highlight a specific box, use the optional `box` param:
 
 ```javascript
 import { Fretboard, Systems } from '@moonwave99/fretboard.js';
@@ -226,10 +227,14 @@ const fretboard = new Fretboard();
 fretboard.renderScale({
   type: 'major',
   root: 'A',
-  system: Systems.CAGED,
-  box: 'C'
+  box: {
+    system: Systems.CAGED,
+    box: 'C'
+  }
 });
 ```
+
+For more information, see [Fretboard Systems][fretboard-systems].
 
 ### renderChord()
 
@@ -319,8 +324,9 @@ const fretboard = new Fretboard({
 });
 ```
 
-The options is used by `renderScale()` to populate the fretboard according to the tuning.
+**Note:** the tuning starts from the lower note as per naming convention.
 
+The option is used by `renderScale()` to populate the fretboard according to the tuning.  
 A set of common used tuning can be imported from the library itself:
 
 ```javascript
@@ -345,3 +351,5 @@ GUITAR_TUNINGS = {
 > Why don't you provide a more expressive API like .highlightMajorTriads()?
 
 The aim of this library is to be as abstract as possible, and to make no assumptions besides the bare string/fret positioning. Since you can pass as many properties as you want to the position entries, you can provide full controlled and rich visualisations.
+
+[fretboard-systems]: /documentation-music-tools.html#fretboard-systems

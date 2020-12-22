@@ -1,69 +1,111 @@
 # Documentation - Music Tools
 
 The library includes some helpers in order to populate the fretboard with existing patterns.  
-They all return an array of `{ string, fret, ...various }`, that can be passed to `Fretboard.render()` (or to your own function as well!).
 
-## Scales
+## Fretboard System
 
-### Pentatonic
+A **fretboard system** is an abstract representation of the fretboard, based on a given **tuning** (collection of notes to which the open strings are tuned) and the **number of frets** of the instrument.
 
-Returns the positions for one of the five [pentatonic][pentatonic] boxes.
-
-```typescript
-import { pentatonic } from '@moonwave99/fretboard.js';
-
-pentatonic ({
-  box = 1,
-  root = 'C3',
-  mode = 'major',
-}): Position[]
-```
-
-Accepts:
-
-- **box**: 1-5;
-- **root**: the root, relative to the box;
-- **mode**: the mode of the pentatonic scale - major or minor.
-
-### Three-Note-Per-String
-
-Returns the positions for one of the five **3NPS** boxes.
+It allows the depiction of a musical scale across all the fretboard, and the highlight of vertical boxes like the **CAGED** system and the **Three Notes per String (TNPS)** system.
 
 ```typescript
-import { TNPString } from '@moonwave99/fretboard.js';
+import { FretboardSystem } from '@moonwave99/fretboard.js';
 
-TNPString ({
-  box = 1,
-  root = 'E3',
-  mode = 'major',
-}): Position[]
+// defaults to standard tuning and 15 frets
+const system = new FretboardSystem();
+
+// creates a long neck drop D guitar
+const system = new FretboardSystem({
+  tuning: ['D2', 'A2', 'D3', 'G3', 'B3', 'E4'],
+  fretCount: 24
+});
 ```
 
-Accepts:
+For more information about included alternate tunings see the [fretboard page][tunings]. They are just an array of notes though.
 
-- **box**: 1-7;
-- **root**: the root, relative to the box;
-- **mode**: the mode of the box itself.
-
-### CAGED
-
-Returns the positions for one of the five [CAGED][caged] system boxes.
+The system provides the `getScale(): Position[]` method:
 
 ```typescript
-import { CAGED } from '@moonwave99/fretboard.js';
+const system = new FretboardSystem();
 
-CAGED ({
-  box = 'C',
-  root = 'C3',
-  mode = 'major',
-}): Position[]
+// returns all the E,G,A,B,D occurrences across all strings
+const scale = system.getScale({
+  type: 'pentatonic minor',
+  root: 'E'
+});
 ```
 
-Accepts:
+The `type` parameter can be a mode (e.g. `ionian`), a mode alias (`major`) or a pentatonic mode (`pentatonic minor` or `pentatonic major`).
 
-- **box**: one of C-A-G-E-D;
-- **root**: the root, relative to the box;
-- **mode**: the mode of the box itself.
+### Boxes
+
+The optional `box` parameter controls the vertical box visualisation:
+
+```typescript
+import { FretboardSystem, Systems } from '@moonwave99/fretboard.js';
+
+const system = new FretboardSystem();
+
+// returns all the E,G,A,B,D occurrences across all strings, and highlights the first position pentatonic box
+const scale = system.getScale({
+  type: 'pentatonic minor',
+  root: 'E',
+  box: {
+    box: 1,
+    system: Systems.pentatonic
+  }
+});
+```
+
+In this case, notes between frets 0 and 3 of the E minor pentatonic scale will have the `inBox` property set to `true`, that can be used in the `Fretboard` renderer for styling purposes.
+
+In order to display the box up to the 12th position, the `root` can include the corrisponding octave:
+
+```typescript
+import { FretboardSystem, Systems } from '@moonwave99/fretboard.js';
+
+const system = new FretboardSystem();
+const scale = system.getScale({
+  type: 'pentatonic minor',
+  root: 'E3',
+  box: {
+    box: 1,
+    system: Systems.pentatonic
+  }
+});
+```
+
+This time, the box will be between frets 12 and 15.
+
+Other supported systems:
+
+```typescript
+import { FretboardSystem, Systems } from '@moonwave99/fretboard.js';
+
+const system = new FretboardSystem();
+
+// returns the C-shaped box of the D major scale, starting on the F# in second position
+system.getScale({
+  type: 'major',
+  root: 'D',
+  box: {
+    box: 'C',
+    system: Systems.CAGED
+  }
+});
+
+// returns the D major scale starting on the D in tenth position following the TNPS scheme
+system.getScale({
+  type: 'major',
+  root: 'D',
+  box: {
+    box: 1,
+    system: Systems.TNPS
+  }
+});
+```
+
+**Note:** the scale naming detection is offered by [tonaljs][tonaljs], check their knowledge!
 
 ## Tetrachords
 
@@ -96,3 +138,5 @@ Accepts:
 [pentatonic]: https://en.wikipedia.org/wiki/Pentatonic_scale
 [caged]: https://appliedguitartheory.com/lessons/caged-guitar-theory-system/
 [tetrachords]: https://en.wikipedia.org/wiki/Tetrachord
+[tunings]: /fretboard.html#tunings
+[tonaljs]: https://github.com/tonaljs/tonal/tree/master/packages/scale-type

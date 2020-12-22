@@ -9,11 +9,17 @@
     "intervals": {
       "1P": "#F25116",
       "2M": "#FCFF6C",
+      "2m": "#FCFF6C",
+      "3m": "#F29727",
       "3M": "#F29727",
       "4P": "#2FABEE",
+      "4A": "#2FABEE",
       "5P": "#D89D6A",
+      "5A": "#D89D6A",
       "6M": "#D7FFAB",
-      "7M": "#96ADC8"
+      "6m": "#D7FFAB",
+      "7M": "#96ADC8",
+      "7m": "#96ADC8"
     },
     "octaves": [
       "blue",

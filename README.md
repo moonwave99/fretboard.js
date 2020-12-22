@@ -12,15 +12,6 @@
 
 [See online documentation][docs]
 
-## Roadmap
-
-- [x] add crop to displayed positions options;
-- [x] add `renderChord()` shorthand;
-- [x] add hover / click event handlers;
-- [ ] add harmonic minor scale and its modes;
-- [ ] abstract tuning system;
-- [ ] render static SVGs.
-
 ---
 
 ## [ISC License](https://spdx.org/licenses/ISC)

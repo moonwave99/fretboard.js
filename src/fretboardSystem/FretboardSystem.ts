@@ -105,7 +105,7 @@ export class FretboardSystem {
                     ...x
                 };
                 if (boxPositions.length && isPositionInBox(x, boxPositions)) {
-                    position.inSystem = true;
+                    position.inBox = true;
                 }
                 return position;
             });

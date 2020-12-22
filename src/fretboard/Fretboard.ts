@@ -461,7 +461,7 @@ export class Fretboard {
         root,
         system,
         box
-      }).filter(({ inSystem }) => inSystem)
+      }).filter(({ inBox }) => inBox)
     );
 
     this.render();

@@ -14,8 +14,8 @@ function pentatonicSystemExample() {
     ...fretboardConfiguration,
     el: $wrapper.querySelector('figure'),
     dotText: ({ note, octave, interval }) => note,
-    dotFill: ({ interval, inSystem }) =>
-      !inSystem
+    dotFill: ({ interval, inBox }) =>
+      !inBox
         ? colors.disabled
         : interval === '1P'
         ? colors.defaultActiveFill
@@ -59,8 +59,8 @@ function CAGEDSystemExample() {
     ...fretboardConfiguration,
     el: $wrapper.querySelector('figure'),
     dotText: ({ note, octave, interval }) => note,
-    dotFill: ({ interval, inSystem }) =>
-      !inSystem
+    dotFill: ({ interval, inBox }) =>
+      !inBox
         ? colors.disabled
         : interval === '1P'
         ? colors.defaultActiveFill
@@ -95,8 +95,8 @@ function TNPSSystemExample() {
     ...fretboardConfiguration,
     el: $wrapper.querySelector('figure'),
     dotText: ({ note, octave, interval }) => note,
-    dotFill: ({ interval, inSystem }) =>
-      !inSystem
+    dotFill: ({ interval, inBox }) =>
+      !inBox
         ? colors.disabled
         : interval === "1P"
         ? colors.defaultActiveFill
@@ -214,10 +214,10 @@ function connectedBoxesExample() {
   connectedCagedExample({
     box1: system
       .getScale({ root: 'D', box: 'C', system: Systems.CAGED })
-      .filter(({ inSystem }) => inSystem),
+      .filter(({ inBox }) => inBox),
     box2: system
       .getScale({ root: 'D', box: 'A', system: Systems.CAGED })
-      .filter(({ inSystem }) => inSystem),
+      .filter(({ inBox }) => inBox),
   });
   connectedPentatonicExample({
     box1: system
@@ -227,7 +227,7 @@ function connectedBoxesExample() {
         box: 5,
         system: Systems.pentatonic,
       })
-      .filter(({ inSystem }) => inSystem),
+      .filter(({ inBox }) => inBox),
     box2: system
       .getScale({
         root: 'E3',
@@ -235,7 +235,7 @@ function connectedBoxesExample() {
         box: 1,
         system: Systems.pentatonic,
       })
-      .filter(({ inSystem }) => inSystem),
+      .filter(({ inBox }) => inBox),
   });
 }
 

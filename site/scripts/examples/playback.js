@@ -13,7 +13,7 @@ import '../../styles/playback.scss';
 document.addEventListener('DOMContentLoaded', () => {
   const fretboard = new Fretboard({
     ...fretboardConfiguration,
-    dotFill: ({ inSystem }) => inSystem ? colors.defaultFill : colors.disabled
+    dotFill: ({ inBox }) => inBox ? colors.defaultFill : colors.disabled
   }).renderScale({
     root: 'C',
     box: 'E',
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const [root, chordType] = [element.chord[0].name[0], element.chord[0].name.substring(1)];
       const chord = getChord(chordType, `${root}${octave}`);
       fretboard.style({
-        filter: { inSystem: true },
+        filter: { inBox: true },
         stroke: ({ note, octave }) =>
           chord.notes.indexOf(`${note}${octave}`) > -1
             ? colors.intervals['1P']
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (!chordElement) {
         fretboard.style({
-          filter: { inSystem: true },
+          filter: { inBox: true },
           fill: ({ note, octave }) =>
             `${note}${octave}` === playedNote
               ? colors.chordTypes[chordType]
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
         chord = getChord(chordType, playedNote).notes;
 
         fretboard.style({
-          filter: { inSystem: true },
+          filter: { inBox: true },
           text: ({ note, octave }) => chord.indexOf(`${note}${octave}`) > -1 ? note : '',
           fill: ({ note, octave }) =>
             `${note}${octave}` === playedNote

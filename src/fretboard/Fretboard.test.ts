@@ -133,7 +133,7 @@ test('Fretboard with cropping', t => {
     root: 'C',
     type: 'minor pentatonic',
     system: Systems.pentatonic
-  }).filter(({ inSystem }) => inSystem);
+  }).filter(({ inBox }) => inBox);
   new Fretboard({
     scaleFrets: false,
     fretCount: 4,

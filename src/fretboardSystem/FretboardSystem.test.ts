@@ -63,7 +63,7 @@ test('FretboardSystem - getScale() with system', t => {
         system: Systems.pentatonic
     });
     t.is(
-        scale.filter(({ inSystem }) => inSystem).length,
+        scale.filter(({ inBox }) => inBox).length,
         12
     );
 });

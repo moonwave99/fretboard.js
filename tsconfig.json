@@ -1,5 +1,8 @@
 {
 	"compilerOptions": {
+		"declaration": true,
+		"declarationDir": "./dist",
+		"outDir": "./dist",
 		"module": "ESNext",
 		"moduleResolution": "node",
 		"resolveJsonModule": true,

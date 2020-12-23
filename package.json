@@ -6,6 +6,7 @@
 	"main": "dist/fretboard.cjs.js",
 	"module": "dist/fretboard.esm.js",
 	"browser": "dist/fretboard.umd.js",
+	"types": "dist/index.d.ts",
 	"files": [
 		"dist/fretboard.*.js"
 	],
@@ -37,8 +38,7 @@
 		]
 	},
 	"devDependencies": {
-		"@rollup/plugin-node-resolve": "^7.1.3",
-		"@rollup/plugin-typescript": "^4.1.2",
+		"@rollup/plugin-node-resolve": "^11.0.1",
 		"@tonaljs/chord": "^4.5.1",
 		"@types/d3-selection": "^1.4.1",
 		"@types/throttle-debounce": "^2.1.0",
@@ -63,6 +63,7 @@
 		"nyc": "^15.1.0",
 		"prismjs": "^1.20.0",
 		"rollup": "^2.15.0",
+		"rollup-plugin-typescript2": "^0.29.0",
 		"sass": "^1.29.0",
 		"sass-loader": "^8.0.2",
 		"style-loader": "^1.2.1",

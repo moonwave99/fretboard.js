@@ -8,7 +8,9 @@
 	"browser": "dist/fretboard.umd.js",
 	"types": "dist/index.d.ts",
 	"files": [
-		"dist/fretboard.*.js"
+		"dist/fretboard.*.js",
+		"dist/fretboard.*.map",
+		"dist/**/*.d.ts"
 	],
 	"scripts": {
 		"test": "TS_NODE_COMPILER_OPTIONS='{\"module\":\"commonjs\"}' npx ava-ts",

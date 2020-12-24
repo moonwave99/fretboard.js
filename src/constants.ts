@@ -9,7 +9,8 @@ export const DEFAULT_COLORS = {
     dotFill: 'white',
     fretNumber: '#00000099',
     mutedString: '#333',
-    dotText: '#111'
+    dotText: '#111',
+    barres: '#666'
 };
 
 export const DEFAULT_DIMENSIONS = {

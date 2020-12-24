@@ -49,6 +49,9 @@ Fretboard.js can render chord diagrams of course. Here you have some good old [o
 
 [open-chords]: https://en.wikipedia.org/wiki/Open_chord
 
+<!--examples.chords.barred-->
+Fingers shortage? Raise the bar!
+
 <!--examples.chords.jazz-->
 Want to become a jazz cat? No problem!
 

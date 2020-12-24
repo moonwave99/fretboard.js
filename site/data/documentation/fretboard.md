@@ -85,13 +85,13 @@ el                | string   | '#fretboard' | Container element selector
 tuning            | string[] | ["E2", "A2", "D3", "G3", "B3", "E4"] | Tuning of the instrument (see [tuning](#tuning))
 stringCount       | number   | 6            | Number of instrument strings to display
 stringWidth       | number \| \[number\]   | 1   | String line stroke width - an array of 6 numbers can be passed, e.g. `[1, 1, 1, 3, 4, 5]`
-stringColor       | string   | 'black'      | String color
+stringColor       | string   | '#666'      | String color
 fretCount         | number   | 15           | Number of frets to display
 fretWidth         | string   | 1            | Fret line stroke width
-fretColor         | string   | 'black'      | Fret color
+fretColor         | string   | '#666'      | Fret color
 nutWidth          | string   | 7            | Nut stroke width
-nutColor          | string   | 'black'      | Nut color
-middleFretColor   | string   | 'red'        | Middle fret color
+nutColor          | string   | '#666'      | Nut color
+middleFretColor   | string   | '#ff636c'        | Middle fret color
 middleFretWidth   | string   | 3            | Middle fret stroke width
 scaleFrets        | string   | true         | If `true`, spaces frets logarithmically, otherwise linear
 topPadding        | string   | 20           | Top padding (relative to SVG container)
@@ -101,7 +101,7 @@ rightPadding      | string   | 20           | Right padding
 height            | string   | 150          | SVG element height
 width             | string   | 960          | SVG element width
 dotSize           | string   | 20           | Dot diameter
-dotStrokeColor    | string   | 'black'      | Dot stroke color
+dotStrokeColor    | string   | '#555'      | Dot stroke color
 dotStrokeWidth    | string   | 2            | Dot stroke width
 dotTextSize       | string   | 12           | Dot text size
 dotFill           | string   | 'white'      | Dot fill color
@@ -114,6 +114,7 @@ fretNumbersColor  | string   | '#00000099'  | Fret numbers color
 font              | string   | 'Arial'      | Text font
 crop              | boolean  | false        | If `true`, crops the rendering. Must be used in conjunction with `fretCount`, so set it to a value enough to contain your diagram (3/4 for a chord, 5/6 for a scale box for instance)
 fretLeftPadding   | number   | 0            | Amount of empty frets to display before dots.
+barresColor       | string   | '#666'            | Amount of empty frets to display before dots.
 
 ## Fretboard API
 
@@ -239,7 +240,7 @@ For more information, see [Fretboard Systems][fretboard-systems].
 ### renderChord()
 
 ```typescript
-renderChord(chord: string): Fretboard
+renderChord(chord: string, barres? Barre | Barre[]): Fretboard
 ```
 
 Shorthand for rendering positions from a chord voicing string, e.g. `x32010` for a C Major in open position.
@@ -275,6 +276,41 @@ fretboard.renderChord('x7678x');
 ```
 
 **Note:** for frets above the 9th, the dash-splitted-notation should be used in order to prevent parsing ambiguity - for instance `10-x-10-10-8-x` for a `Dmadd11` chord.
+
+Barres are supported by passing either a single `Barre` parameter, or an array of them:
+
+```typescript
+// renders a F major in first position
+const fretboard = new Fretboard({
+  fretCount: 3,
+  showFretNumbers: false,
+  crop: true
+});
+
+fretboard.renderChord('133211', { fret: 1 });
+
+// renders a B minor in second position
+const fretboard = new Fretboard({
+  fretCount: 3,
+  showFretNumbers: false,
+  crop: true
+});
+
+fretboard.renderChord('x24432', { fret: 2, stringFrom: 5 });
+
+// renders a C major in third position
+const fretboard = new Fretboard({
+  fretCount: 3,
+  showFretNumbers: false,
+  crop: true
+});
+
+fretboard.renderChord('x35553', [
+  { fret: 3, stringFrom: 5 },
+  { fret: 5, stringFrom: 4, stringTo: 2 }
+]);
+```
+**Note:** `stringFrom` defaults to the lowest string, and `stringTo` to the first. Pass the "human" agreed value otherwise, e.g. 2 for the open B string, or 5 for the open A (in standard guitar tuning of course).
 
 ### muteStrings()
 

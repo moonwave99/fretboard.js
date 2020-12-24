@@ -267,7 +267,7 @@ test('Fretboard renderChord()', t => {
   t.is(svg.querySelectorAll('.dots .dot').length, 3);
 });
 
-test('Fretboard renderChord() above 9th fret', t => {
+test('Fretboard renderChord() - above 9th fret', t => {
   const fretboard = new Fretboard();
   fretboard.renderChord('10-x-10-10-8-x');
 
@@ -275,6 +275,27 @@ test('Fretboard renderChord() above 9th fret', t => {
 
   t.is(svg.querySelectorAll('.muted-strings .muted-string').length, 2);
   t.is(svg.querySelectorAll('.dots .dot').length, 4);
+});
+
+test('Fretboard renderChord() - barres', t => {
+  const fretboard = new Fretboard();
+  fretboard.renderChord('133211', { fret: 1 });
+
+  const svg = document.querySelector('#fretboard svg');
+
+  t.is(svg.querySelectorAll('.barres rect').length, 1);
+});
+
+test('Fretboard renderChord() - multiple barres', t => {
+  const fretboard = new Fretboard();
+  fretboard.renderChord('x35553', [
+    { fret: 3, stringFrom: 5 },
+    { fret: 5, stringFrom: 4, stringTo: 2 }
+  ]);
+
+  const svg = document.querySelector('#fretboard svg');
+
+  t.is(svg.querySelectorAll('.barres rect').length, 2);
 });
 
 test('Fretboard renderBox()', t => {

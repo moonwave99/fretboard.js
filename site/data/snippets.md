@@ -29,4 +29,40 @@ fretboard.renderChord([
 // optional
 fretboard.muteStrings({ strings: [6] });
 ```
+
+Barres are supported by passing either a single `Barre` parameter, or an array of them:
+
+```typescript
+// renders a F major in first position
+const fretboard = new Fretboard({
+  fretCount: 3,
+  showFretNumbers: false,
+  crop: true
+});
+
+fretboard.renderChord('133211', { fret: 1 });
+
+// renders a B minor in second position
+const fretboard = new Fretboard({
+  fretCount: 3,
+  showFretNumbers: false,
+  crop: true
+});
+
+fretboard.renderChord('x24432', { fret: 2, stringFrom: 5 });
+
+// renders a C major in third position
+const fretboard = new Fretboard({
+  fretCount: 3,
+  showFretNumbers: false,
+  crop: true
+});
+
+fretboard.renderChord('x35553', [
+  { fret: 3, stringFrom: 5 },
+  { fret: 5, stringFrom: 4, stringTo: 2 }
+]);
+```
+**Note:** `stringFrom` defaults to the lowest string, and `stringTo` to the first. Pass the "human" agreed value otherwise, e.g. 2 for the open B string, or 5 for the open A (in standard guitar tuning of course).
+
 Providing chord positions by name is outside the scope of this library, as many resources already exist for that.

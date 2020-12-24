@@ -428,8 +428,8 @@ test('Fretboard event handlers', t => {
     .render()
     .on('click', (position: Position) => t.deepEqual(position, { string: 1, fret: 0 }));
   const hoverDiv = document.querySelector('#fretboard .hoverDiv');
-  hoverDiv.dispatchEvent(new MouseEvent('click'));
   t.truthy(hoverDiv);
+  hoverDiv.dispatchEvent(new MouseEvent('click'));
 });
 
 test('Fretboard add new event listener', t => {
@@ -467,8 +467,17 @@ test('Fretboard removeEventListeners before adding listeners', t => {
     .render()
     .removeEventListeners();
   const svg = document.querySelector('#fretboard svg');
-
   t.truthy(svg);
+});
+
+test('Fretboard event handlers - click on dot', t => {
+  new Fretboard()
+    .setDots([{ string: 1, fret: 0, note: 'E' }])
+    .render()
+    .on('click', (position: Position) => t.deepEqual(position, { string: 1, fret: 0, note: 'E' }));
+  const hoverDiv = document.querySelector('#fretboard .hoverDiv');
+  t.truthy(hoverDiv);
+  hoverDiv.dispatchEvent(new MouseEvent('click'));
 });
 
 test('Fretboard with different stringWidths', t => {

@@ -467,7 +467,8 @@ export class Fretboard {
       options,
       strings,
       frets,
-      hoverDiv
+      hoverDiv,
+      dots
     } = this;
     const stringsGroup = svg.select('.strings');
 
@@ -486,6 +487,7 @@ export class Fretboard {
           stringsGroup,
           strings,
           frets,
+          dots,
           ...options
         }
       )));

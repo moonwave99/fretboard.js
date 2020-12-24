@@ -154,6 +154,7 @@ type GetPositionParams = {
   nutWidth: number;
   strings: number[];
   frets: number[];
+  dots: Position[];
 }
 
 export const getPositionFromMouseCoords = ({
@@ -162,7 +163,8 @@ export const getPositionFromMouseCoords = ({
   leftPadding,
   nutWidth,
   strings,
-  frets
+  frets,
+  dots
 }: GetPositionParams): Position => {
   const {
     width: stringsGroupWidth,
@@ -198,7 +200,8 @@ export const getPositionFromMouseCoords = ({
     foundFret = 0;
   }
 
-  return {
+  const foundDot = dots.find(({ fret, string }) => fret === foundFret && string === foundString + 1);
+  return foundDot || {
     string: foundString + 1,
     fret: foundFret
   }

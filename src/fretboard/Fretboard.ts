@@ -50,6 +50,12 @@ export type Position = {
 
 type FretboardHandler = (position: Position) => void;
 
+export type Barre = {
+  fret: number;
+  stringFrom?: number;
+  stringTo?: number;
+}
+
 export const defaultOptions = {
   el: '#fretboard',
   tuning: GUITAR_TUNINGS.default,
@@ -83,7 +89,8 @@ export const defaultOptions = {
   fretNumbersHeight: 2 * DEFAULT_DIMENSIONS.unit,
   fretNumbersMargin: DEFAULT_DIMENSIONS.unit,
   fretNumbersColor: DEFAULT_COLORS.line,
-  font: DEFAULT_FONT_FAMILY
+  font: DEFAULT_FONT_FAMILY,
+  barresColor: DEFAULT_COLORS.barres
 };
 
 export const defaultMuteStringsParams = {
@@ -127,6 +134,7 @@ export type Options = {
   crop: boolean;
   fretLeftPadding: number;
   font: string;
+  barresColor: string;
 }
 
 type Rec = Record<string, string | number | boolean>;
@@ -269,14 +277,10 @@ export class Fretboard {
       dotSize,
       dotText,
       dotTextSize,
-      disabledOpacity,
-      fretLeftPadding,
-      crop
+      disabledOpacity
     } = this.options;
 
-    const dotOffset = crop
-      ? Math.max(0, Math.min(...dots.map(({ fret }) => fret)) - 1 - fretLeftPadding)
-      : 0;
+    const dotOffset = this.getDotOffset();
     this.baseRender(dotOffset);
 
     wrapper.select('.dots').remove();
@@ -407,13 +411,14 @@ export class Fretboard {
     return this;
   }
 
-  renderChord(chord: string): Fretboard {
-    const { positions, mutedStrings } = parseChord(chord);
+  renderChord(chord: string, barres?: Barre | Barre[]): Fretboard {
+    const { positions, mutedStrings: strings } = parseChord(chord);
     this.setDots(positions);
+    if (barres) {
+      this.renderBarres([].concat(barres));
+    }    
     this.render();
-    this.muteStrings({
-      strings: mutedStrings
-    });
+    this.muteStrings({ strings });
     return this;
   }
 
@@ -503,6 +508,50 @@ export class Fretboard {
         ([eventName, handler]) => hoverDiv.removeEventListener(eventName, handler)
       );
     return this;
+  }
+
+  private renderBarres(barres: Barre[]): void {
+    const {
+      wrapper,
+      strings,
+      options,
+      positions
+    } = this;
+
+    const normalisedBarres = barres.map(({
+      fret,
+      stringFrom,
+      stringTo
+    }: Barre) => ({
+      fret,
+      stringFrom: stringFrom
+        ? Math.min(stringFrom, strings.length)
+        : strings.length,
+      stringTo: stringTo
+        ? Math.max(stringTo, 1)
+        : 1
+    }));
+
+    const { dotSize, barresColor } = options;
+    const dotOffset = this.getDotOffset();
+    const barreWidth = dotSize * .8;
+    
+    const barresGroup = wrapper
+      .append('g')
+      .attr('class', 'barres')
+      .attr('transform', `translate(-${barreWidth * .5}, 0)`);
+
+    barresGroup
+      .selectAll('rect')
+      .data(normalisedBarres)
+      .enter()
+      .append('rect')
+      .attr('y', ({ fret, stringTo }: Barre) => positions[stringTo - 1][fret - dotOffset].y - dotSize * .75)
+      .attr('x', ({ fret, stringFrom }: Barre) => `${positions[stringFrom - 1][fret - dotOffset].x}%`)
+      .attr('rx', 7.5)
+      .attr('width', barreWidth)
+      .attr('height', ({ stringFrom, stringTo }: Barre) => strings[stringFrom - 1] - strings[stringTo - 1] + 1.5 * dotSize)
+      .attr('fill', barresColor);
   }
 
   private baseRender(dotOffset: number): void {
@@ -607,4 +656,12 @@ export class Fretboard {
 
     this.baseRendered = true;
   }  
+
+  private getDotOffset(): number {
+    const { dots } = this;
+    const { crop, fretLeftPadding } = this.options;
+    return crop
+      ? Math.max(0, Math.min(...dots.map(({ fret }) => fret)) - 1 - fretLeftPadding)
+      : 0;    
+  }
 }

@@ -28,7 +28,7 @@ const getTexts = (file) => {
   );
 };
 
-const { repository } = require('./package.json');
+const { version, repository } = require('./package.json');
 
 const getExampleLink = (example) => `${repository.url}/tree/master/site/scripts/examples/${example}.js`;
 
@@ -76,12 +76,16 @@ const partials = {
         <div class="navbar-start">
           <div class="navbar-item has-dropdown is-hoverable">
             <span class="navbar-link ${isCurrent('documentation')}">
-              Documentation
+              Documentation <span class="version">(v${version})</span>
             </span>
 
             <div class="navbar-dropdown">
-              <a class="navbar-item ${isCurrent('fretboard')}" href="documentation-fretboard.html">Fretboard</a>
-              <a class="navbar-item ${isCurrent('musicTools')}" href="documentation-music-tools.html">Music tools</a>
+              <a class="navbar-item ${isCurrent(
+                'fretboard'
+              )}" href="documentation-fretboard.html">Fretboard class</a>
+              <a class="navbar-item ${isCurrent(
+                'musicTools'
+              )}" href="documentation-music-tools.html">Music Tools</a>
             </div>
           </div>
 

@@ -19,9 +19,9 @@ Given an existing DOM element:
 `require` / `import` the library accordingly:
 
 ```javascript
-const { Fretboard, CAGED } = require('@moonwave99/fretboard.js');
+const { Fretboard } = require('@moonwave99/fretboard.js');
 // OR
-import { Fretboard, CAGED } from '@moonwave99/fretboard.js';
+import { Fretboard } from '@moonwave99/fretboard.js';
 ```
 
 Then initialise a `Fretboard` instance with desired options:
@@ -35,19 +35,6 @@ const fretboard = new Fretboard({
 });
 ```
 First set the dots with `setDots` and call the `render` method to display:
-
-```javascript
-const box = CAGED({
-  mode: 'major',
-  root: 'C3',
-  box: 'C'
-});
-
-fretboard.setDots(box);
-fretboard.render();
-```
-
-In this case, the `CAGED` method returns an array of objects containing further musical information like the note name and the scale degree, but you can pass just an array of `{ string, fret }`:
 
 ```javascript
 // this would render an open C chord
@@ -154,7 +141,7 @@ style({
   fontFill,
   ...opts  
 }: {
-  filter?: (position: Position) => boolean;
+  filter?: (position: Position) => boolean | Record<string, string|number|boolean>;
   text?: (position: Position) => string;
   fontSize?: number;
   fontFill?: string;
@@ -167,23 +154,16 @@ Applies the passed properties to selected positions (via the `filter` function p
 ```typescript
 const fretboard = new Fretboard();
 
-// the box positions contain the note name and the interval from the root
-const box = CAGED({
-  mode: 'major',
-  root: 'C3',
-  box: 'C'
-});
-
 fretboard
-  .setDots(box)
+  .setDots(dots)
   .render()
   .style({
     // this gives us just the root notes
-    filter: ({ interval }) => interval === '1P',
+    filter: ({ interval: '1P' }),
     // displays the note name
     text: ({ note }) => note, 
     // sets the value of the fill attribute
-    fill: ({ interval }) => interval === '1P' ? 'red' : 'white' 
+    fill: 'red'
 })
 ```
 

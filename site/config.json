@@ -22,11 +22,10 @@
       "7m": "#96ADC8"
     },
     "octaves": [
-      "blue",
-      "magenta",
-      "#ff636c",
-      "orange",
-      "yellow",
+      "#70D6FF",
+      "#FFBE0B",
+      "#E9FF70",
+      "#FF70A6",
       "#6ae674"
     ],
     "chordTypes": {

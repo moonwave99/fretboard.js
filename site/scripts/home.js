@@ -26,7 +26,7 @@ export default function home() {
             fretboard.style({
               text: ({ note, octave }) => `${note}${octave}`,
               fontSize: 10,
-              fill: ({ octave }) => colors.octaves[octave]
+              fill: ({ octaveInScale }) => colors.octaves[octaveInScale],
             });
             break;
           case 'show-intervals':

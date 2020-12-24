@@ -34,6 +34,7 @@ test('FretboardSystem - getScale()', t => {
     });
     t.deepEqual(scale[0], {
         octave: 4,
+        octaveInScale: 2,
         chroma: 4,
         note: 'E',
         interval: '1P',

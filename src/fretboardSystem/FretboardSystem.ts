@@ -52,6 +52,26 @@ function parseNote(note: string): {
     };
 }
 
+function getOctaveInScale({
+    root,
+    note,
+    octave,
+    baseOctave
+}: {
+    root: string;
+    note: string;
+    octave: number;
+    baseOctave: number;   
+}): number {
+    const noteChroma = getChroma(note) || 0;
+    const rootChroma = getChroma(root) || 0;
+
+    if (rootChroma > noteChroma) {
+        return octave - 1 - baseOctave;
+    }
+    return octave - baseOctave;
+}
+
 export function isPositionInBox({ fret, string }: Position, systemPositions: Position[]): boolean {
     return !!systemPositions.find(x => x.fret === fret && x.string === string);
 }
@@ -60,8 +80,13 @@ export class FretboardSystem {
     private tuning: Tuning = GUITAR_TUNINGS.default;
     private fretCount: number = DEFAULT_FRET_COUNT;
     private positions: FretboardPosition[];
+    private baseNote: string;
+    private baseOctave: number;
     constructor(params?: FretboardSystemParams) {
         Object.assign(this, params);
+        const { note: baseNote, octave: baseOctave } = parseNote(this.tuning[0]);
+        this.baseNote = baseNote;
+        this.baseOctave = baseOctave;
         this.populate();
     }
     getTuning(): Tuning {
@@ -75,6 +100,7 @@ export class FretboardSystem {
         root: paramsRoot = 'C',
         box
     }: ScaleParams): Position[] {
+        const { baseOctave } = this;
         const { note: root } = parseNote(paramsRoot);
         const scaleName = `${root} ${type}`;
         const { notes, empty, intervals } = getScale(scaleName);
@@ -101,8 +127,10 @@ export class FretboardSystem {
                 ...rest
             }))
             .map(x => {
+                const octave = this.getOctave(x);
                 const position: Position = {
-                    octave: this.getOctave(x),
+                    octave,
+                    octaveInScale: getOctaveInScale({ root, octave, baseOctave, ...x }),
                     ...x
                 };
                 if (boxPositions.length && isPositionInBox(x, boxPositions)) {
@@ -120,7 +148,6 @@ export class FretboardSystem {
             fret: rootOffset || negativeFrets ? fret + 12 : fret
         }));
     }
-
     private populate(): void {
         const { tuning, fretCount } = this;
         this.positions = tuning
@@ -156,7 +183,6 @@ export class FretboardSystem {
             octaveIncrement--;
         } else if (note === 'Cb' && octaveIncrement === 0) {
             octaveIncrement++;
-
         }
         octaveIncrement += Math.floor(fret / 12);
         return baseOctave + octaveIncrement;

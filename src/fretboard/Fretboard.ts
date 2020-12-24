@@ -40,8 +40,13 @@ export type Position = {
   fret: number;
   note?: string;
   disabled?: boolean;
-  [key: string]: string|number|boolean|Array<string|number>;
-}
+  octave?: number;
+  octaveInScale?: number;
+  inBox?: boolean;
+  interval?: string;
+  degree?: number;
+  chroma?: number;
+} & Record<string, string | number | boolean | Array<string | number>>;
 
 type FretboardHandler = (position: Position) => void;
 

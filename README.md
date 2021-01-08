@@ -24,4 +24,4 @@ THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES WITH RE
 
 [homepage]: https://moonwave99.github.io/fretboard.js/
 [icon]: https://moonwave99.github.io/fretboard.js/assets/icon.svg
-[docs]: https://moonwave99.github.io/fretboard.js/documentation.html
+[docs]: https://moonwave99.github.io/fretboard.js/documentation-fretboard.html

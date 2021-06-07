@@ -48,7 +48,7 @@ export type Position = {
   chroma?: number;
 } & Record<string, string | number | boolean | Array<string | number>>;
 
-type FretboardHandler = (position: Position) => void;
+type FretboardHandler = (position: Position, event: MouseEvent) => void;
 
 export type Barre = {
   fret: number;
@@ -155,11 +155,11 @@ function getDotCoords({
   fret,
   string,
   frets,
-  strings  
+  strings
 }: {
   fret: number;
   string: number;
-  frets: number[];  
+  frets: number[];
   strings: number[];
 }): Point {
   let x = 0;
@@ -212,9 +212,9 @@ export class Fretboard {
   private handlers: Record<string, (event: MouseEvent) => void> = {};
   private system: FretboardSystem;
   private dots: Position[] = [];
-  constructor (options = {}) {
+  constructor(options = {}) {
     this.options = Object.assign({}, defaultOptions, options);
-    validateOptions(this.options);    
+    validateOptions(this.options);
     const {
       el,
       height,
@@ -246,20 +246,20 @@ export class Fretboard {
       typeof el === 'string'
         ? select(el)
         : select<BaseType, unknown>(el)
-      )
+    )
       .append('div')
-        .attr('class', 'fretbard-html-wrapper')
-        .attr('style', 'position: relative')
+      .attr('class', 'fretbard-html-wrapper')
+      .attr('style', 'position: relative')
       .append('svg')
-        .attr('viewBox', `0 0 ${totalWidth} ${totalHeight}`);
+      .attr('viewBox', `0 0 ${totalWidth} ${totalHeight}`);
 
     this.wrapper = this.svg
       .append('g')
-        .attr('class', 'fretboard-wrapper')
-        .attr(
-          'transform',
-          `translate(${leftPadding}, ${topPadding}) scale(${width / totalWidth})`
-        );
+      .attr('class', 'fretboard-wrapper')
+      .attr(
+        'transform',
+        `translate(${leftPadding}, ${topPadding}) scale(${width / totalWidth})`
+      );
   }
 
   render(): Fretboard {
@@ -291,16 +291,16 @@ export class Fretboard {
 
     const dotGroup = wrapper
       .append('g')
-        .attr('class', 'dots')
-        .attr('font-family', font);
+      .attr('class', 'dots')
+      .attr('font-family', font);
 
     const dotsNodes = dotGroup.selectAll('g')
       .data(dots)
       .enter()
       .filter(({ fret }) => fret >= 0)
       .append('g')
-        .attr('class', dot => ['dot', dotClasses(dot, '')].join(' '))
-        .attr('opacity', ({ disabled }) => disabled ? disabledOpacity : 1);
+      .attr('class', dot => ['dot', dotClasses(dot, '')].join(' '))
+      .attr('opacity', ({ disabled }) => disabled ? disabledOpacity : 1);
 
     dotsNodes.append('circle')
       .attr('class', 'dot-circle')
@@ -334,7 +334,7 @@ export class Fretboard {
     return this;
   }
 
-  style ({
+  style({
     filter = (): boolean => true,
     text,
     fontSize,
@@ -358,7 +358,7 @@ export class Fretboard {
 
     const dots = wrapper.selectAll('.dot-circle')
       .filter(filterFunction);
-    
+
     Object.keys(opts).forEach(
       key => dots.attr(key, (opts as Rec)[key])
     );
@@ -389,24 +389,24 @@ export class Fretboard {
 
     wrapper
       .append('g')
-        .attr('class', 'muted-strings')
-        .attr('transform', `translate(${-width / 2}, ${-width / 2})`)
+      .attr('class', 'muted-strings')
+      .attr('transform', `translate(${-width / 2}, ${-width / 2})`)
       .selectAll('path')
-        .data(strings)
-        .enter()
+      .data(strings)
+      .enter()
       .append('path')
-        .attr('d', d => {
-          const { y } = positions[d - 1][0];
-          return [
-            `M 0 ${y}`,
-            `L ${width} ${y + width}`,
-            `M ${width} ${y}`,
-            `L 0 ${y + width}`
-          ].join(' ');
-        })
-        .attr('stroke', stroke)
-        .attr('stroke-width', strokeWidth)
-        .attr('class', 'muted-string');
+      .attr('d', d => {
+        const { y } = positions[d - 1][0];
+        return [
+          `M 0 ${y}`,
+          `L ${width} ${y + width}`,
+          `M ${width} ${y}`,
+          `L 0 ${y + width}`
+        ].join(' ');
+      })
+      .attr('stroke', stroke)
+      .attr('stroke-width', strokeWidth)
+      .attr('class', 'muted-string');
 
     return this;
   }
@@ -416,7 +416,7 @@ export class Fretboard {
     this.setDots(positions);
     if (barres) {
       this.renderBarres([].concat(barres));
-    }    
+    }
     this.render();
     this.muteStrings({ strings });
     return this;
@@ -431,7 +431,7 @@ export class Fretboard {
     root: string;
     box?: {
       system: Systems;
-      box: string|number;
+      box: string | number;
     };
   }): Fretboard {
     if (box && this.options.tuning.toString() !== GUITAR_TUNINGS.default.toString()) {
@@ -459,7 +459,7 @@ export class Fretboard {
 
     const dots = this.system.getScale({ type, root, box }).filter(({ inBox }) => inBox);
     return this.setDots(dots).render();
-  }  
+  }
 
   on(eventName: string, handler: FretboardHandler): Fretboard {
     const {
@@ -479,20 +479,19 @@ export class Fretboard {
 
     if (this.handlers[eventName]) {
       this.hoverDiv.removeEventListener(eventName, this.handlers[eventName]);
-    } else {
-      this.handlers[eventName] = throttle(
-        THROTTLE_INTERVAL,
-        (event: MouseEvent) => handler(getPositionFromMouseCoords({
-          event,
-          stringsGroup,
-          strings,
-          frets,
-          dots,
-          ...options
-        }
-      )));
-      this.hoverDiv.addEventListener(eventName, this.handlers[eventName]);
     }
+    this.handlers[eventName] = throttle(
+      THROTTLE_INTERVAL,
+      (event: MouseEvent) => handler(getPositionFromMouseCoords({
+        event,
+        stringsGroup,
+        strings,
+        frets,
+        dots,
+        ...options
+      }
+      ), event));
+    this.hoverDiv.addEventListener(eventName, this.handlers[eventName]);
     return this;
   }
 
@@ -537,7 +536,7 @@ export class Fretboard {
     const { dotSize, barresColor } = options;
     const dotOffset = this.getDotOffset();
     const barreWidth = dotSize * .8;
-    
+
     const barresGroup = wrapper
       .append('g')
       .attr('class', 'barres')
@@ -657,13 +656,13 @@ export class Fretboard {
     }
 
     this.baseRendered = true;
-  }  
+  }
 
   private getDotOffset(): number {
     const { dots } = this;
     const { crop, fretLeftPadding } = this.options;
     return crop
       ? Math.max(0, Math.min(...dots.map(({ fret }) => fret)) - 1 - fretLeftPadding)
-      : 0;    
+      : 0;
   }
 }

@@ -34,6 +34,7 @@ const fretboard = new Fretboard({
   ...
 });
 ```
+
 First set the dots with `setDots` and call the `render` method to display:
 
 ```javascript
@@ -41,16 +42,16 @@ First set the dots with `setDots` and call the `render` method to display:
 fretboard.setDots([
   {
     string: 5,
-    fret: 3
+    fret: 3,
   },
   {
     string: 4,
-    fret: 2
+    fret: 2,
   },
   {
     string: 2,
-    fret: 1
-  }
+    fret: 1,
+  },
 ]);
 
 fretboard.render();
@@ -66,42 +67,42 @@ fretboard.setDots(dots).render();
 
 **Note**: even though the context should provide enough disambiguation, the word _string_ refers to both the instrument ones and the programming data type!
 
-Parameter         | Type     | Default      | Description
-------------------|----------|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-el                | string   | '#fretboard' | Container element selector
-tuning            | string[] | ["E2", "A2", "D3", "G3", "B3", "E4"] | Tuning of the instrument (see [tuning](#tuning))
-stringCount       | number   | 6            | Number of instrument strings to display
-stringWidth       | number \| \[number\]   | 1   | String line stroke width - an array of 6 numbers can be passed, e.g. `[1, 1, 1, 3, 4, 5]`
-stringColor       | string   | '#666'      | String color
-fretCount         | number   | 15           | Number of frets to display
-fretWidth         | string   | 1            | Fret line stroke width
-fretColor         | string   | '#666'      | Fret color
-nutWidth          | string   | 7            | Nut stroke width
-nutColor          | string   | '#666'      | Nut color
-middleFretColor   | string   | '#ff636c'        | Middle fret color
-middleFretWidth   | string   | 3            | Middle fret stroke width
-scaleFrets        | string   | true         | If `true`, spaces frets logarithmically, otherwise linear
-topPadding        | string   | 20           | Top padding (relative to SVG container)
-bottomPadding     | string   | 15           | Bottom padding
-leftPadding       | string   | 20           | Left padding
-rightPadding      | string   | 20           | Right padding
-height            | string   | 150          | SVG element height
-width             | string   | 960          | SVG element width
-dotSize           | string   | 20           | Dot diameter
-dotStrokeColor    | string   | '#555'      | Dot stroke color
-dotStrokeWidth    | string   | 2            | Dot stroke width
-dotTextSize       | string   | 12           | Dot text size
-dotFill           | string   | 'white'      | Dot fill color
-dotText           | Function | (dot) => ''  | Returns the text for given dot
-disabledOpacity   | string   | 0.9          | Opacity level for disabled dots
-showFretNumbers   | string   | true         | Show fret numbers if true
-fretNumbersHeight | string   | 40           | Fret numbers container height
-fretNumbersMargin | string   | 20           | Fret number container top margin
-fretNumbersColor  | string   | '#00000099'  | Fret numbers color
-font              | string   | 'Arial'      | Text font
-crop              | boolean  | false        | If `true`, crops the rendering. Must be used in conjunction with `fretCount`, so set it to a value enough to contain your diagram (3/4 for a chord, 5/6 for a scale box for instance)
-fretLeftPadding   | number   | 0            | Amount of empty frets to display before dots.
-barresColor       | string   | '#666'            | Amount of empty frets to display before dots.
+| Parameter         | Type                 | Default                              | Description                                                                                                                                                                           |
+| ----------------- | -------------------- | ------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| el                | string               | '#fretboard'                         | Container element selector                                                                                                                                                            |
+| tuning            | string[]             | ["E2", "A2", "D3", "G3", "B3", "E4"] | Tuning of the instrument (see [tuning](#tuning))                                                                                                                                      |
+| stringCount       | number               | 6                                    | Number of instrument strings to display                                                                                                                                               |
+| stringWidth       | number \| \[number\] | 1                                    | String line stroke width - an array of 6 numbers can be passed, e.g. `[1, 1, 1, 3, 4, 5]`                                                                                             |
+| stringColor       | string               | '#666'                               | String color                                                                                                                                                                          |
+| fretCount         | number               | 15                                   | Number of frets to display                                                                                                                                                            |
+| fretWidth         | string               | 1                                    | Fret line stroke width                                                                                                                                                                |
+| fretColor         | string               | '#666'                               | Fret color                                                                                                                                                                            |
+| nutWidth          | string               | 7                                    | Nut stroke width                                                                                                                                                                      |
+| nutColor          | string               | '#666'                               | Nut color                                                                                                                                                                             |
+| middleFretColor   | string               | '#ff636c'                            | Middle fret color                                                                                                                                                                     |
+| middleFretWidth   | string               | 3                                    | Middle fret stroke width                                                                                                                                                              |
+| scaleFrets        | string               | true                                 | If `true`, spaces frets logarithmically, otherwise linear                                                                                                                             |
+| topPadding        | string               | 20                                   | Top padding (relative to SVG container)                                                                                                                                               |
+| bottomPadding     | string               | 15                                   | Bottom padding                                                                                                                                                                        |
+| leftPadding       | string               | 20                                   | Left padding                                                                                                                                                                          |
+| rightPadding      | string               | 20                                   | Right padding                                                                                                                                                                         |
+| height            | string               | 150                                  | SVG element height                                                                                                                                                                    |
+| width             | string               | 960                                  | SVG element width                                                                                                                                                                     |
+| dotSize           | string               | 20                                   | Dot diameter                                                                                                                                                                          |
+| dotStrokeColor    | string               | '#555'                               | Dot stroke color                                                                                                                                                                      |
+| dotStrokeWidth    | string               | 2                                    | Dot stroke width                                                                                                                                                                      |
+| dotTextSize       | string               | 12                                   | Dot text size                                                                                                                                                                         |
+| dotFill           | string               | 'white'                              | Dot fill color                                                                                                                                                                        |
+| dotText           | Function             | (dot) => ''                          | Returns the text for given dot                                                                                                                                                        |
+| disabledOpacity   | string               | 0.9                                  | Opacity level for disabled dots                                                                                                                                                       |
+| showFretNumbers   | string               | true                                 | Show fret numbers if true                                                                                                                                                             |
+| fretNumbersHeight | string               | 40                                   | Fret numbers container height                                                                                                                                                         |
+| fretNumbersMargin | string               | 20                                   | Fret number container top margin                                                                                                                                                      |
+| fretNumbersColor  | string               | '#00000099'                          | Fret numbers color                                                                                                                                                                    |
+| font              | string               | 'Arial'                              | Text font                                                                                                                                                                             |
+| crop              | boolean              | false                                | If `true`, crops the rendering. Must be used in conjunction with `fretCount`, so set it to a value enough to contain your diagram (3/4 for a chord, 5/6 for a scale box for instance) |
+| fretLeftPadding   | number               | 0                                    | Amount of empty frets to display before dots.                                                                                                                                         |
+| barresColor       | string               | '#666'                               | Amount of empty frets to display before dots.                                                                                                                                         |
 
 ## Fretboard API
 
@@ -139,13 +140,13 @@ style({
   text,
   fontSize,
   fontFill,
-  ...opts  
+  ...opts
 }: {
   filter?: (position: Position) => boolean | Record<string, string|number|boolean>;
   text?: (position: Position) => string;
   fontSize?: number;
   fontFill?: string;
-  [key: string]: string | number | Function;  
+  [key: string]: string | number | Function;
 }): Fretboard
 ```
 
@@ -159,12 +160,12 @@ fretboard
   .render()
   .style({
     // this gives us just the root notes
-    filter: ({ interval: '1P' }),
+    filter: { interval: '1P' },
     // displays the note name
-    text: ({ note }) => note, 
+    text: ({ note }) => note,
     // sets the value of the fill attribute
-    fill: 'red'
-})
+    fill: 'red',
+  });
 ```
 
 ### renderScale()
@@ -192,7 +193,7 @@ const fretboard = new Fretboard();
 // shows where all the C,D,E,F,G,A,B are across all strings
 fretboard.renderScale({
   type: 'major',
-  root: 'C'
+  root: 'C',
 });
 ```
 
@@ -210,8 +211,8 @@ fretboard.renderScale({
   root: 'A',
   box: {
     system: Systems.CAGED,
-    box: 'C'
-  }
+    box: 'C',
+  },
 });
 ```
 
@@ -240,7 +241,7 @@ Examples:
 // renders an open C major
 const fretboard = new Fretboard({
   fretCount: 3,
-  showFretNumbers: false
+  showFretNumbers: false,
 });
 
 fretboard.renderChord('x32010');
@@ -249,7 +250,7 @@ fretboard.renderChord('x32010');
 const fretboard = new Fretboard({
   fretCount: 3,
   showFretNumbers: true,
-  crop: true
+  crop: true,
 });
 
 fretboard.renderChord('x7678x');
@@ -264,7 +265,7 @@ Barres are supported by passing either a single `Barre` parameter, or an array o
 const fretboard = new Fretboard({
   fretCount: 3,
   showFretNumbers: false,
-  crop: true
+  crop: true,
 });
 
 fretboard.renderChord('133211', { fret: 1 });
@@ -273,7 +274,7 @@ fretboard.renderChord('133211', { fret: 1 });
 const fretboard = new Fretboard({
   fretCount: 3,
   showFretNumbers: false,
-  crop: true
+  crop: true,
 });
 
 fretboard.renderChord('x24432', { fret: 2, stringFrom: 5 });
@@ -282,14 +283,15 @@ fretboard.renderChord('x24432', { fret: 2, stringFrom: 5 });
 const fretboard = new Fretboard({
   fretCount: 3,
   showFretNumbers: false,
-  crop: true
+  crop: true,
 });
 
 fretboard.renderChord('x35553', [
   { fret: 3, stringFrom: 5 },
-  { fret: 5, stringFrom: 4, stringTo: 2 }
+  { fret: 5, stringFrom: 4, stringTo: 2 },
 ]);
 ```
+
 **Note:** `stringFrom` defaults to the lowest string, and `stringTo` to the first. Pass the "human" agreed value otherwise, e.g. 2 for the open B string, or 5 for the open A (in standard guitar tuning of course).
 
 ### muteStrings()
@@ -312,10 +314,10 @@ Marks passed strings with a cross, e.g. `fretboard.muteStrings({ strings: [1, 6]
 
 ## Events
 
-You can listen to `click` and `mousemove` events on a fretboard instance. The callback function will be invoked with the corresponding `Position` (string/fret number).
+You can listen to `click` and `mousemove` events on a fretboard instance. The callback function will be invoked with the corresponding `Position` (string/fret number), and the original `MouseEvent` as second parameter.
 
 ```typescript
-fretboard.on(eventName, (position: Position) => void)
+fretboard.on(eventName, (position: Position, event: MouseEvent) => void)
 ```
 
 For example:
@@ -324,7 +326,7 @@ For example:
 // this renders a dot following the mouse coordinates
 const fretboard = new Fretboard();
 fretboard.render([]);
-fretboard.on('mousemove', position => fretboard.render([position]));
+fretboard.on('mousemove', (position) => fretboard.render([position]));
 
 // you can remove the eventListeners with
 fretboard.removeEventListeners();
@@ -336,7 +338,7 @@ One can pass a custom tuning as an array of notes, e.g.:
 
 ```javascript
 const fretboard = new Fretboard({
-  tuning: ["D2", "G2", "D3", "G3", "B3", "D4"]
+  tuning: ['D2', 'G2', 'D3', 'G3', 'B3', 'D4'],
 });
 ```
 

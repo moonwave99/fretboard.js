@@ -15,6 +15,8 @@ import {
     DEFAULT_FRET_COUNT
 } from '../constants';
 
+const CHROMATIC_SCALE = getScale('C chromatic').notes;
+
 export type FretboardPosition = {
     string: number;
     fret: number;
@@ -61,7 +63,7 @@ function getOctaveInScale({
     root: string;
     note: string;
     octave: number;
-    baseOctave: number;   
+    baseOctave: number;
 }): number {
     const noteChroma = getChroma(note) || 0;
     const rootChroma = getChroma(root) || 0;
@@ -94,6 +96,12 @@ export class FretboardSystem {
     }
     getFretCount(): number {
         return this.fretCount;
+    }
+    getNoteAtPosition(position: Position): string {
+        const { chroma } = this.positions.find(
+            x => x.string === position.string && x.fret === position.fret
+        );
+        return CHROMATIC_SCALE[chroma];
     }
     getScale({
         type = 'major',
@@ -138,7 +146,7 @@ export class FretboardSystem {
                 }
                 return position;
             });
-    }    
+    }
     private adjustOctave(positions: Position[], root: string): Position[] {
         const { tuning } = this;
         const rootOffset = semitones(distance(tuning[0], root)) >= 12;
@@ -170,7 +178,7 @@ export class FretboardSystem {
         fret: number;
         string: number;
         note: string;
-        chroma: number;        
+        chroma: number;
     }): number {
         const { tuning } = this;
         const baseNoteWithOctave = tuning[tuning.length - string];

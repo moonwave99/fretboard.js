@@ -18,18 +18,18 @@ const {
 } = defaultOptions;
 
 const defaultWidth =
-    width
+  width
   + leftPadding
   + rightPadding;
 
 const defaultHeight =
-    height
+  height
   + topPadding
   + bottomPadding
   + fretNumbersHeight;
 
 test.beforeEach(() => {
-	browserEnv();
+  browserEnv();
   document.body.innerHTML = '<div id="fretboard"></div>';
 });
 
@@ -151,7 +151,7 @@ test('Fretboard with cropping', t => {
   t.is(svg.getAttribute('viewBox'), `0 0 ${defaultWidth} ${defaultHeight}`);
   t.deepEqual(
     Array.from(svg.querySelectorAll('.fret-numbers text')).map(x => x.innerHTML),
-    ['8', '9', '10', '11' ]
+    ['8', '9', '10', '11']
   );
 });
 
@@ -196,7 +196,7 @@ test('Fretboard style()', t => {
   t.is(
     dotNodes.length,
     pentaDots.filter(({ note }) => note === 'G').length
-  );    
+  );
 });
 
 test('Fretboard style() no text', t => {
@@ -420,13 +420,13 @@ test('Fretboard renderScale() - custom tuning warning', t => {
       box: 'C'
     }
   });
-  t.is(fretboard instanceof Fretboard, true);  
+  t.is(fretboard instanceof Fretboard, true);
 });
 
 test('Fretboard event handlers', t => {
   new Fretboard()
     .render()
-    .on('click', (position: Position) => t.deepEqual(position, { string: 1, fret: 0 }));
+    .on('click', (position: Position) => t.deepEqual(position, { string: 1, fret: 0, note: 'E' }));
   const hoverDiv = document.querySelector('#fretboard .hoverDiv');
   t.truthy(hoverDiv);
   hoverDiv.dispatchEvent(new MouseEvent('click'));
@@ -472,7 +472,7 @@ test('Fretboard removeEventListeners before adding listeners', t => {
 
 test('Fretboard event handlers - click on dot', t => {
   new Fretboard()
-    .setDots([{ string: 1, fret: 0, note: 'E' }])
+    .setDots([{ string: 1, fret: 0 }])
     .render()
     .on('click', (position: Position) => t.deepEqual(position, { string: 1, fret: 0, note: 'E' }));
   const hoverDiv = document.querySelector('#fretboard .hoverDiv');

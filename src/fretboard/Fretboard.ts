@@ -468,7 +468,8 @@ export class Fretboard {
       strings,
       frets,
       hoverDiv,
-      dots
+      dots,
+      system
     } = this;
     const stringsGroup = svg.select('.strings');
 
@@ -482,15 +483,19 @@ export class Fretboard {
     }
     this.handlers[eventName] = throttle(
       THROTTLE_INTERVAL,
-      (event: MouseEvent) => handler(getPositionFromMouseCoords({
-        event,
-        stringsGroup,
-        strings,
-        frets,
-        dots,
-        ...options
-      }
-      ), event));
+      (event: MouseEvent) => {
+        const position = getPositionFromMouseCoords({
+          event,
+          stringsGroup,
+          strings,
+          frets,
+          dots,
+          ...options
+        });
+        const note = system.getNoteAtPosition(position);
+        handler({ ...position, note }, event);
+      });
+
     this.hoverDiv.addEventListener(eventName, this.handlers[eventName]);
     return this;
   }

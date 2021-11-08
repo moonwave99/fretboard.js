@@ -48,6 +48,11 @@ export type Position = {
   chroma?: number;
 } & Record<string, string | number | boolean | Array<string | number>>;
 
+type MouseEventNames = keyof Pick<
+  HTMLElementEventMap,
+  ({[P in keyof HTMLElementEventMap]: HTMLElementEventMap[P] extends MouseEvent ? P : never })[keyof HTMLElementEventMap]
+>;
+
 type FretboardHandler = (position: Position, event: MouseEvent) => void;
 
 export type Barre = {
@@ -209,7 +214,7 @@ export class Fretboard {
   private options: Options;
   private baseRendered: boolean;
   private hoverDiv: HTMLDivElement;
-  private handlers: Record<string, (event: MouseEvent) => void> = {};
+  private handlers: Partial<Record<MouseEventNames, (event: MouseEvent) => void>> = {};
   private system: FretboardSystem;
   private dots: Position[] = [];
   constructor(options = {}) {
@@ -461,7 +466,7 @@ export class Fretboard {
     return this.setDots(dots).render();
   }
 
-  on(eventName: string, handler: FretboardHandler): Fretboard {
+  on(eventName: MouseEventNames, handler: FretboardHandler): Fretboard {
     const {
       svg,
       options,

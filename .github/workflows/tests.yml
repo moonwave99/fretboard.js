@@ -16,5 +16,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
-    - run: npm install ava-ts -g
+    - run: npm install esling ava-ts -g
+    - run: npm run lint    
     - run: npm run test

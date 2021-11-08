@@ -15,7 +15,8 @@ jobs:
       uses: actions/setup-node@v2.4.1
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'npm'
     - run: npm install
-    - run: npm install esling ava-ts -g
+    - run: npm install eslint ava-ts -g
     - run: npm run lint    
     - run: npm run test

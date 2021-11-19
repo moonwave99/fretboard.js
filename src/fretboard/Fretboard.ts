@@ -271,7 +271,7 @@ export class Fretboard {
     const {
       wrapper,
       positions,
-      dots
+      options
     } = this;
 
     const {
@@ -290,6 +290,7 @@ export class Fretboard {
 
     wrapper.select('.dots').remove();
 
+    const dots = this.dots.filter(dot => dot.fret <= options.fretCount);
     if (!dots.length) {
       return this;
     }

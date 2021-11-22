@@ -166,6 +166,33 @@ test('Fretboard render twice', t => {
   t.is(svg.querySelectorAll('.dots .dot').length, pentaDots.length);
 });
 
+test('Fretboard render dot less than fret count', t => {
+  const fretboard = new Fretboard({ fretCount: 12 });
+  fretboard.setDots([{ fret: 11, string: 1 }]).render();
+
+  const svg = document.querySelector('#fretboard svg');
+
+  t.is(svg.querySelectorAll('.dots .dot').length, 1);
+});
+
+test('Fretboard render dot equal to fret count', t => {
+  const fretboard = new Fretboard({ fretCount: 12 });
+  fretboard.setDots([{ fret: 12, string: 1 }]).render();
+
+  const svg = document.querySelector('#fretboard svg');
+
+  t.is(svg.querySelectorAll('.dots .dot').length, 1);
+});
+
+test('Fretboard render dot greater than fret count', t => {
+  const fretboard = new Fretboard({ fretCount: 12 });
+  fretboard.setDots([{ fret: 13, string: 1 }]).render();
+
+  const svg = document.querySelector('#fretboard svg');
+
+  t.is(svg.querySelectorAll('.dots .dot').length, 0);
+});
+
 test('Fretboard clear', t => {
   const fretboard = new Fretboard();
   fretboard.setDots(pentaDots).render();

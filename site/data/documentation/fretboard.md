@@ -325,8 +325,8 @@ For example:
 ```typescript
 // this renders a dot following the mouse coordinates
 const fretboard = new Fretboard();
-fretboard.render([]);
-fretboard.on('mousemove', (position) => fretboard.render([position]));
+fretboard.setDots([]).render();
+fretboard.on('mousemove', (position) => fretboard.setDots([position]).render());
 
 // you can remove the eventListeners with
 fretboard.removeEventListeners();

@@ -286,11 +286,12 @@ export class Fretboard {
     } = this.options;
 
     const dotOffset = this.getDotOffset();
+    
     this.baseRender(dotOffset);
 
     wrapper.select('.dots').remove();
 
-    const dots = this.dots.filter(dot => dot.fret <= options.fretCount);
+    const dots = this.dots.filter(dot => dot.fret <= options.fretCount + dotOffset);
     if (!dots.length) {
       return this;
     }
@@ -419,6 +420,9 @@ export class Fretboard {
 
   renderChord(chord: string, barres?: Barre | Barre[]): Fretboard {
     const { positions, mutedStrings: strings } = parseChord(chord);
+
+    // console.log(positions, this.options.crop);
+
     this.setDots(positions);
     if (barres) {
       this.renderBarres([].concat(barres));

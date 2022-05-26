@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" class="has-navbar-fixed-top" data-section="triads">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+        <%= htmlWebpackPlugin.options.title %>
+    </title>
+    <%= htmlWebpackPlugin .tags .headTags .filter((tag)=>
+        tag.attributes.href.startsWith('index')) .join('') %>
+</head>
+
+<body>
+    <%= partials.nav('triads') %>
+        <main>
+            <section class="container">
+                <header>
+                    <h1>
+                        <%= examples.triads.title %>
+                    </h1>
+                    <p>
+                        <a href="<%= getExampleLink('triads') %>">See example source</a>
+                    </p>
+                    <%= texts['examples.triads'] %>
+                </header>
+                <div class="columns">
+                    <figure class="column is-three-quarters" id="fretboard"></figure>
+                    <form class="column api-actions">
+                        <div class="field">
+                            <div class="control">
+                                <div class="select is-small">
+                                    <select name="triadsStrings">
+                                        <option disabled selected>Render triad on different strings</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                        <option value="E">E</option>
+                                        <option value="F">F</option>
+                                        <option value="G">G</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <div class="select is-small">
+                                    <select name="harmonised">
+                                        <option disabled selected>Triads as harmonised scale</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                        <option value="E">E</option>
+                                        <option value="F">F</option>
+                                        <option value="G">G</option>
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </section>
+        </main>
+        <%= partials.footer() %>
+            <%= htmlWebpackPlugin .tags .bodyTags .filter((tag)=> tag.attributes.src.startsWith('index')) .join('') %>
+</body>
+
+</html>

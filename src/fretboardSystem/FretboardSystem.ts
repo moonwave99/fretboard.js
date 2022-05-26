@@ -1,4 +1,4 @@
-import { get as getNote, chroma as getChroma } from '@tonaljs/note';
+import { get as getNote, chroma as getChroma, transpose } from '@tonaljs/note';
 import { distance, semitones } from '@tonaljs/interval';
 import { get as getScale } from '@tonaljs/scale';
 
@@ -36,6 +36,54 @@ type ScaleParams = {
         box: string | number;
     };
 }
+
+export enum TriadTypes {
+    Major = '3M-5P',
+    Minor = '3m-5P',
+    Diminished = '3m-5d',
+    Augmented = '3M-5A',
+}
+
+export enum TriadLayout {
+    Three = 'Three',
+    OnePlusTwo = 'OnePlusTwo',
+    TwoPlusOne = 'TwoPlusOne',
+    One = 'One',
+}
+
+const LayoutPositions = {
+    [TriadTypes.Major]: {
+        [TriadLayout.Three]: [{ fret: 0, string: 0 }, { fret: 4, string: 0 }, { fret: 7, string: 0 }],
+        [TriadLayout.OnePlusTwo]: [{ fret: 0, string: 0 }, { fret: -1, string: -1 }, { fret: 2, string: -1 }],
+        [TriadLayout.TwoPlusOne]: [{ fret: 0, string: 0 }, { fret: 4, string: 0 }, { fret: 2, string: -1 }],
+        [TriadLayout.One]: [{ fret: 0, string: 0 }, { fret: -1, string: -1 }, { fret: -3, string: -2 }],
+    },
+    [TriadTypes.Minor]: {
+        [TriadLayout.Three]: [{ fret: 0, string: 0 }, { fret: 3, string: 0 }, { fret: 7, string: 0 }],
+        [TriadLayout.OnePlusTwo]: [{ fret: 0, string: 0 }, { fret: -2, string: -1 }, { fret: 2, string: -1 }],
+        [TriadLayout.TwoPlusOne]: [{ fret: 0, string: 0 }, { fret: 3, string: 0 }, { fret: 2, string: -1 }],
+        [TriadLayout.One]: [{ fret: 0, string: 0 }, { fret: -2, string: -1 }, { fret: -3, string: -2 }],
+    },
+    [TriadTypes.Diminished]: {
+        [TriadLayout.Three]: [{ fret: 0, string: 1 }, { fret: 4, string: 1 }, { fret: 7, string: 1 }],
+        [TriadLayout.OnePlusTwo]: [{ fret: 0, string: 0 }, { fret: -2, string: -1 }, { fret: 1, string: -1 }],
+        [TriadLayout.TwoPlusOne]: [{ fret: 0, string: 0 }, { fret: 3, string: 0 }, { fret: 1, string: -1 }],
+        [TriadLayout.One]: [{ fret: 0, string: 0 }, { fret: -2, string: -1 }, { fret: -4, string: -2 }],
+    },
+    [TriadTypes.Augmented]: {
+        [TriadLayout.Three]: [{ fret: 0, string: 0 }, { fret: 4, string: 0 }, { fret: 8, string: 0 }],
+        [TriadLayout.OnePlusTwo]: [{ fret: 0, string: 0 }, { fret: -1, string: -1 }, { fret: 3, string: -1 }],
+        [TriadLayout.TwoPlusOne]: [{ fret: 0, string: 0 }, { fret: 5, string: 0 }, { fret: 3, string: -1 }],
+        [TriadLayout.One]: [{ fret: 0, string: 0 }, { fret: -1, string: -1 }, { fret: -2, string: -2 }],
+    },
+}
+
+type GetTriadArgs = {
+    root: string;
+    type: TriadTypes;
+    string?: number;
+    layout?: TriadLayout;
+};
 
 function parseNote(note: string): {
     note: string;
@@ -78,6 +126,14 @@ export function isPositionInBox({ fret, string }: Position, systemPositions: Pos
     return !!systemPositions.find(x => x.fret === fret && x.string === string);
 }
 
+export function transposePositionsByOneOctave(positions: Position[]): Position[] {
+    return positions.map(x => ({
+        ...x,
+        fret: x.fret + 12,
+        octave: x.octave + 1
+    }));
+}
+
 export class FretboardSystem {
     private tuning: Tuning = GUITAR_TUNINGS.default;
     private fretCount: number = DEFAULT_FRET_COUNT;
@@ -102,6 +158,69 @@ export class FretboardSystem {
             x => x.string === position.string && x.fret === position.fret
         );
         return CHROMATIC_SCALE[chroma];
+    }
+    getPositionForNote(note: string, string = this.tuning.length): Position {
+        const { note: stringRoot } = parseNote(this.tuning[this.tuning.length - string]);
+
+        const fret = semitones(distance(stringRoot, note));
+        const chroma = getChroma(note);
+        const octave = this.getOctave({
+            fret,
+            string,
+            note,
+            chroma
+        });
+
+        return { string, fret, note, octave } as Position;
+    }
+    getTriad({ root, type, string, layout }: GetTriadArgs = {
+        root: 'C',
+        type: TriadTypes.Major,
+        layout: TriadLayout.One
+    }): Position[] {
+        const rootPosition = { ...this.getPositionForNote(root, string), degree: 1 };
+
+        const [thirdInterval, fifthInterval] = type.split('-');
+        const positions = LayoutPositions[type][layout];
+
+        const thirdNote = getNote(transpose(`${rootPosition.note}${rootPosition.octave}`, thirdInterval));
+        const fifthNote = getNote(transpose(`${rootPosition.note}${rootPosition.octave}`, fifthInterval));
+
+        const thirdString = rootPosition.string + positions[1].string;
+        const fifthString = rootPosition.string + positions[2].string;
+
+        const thirdStringOffset = (thirdString !== rootPosition.string && thirdString === 2 ? 1 : 0);
+        const fifthStringOffset = (fifthString !== thirdString && fifthString === 2 ? 1 : 0);
+
+        const thirdPosition = {
+            string: thirdString,
+            fret: rootPosition.fret + positions[1].fret + thirdStringOffset,
+            note: `${thirdNote.letter}${thirdNote.acc}`,
+            octave: thirdNote.oct,
+            degree: 3
+        };
+
+        const fifthPosition = {
+            string: fifthString,
+            fret: rootPosition.fret + positions[2].fret + thirdStringOffset + fifthStringOffset,
+            note: `${fifthNote.letter}${fifthNote.acc}`,
+            octave: fifthNote.oct,
+            degree: 5
+        };
+
+        if (thirdPosition.fret < 0 || fifthPosition.fret < 0) {
+            return transposePositionsByOneOctave([
+                rootPosition,
+                thirdPosition,
+                fifthPosition
+            ]);
+        }
+
+        return [
+            rootPosition,
+            thirdPosition,
+            fifthPosition
+        ];
     }
     getScale({
         type = 'major',

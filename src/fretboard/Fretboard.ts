@@ -30,7 +30,7 @@ import {
   DEFAULT_FONT_SIZE
 } from '../constants';
 
-import { FretboardSystem } from '../fretboardSystem/FretboardSystem';
+import { FretboardSystem, TriadTypes, TriadLayout, transposePositionsByOneOctave } from '../fretboardSystem/FretboardSystem';
 import { Systems } from '../fretboardSystem/systems/systems';
 
 export type Tuning = string[];
@@ -50,7 +50,7 @@ export type Position = {
 
 type MouseEventNames = keyof Pick<
   HTMLElementEventMap,
-  ({[P in keyof HTMLElementEventMap]: HTMLElementEventMap[P] extends MouseEvent ? P : never })[keyof HTMLElementEventMap]
+  ({ [P in keyof HTMLElementEventMap]: HTMLElementEventMap[P] extends MouseEvent ? P : never })[keyof HTMLElementEventMap]
 >;
 
 type FretboardHandler = (position: Position, event: MouseEvent) => void;
@@ -156,6 +156,12 @@ type MuteStringsParams = {
   stroke?: string;
 }
 
+type GetTriadParams = {
+  string: number;
+  layout: TriadLayout;
+  nextOctave: boolean;
+}
+
 function getDotCoords({
   fret,
   string,
@@ -203,6 +209,28 @@ function validateOptions(options: Options): void {
   if (stringCount !== tuning.length) {
     throw new Error(`stringCount (${stringCount}) and tuning size (${tuning.length}) do not match`);
   }
+}
+
+const TriadTypesMap: Record<string, TriadTypes> = {
+  'm': TriadTypes.Minor,
+  'dim': TriadTypes.Diminished,
+  'aug': TriadTypes.Augmented,
+};
+
+function parseTriadName(name: string): {
+  root: string;
+  type: TriadTypes;
+} {
+  if (name.includes('#') || name.includes('b')) {
+    return {
+      root: name.slice(0, 2),
+      type: TriadTypesMap[name.slice(2)] || TriadTypes.Major
+    }
+  }
+  return {
+    root: name.slice(0, 1),
+    type: TriadTypesMap[name.slice(1)] || TriadTypes.Major
+  };
 }
 
 export class Fretboard {
@@ -278,7 +306,6 @@ export class Fretboard {
       font,
       dotStrokeColor,
       dotStrokeWidth,
-      dotFill,
       dotSize,
       dotText,
       dotTextSize,
@@ -286,7 +313,7 @@ export class Fretboard {
     } = this.options;
 
     const dotOffset = this.getDotOffset();
-    
+
     this.baseRender(dotOffset);
 
     wrapper.select('.dots').remove();
@@ -315,8 +342,7 @@ export class Fretboard {
       .attr('cy', ({ string, fret }) => positions[string - 1][fret - dotOffset].y)
       .attr('r', dotSize * 0.5)
       .attr('stroke', dotStrokeColor)
-      .attr('stroke-width', dotStrokeWidth)
-      .attr('fill', dotFill);
+      .attr('stroke-width', dotStrokeWidth);
 
     dotsNodes.append('text')
       .attr('class', 'dot-text')
@@ -420,9 +446,6 @@ export class Fretboard {
 
   renderChord(chord: string, barres?: Barre | Barre[]): Fretboard {
     const { positions, mutedStrings: strings } = parseChord(chord);
-
-    // console.log(positions, this.options.crop);
-
     this.setDots(positions);
     if (barres) {
       this.renderBarres([].concat(barres));
@@ -430,6 +453,28 @@ export class Fretboard {
     this.render();
     this.muteStrings({ strings });
     return this;
+  }
+
+  renderTriad(
+    name: string,
+    { string, layout, nextOctave }: GetTriadParams = { string: 6, layout: TriadLayout.One, nextOctave: false }
+  ): Fretboard {
+    const triad = this.getTriad(name, { string, layout, nextOctave });
+    this.setDots(triad);
+    this.render();
+    return this;
+  }
+
+  getTriad(
+    name: string,
+    { string, layout, nextOctave }: GetTriadParams = { string: 6, layout: TriadLayout.One, nextOctave: false }
+  ): Position[] {
+    if (this.options.tuning.toString() !== GUITAR_TUNINGS.default.toString()) {
+      console.warn('Selected scale system works for standard tuning. Wrong notes may be highlighted.');
+    }
+    const { root, type } = parseTriadName(name);
+    const triad = this.system.getTriad({ root, type, string, layout });
+    return nextOctave ? transposePositionsByOneOctave(triad) : triad;
   }
 
   renderScale({

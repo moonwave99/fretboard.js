@@ -325,6 +325,20 @@ test('Fretboard renderChord() - multiple barres', t => {
   t.is(svg.querySelectorAll('.barres rect').length, 2);
 });
 
+test('Fretboard renderTriad()', t => {
+  const fretboard = new Fretboard();
+  fretboard.renderTriad('C');
+  const svg = document.querySelector('#fretboard svg');
+  t.is(svg.querySelectorAll('.dots .dot').length, 3);
+});
+
+test('Fretboard renderTriad() - minor type', t => {
+  const fretboard = new Fretboard();
+  fretboard.renderTriad('Cm');
+  const svg = document.querySelector('#fretboard svg');
+  t.is(svg.querySelectorAll('.dots .dot').length, 3);
+});
+
 test('Fretboard renderBox()', t => {
   const fretboard = new Fretboard({
     dotText: ({ note }: Position): string => note

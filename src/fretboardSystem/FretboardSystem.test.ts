@@ -1,6 +1,6 @@
 import test from 'ava';
 
-import { FretboardSystem, isPositionInBox } from './FretboardSystem';
+import { FretboardSystem, isPositionInBox, TriadTypes, TriadLayout } from './FretboardSystem';
 import {
     GUITAR_TUNINGS,
     DEFAULT_FRET_COUNT
@@ -88,10 +88,10 @@ test('FretboardSystem - getScale() - B#', t => {
     const system = new FretboardSystem({ fretCount: 12 });
     const scale = system.getScale({ root: 'B#', type: 'major' });
     scale
-        .map(({ note, octave }, index) => note === 'B#' ?  { octave, index }: null)
+        .map(({ note, octave }, index) => note === 'B#' ? { octave, index } : null)
         .filter(x => !!x)
         .forEach(({ octave, index }) => {
-            const { octave: nextOctave, fret} = scale[index + 1];
+            const { octave: nextOctave, fret } = scale[index + 1];
             if (!nextOctave || fret === 0 || fret === 12) {
                 return;
             }
@@ -112,4 +112,173 @@ test('FretboardSystem - getScale() - Cb', t => {
             }
             t.is(octave, (prevOctave as number) + 1);
         })
+});
+
+test('FretboardSystem - getTriad()', t => {
+    const system = new FretboardSystem();
+    const triad = system.getTriad();
+    t.deepEqual(triad, [
+        { string: 6, fret: 8, note: 'C', octave: 3, degree: 1 },
+        { string: 5, fret: 7, note: 'E', octave: 3, degree: 3 },
+        { string: 4, fret: 5, note: 'G', octave: 3, degree: 5 },
+    ]);
+});
+
+test('FretboardSystem - getTriad() - Minor type', t => {
+    const system = new FretboardSystem();
+    const triad = system.getTriad({
+        root: 'C',
+        type: TriadTypes.Minor,
+        layout: TriadLayout.One
+    });
+    t.deepEqual(triad, [
+        { string: 6, fret: 8, note: 'C', octave: 3, degree: 1 },
+        { string: 5, fret: 6, note: 'Eb', octave: 3, degree: 3 },
+        { string: 4, fret: 5, note: 'G', octave: 3, degree: 5 },
+    ]);
+});
+
+test('FretboardSystem - getTriad() - Diminished type', t => {
+    const system = new FretboardSystem();
+    const triad = system.getTriad({
+        root: 'C',
+        type: TriadTypes.Diminished,
+        layout: TriadLayout.One
+    });
+    t.deepEqual(triad, [
+        { string: 6, fret: 8, note: 'C', octave: 3, degree: 1 },
+        { string: 5, fret: 6, note: 'Eb', octave: 3, degree: 3 },
+        { string: 4, fret: 4, note: 'Gb', octave: 3, degree: 5 },
+    ]);
+});
+
+test('FretboardSystem - getTriad() - Augmented type', t => {
+    const system = new FretboardSystem();
+    const triad = system.getTriad({
+        root: 'C',
+        type: TriadTypes.Augmented,
+        layout: TriadLayout.One
+    });
+    t.deepEqual(triad, [
+        { string: 6, fret: 8, note: 'C', octave: 3, degree: 1 },
+        { string: 5, fret: 7, note: 'E', octave: 3, degree: 3 },
+        { string: 4, fret: 6, note: 'G#', octave: 3, degree: 5 },
+    ]);
+});
+
+test('FretboardSystem - getTriad() - OnePlusTwo layout', t => {
+    const system = new FretboardSystem();
+    const triad = system.getTriad({
+        root: 'C',
+        type: TriadTypes.Major,
+        layout: TriadLayout.OnePlusTwo
+    });
+    t.deepEqual(triad, [
+        { string: 6, fret: 8, note: 'C', octave: 3, degree: 1 },
+        { string: 5, fret: 7, note: 'E', octave: 3, degree: 3 },
+        { string: 5, fret: 10, note: 'G', octave: 3, degree: 5 },
+    ]);
+});
+
+test('FretboardSystem - getTriad() - TwoPlusOne layout', t => {
+    const system = new FretboardSystem();
+    const triad = system.getTriad({
+        root: 'C',
+        type: TriadTypes.Major,
+        layout: TriadLayout.TwoPlusOne
+    });
+    t.deepEqual(triad, [
+        { string: 6, fret: 8, note: 'C', octave: 3, degree: 1 },
+        { string: 6, fret: 12, note: 'E', octave: 3, degree: 3 },
+        { string: 5, fret: 10, note: 'G', octave: 3, degree: 5 },
+    ]);
+});
+
+test('FretboardSystem - getTriad() - Three Layout', t => {
+    const system = new FretboardSystem();
+    const triad = system.getTriad({
+        root: 'E',
+        type: TriadTypes.Major,
+        layout: TriadLayout.Three
+    });
+    t.deepEqual(triad, [
+        { string: 6, fret: 0, note: 'E', octave: 2, degree: 1 },
+        { string: 6, fret: 4, note: 'G#', octave: 2, degree: 3 },
+        { string: 6, fret: 7, note: 'B', octave: 2, degree: 5 },
+    ]);
+});
+
+test('FretboardSystem - getTriad() - fifth string', t => {
+    const system = new FretboardSystem();
+    const triad = system.getTriad({
+        root: 'C',
+        type: TriadTypes.Major,
+        string: 5,
+        layout: TriadLayout.One
+    });
+    t.deepEqual(triad, [
+        { string: 5, fret: 3, note: 'C', octave: 3, degree: 1 },
+        { string: 4, fret: 2, note: 'E', octave: 3, degree: 3 },
+        { string: 3, fret: 0, note: 'G', octave: 3, degree: 5 },
+    ]);
+});
+
+test('FretboardSystem - getTriad() - fourth string', t => {
+    const system = new FretboardSystem();
+    const triad = system.getTriad({
+        root: 'C',
+        type: TriadTypes.Major,
+        string: 4,
+        layout: TriadLayout.One
+    });
+    t.deepEqual(triad, [
+        { string: 4, fret: 10, note: 'C', octave: 4, degree: 1 },
+        { string: 3, fret: 9, note: 'E', octave: 4, degree: 3 },
+        { string: 2, fret: 8, note: 'G', octave: 4, degree: 5 },
+    ]);
+});
+
+test('FretboardSystem - getTriad() - third string', t => {
+    const system = new FretboardSystem();
+    const triad = system.getTriad({
+        root: 'C',
+        type: TriadTypes.Major,
+        string: 3,
+        layout: TriadLayout.One
+    });
+    t.deepEqual(triad, [
+        { string: 3, fret: 5, note: 'C', octave: 4, degree: 1 },
+        { string: 2, fret: 5, note: 'E', octave: 4, degree: 3 },
+        { string: 1, fret: 3, note: 'G', octave: 4, degree: 5 },
+    ]);
+});
+
+test('FretboardSystem - getTriad() - second string', t => {
+    const system = new FretboardSystem();
+    const triad = system.getTriad({
+        root: 'C',
+        type: TriadTypes.Major,
+        string: 2,
+        layout: TriadLayout.OnePlusTwo
+    });
+    t.deepEqual(triad, [
+        { string: 2, fret: 1, note: 'C', octave: 4, degree: 1 },
+        { string: 1, fret: 0, note: 'E', octave: 4, degree: 3 },
+        { string: 1, fret: 3, note: 'G', octave: 4, degree: 5 },
+    ]);
+});
+
+test('FretboardSystem - getTriad() - second string', t => {
+    const system = new FretboardSystem();
+    const triad = system.getTriad({
+        root: 'F',
+        type: TriadTypes.Major,
+        layout: TriadLayout.One,
+        string: 6
+    });
+    t.deepEqual(triad, [
+        { string: 6, fret: 13, note: 'F', octave: 3, degree: 1 },
+        { string: 5, fret: 12, note: 'A', octave: 3, degree: 3 },
+        { string: 4, fret: 10, note: 'C', octave: 4, degree: 5 },
+    ]);
 });

@@ -12,7 +12,7 @@ export {
   sliceBox
 } from './tools/tools';
 
-export { FretboardSystem } from './fretboardSystem/FretboardSystem';
+export { FretboardSystem, TriadLayout } from './fretboardSystem/FretboardSystem';
 export { Systems } from './fretboardSystem/systems/systems';
 
 export { GUITAR_TUNINGS } from './constants';

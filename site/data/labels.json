@@ -19,7 +19,10 @@
             "title": "Examples / Tetrachords"
         },
         "triads": {
-            "title": "Examples / Triads"
+            "title": "Examples / Triads",
+            "differentStrings": "Same triad on different strings",
+            "harmonisedScale": "Harmonise a scale in triads horizontally",
+            "inversions": "Triad inversions"
         },
         "events": {
             "title": "Examples / Events",

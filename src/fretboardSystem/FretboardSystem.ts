@@ -1,6 +1,10 @@
 import { get as getNote, chroma as getChroma, transpose } from '@tonaljs/note';
-import { distance, semitones } from '@tonaljs/interval';
+import {
+    distance, semitones, add as addInterval,
+    substract as substractInterval
+} from '@tonaljs/interval';
 import { get as getScale } from '@tonaljs/scale';
+import { getChord } from '@tonaljs/chord';
 
 import {
     Systems,
@@ -38,52 +42,86 @@ type ScaleParams = {
 }
 
 export enum TriadTypes {
-    Major = '3M-5P',
-    Minor = '3m-5P',
-    Diminished = '3m-5d',
-    Augmented = '3M-5A',
+    Major = 'M',
+    Minor = 'm',
+    Diminished = 'dim',
+    Augmented = 'aug',
 }
 
-export enum TriadLayout {
+export enum TriadLayouts {
     Three = 'Three',
     OnePlusTwo = 'OnePlusTwo',
     TwoPlusOne = 'TwoPlusOne',
     One = 'One',
 }
 
-const LayoutPositions = {
+export enum TriadInversions {
+    Root = 'Root',
+    First = 'First',
+    Second = 'Second'
+}
+
+const TriadIntervals = {
     [TriadTypes.Major]: {
-        [TriadLayout.Three]: [{ fret: 0, string: 0 }, { fret: 4, string: 0 }, { fret: 7, string: 0 }],
-        [TriadLayout.OnePlusTwo]: [{ fret: 0, string: 0 }, { fret: -1, string: -1 }, { fret: 2, string: -1 }],
-        [TriadLayout.TwoPlusOne]: [{ fret: 0, string: 0 }, { fret: 4, string: 0 }, { fret: 2, string: -1 }],
-        [TriadLayout.One]: [{ fret: 0, string: 0 }, { fret: -1, string: -1 }, { fret: -3, string: -2 }],
+        [TriadInversions.Root]: ['3M', '3m'],
+        [TriadInversions.First]: ['3m', '4P'],
+        [TriadInversions.Second]: ['4P', '3M'],
     },
     [TriadTypes.Minor]: {
-        [TriadLayout.Three]: [{ fret: 0, string: 0 }, { fret: 3, string: 0 }, { fret: 7, string: 0 }],
-        [TriadLayout.OnePlusTwo]: [{ fret: 0, string: 0 }, { fret: -2, string: -1 }, { fret: 2, string: -1 }],
-        [TriadLayout.TwoPlusOne]: [{ fret: 0, string: 0 }, { fret: 3, string: 0 }, { fret: 2, string: -1 }],
-        [TriadLayout.One]: [{ fret: 0, string: 0 }, { fret: -2, string: -1 }, { fret: -3, string: -2 }],
+        [TriadInversions.Root]: ['3m', '3M'],
+        [TriadInversions.First]: ['3M', '4P'],
+        [TriadInversions.Second]: ['4P', '3m'],
     },
     [TriadTypes.Diminished]: {
-        [TriadLayout.Three]: [{ fret: 0, string: 1 }, { fret: 4, string: 1 }, { fret: 7, string: 1 }],
-        [TriadLayout.OnePlusTwo]: [{ fret: 0, string: 0 }, { fret: -2, string: -1 }, { fret: 1, string: -1 }],
-        [TriadLayout.TwoPlusOne]: [{ fret: 0, string: 0 }, { fret: 3, string: 0 }, { fret: 1, string: -1 }],
-        [TriadLayout.One]: [{ fret: 0, string: 0 }, { fret: -2, string: -1 }, { fret: -4, string: -2 }],
+        [TriadInversions.Root]: ['3m', '3m'],
+        [TriadInversions.First]: ['3m', '4A'],
+        [TriadInversions.Second]: ['4A', '3m'],
     },
     [TriadTypes.Augmented]: {
-        [TriadLayout.Three]: [{ fret: 0, string: 0 }, { fret: 4, string: 0 }, { fret: 8, string: 0 }],
-        [TriadLayout.OnePlusTwo]: [{ fret: 0, string: 0 }, { fret: -1, string: -1 }, { fret: 3, string: -1 }],
-        [TriadLayout.TwoPlusOne]: [{ fret: 0, string: 0 }, { fret: 5, string: 0 }, { fret: 3, string: -1 }],
-        [TriadLayout.One]: [{ fret: 0, string: 0 }, { fret: -1, string: -1 }, { fret: -2, string: -2 }],
+        [TriadInversions.Root]: ['3M', '3M'],
+        [TriadInversions.First]: ['3M', '3M'],
+        [TriadInversions.Second]: ['3M', '3M'],
     },
 }
 
-type GetTriadArgs = {
-    root: string;
-    type: TriadTypes;
-    string?: number;
-    layout?: TriadLayout;
+export function transposeByOneOctave(position: Position): Position {
+    return {
+        ...position,
+        fret: position.fret + 12,
+        octave: position.octave + 1
+    }
+}
+
+type ChordNote = {
+    note: string;
+    degree: number;
+}
+
+function getChordStructure(root: string, type: TriadTypes, inversion: TriadInversions): ChordNote[] {
+    const { notes } = getChord(type, root);
+    const chord = [1, 3, 5].map((degree, index) => ({ note: notes[index], degree }));
+
+    switch (inversion) {
+        case TriadInversions.Root:
+        default:
+            return chord;
+        case TriadInversions.First:
+            return [chord[1], chord[2], chord[0]];
+        case TriadInversions.Second:
+            return [chord[2], chord[0], chord[1]];
+    }
+}
+
+function getStringInterval(first: number, second: number): string {
+    return (first === 3 && second === 2) ? '3M' : '4P';
+}
+
+export type TriadNote = Position & {
+    note: string;
+    octave: number;
+    degree: number;
 };
+
 
 function parseNote(note: string): {
     note: string;
@@ -134,6 +172,22 @@ export function transposePositionsByOneOctave(positions: Position[]): Position[]
     }));
 }
 
+type GetTriadOptions = {
+    root: string;
+    string: number;
+    type?: TriadTypes;
+    layout?: TriadLayouts;
+    inversion?: TriadInversions;
+}
+
+const DEFAULT_GET_TRIAD_OPTIONS = {
+    root: 'C',
+    string: 6,
+    type: TriadTypes.Major,
+    layout: TriadLayouts.One,
+    inversion: TriadInversions.Root
+}
+
 export class FretboardSystem {
     private tuning: Tuning = GUITAR_TUNINGS.default;
     private fretCount: number = DEFAULT_FRET_COUNT;
@@ -159,7 +213,7 @@ export class FretboardSystem {
         );
         return CHROMATIC_SCALE[chroma];
     }
-    getPositionForNote(note: string, string = this.tuning.length): Position {
+    getPositionForNote(note: string, string: number): Position {
         const { note: stringRoot } = parseNote(this.tuning[this.tuning.length - string]);
 
         const fret = semitones(distance(stringRoot, note));
@@ -173,54 +227,82 @@ export class FretboardSystem {
 
         return { string, fret, note, octave } as Position;
     }
-    getTriad({ root, type, string, layout }: GetTriadArgs = {
-        root: 'C',
-        type: TriadTypes.Major,
-        layout: TriadLayout.One
-    }): Position[] {
-        const rootPosition = { ...this.getPositionForNote(root, string), degree: 1 };
+    getTriad(options: GetTriadOptions = DEFAULT_GET_TRIAD_OPTIONS): Position[] {
+        options = Object.assign({}, DEFAULT_GET_TRIAD_OPTIONS, options);
+        const { root, string, type, layout, inversion } = options;
 
-        const [thirdInterval, fifthInterval] = type.split('-');
-        const positions = LayoutPositions[type][layout];
+        const chord = getChordStructure(root, type, inversion);
 
-        const thirdNote = getNote(transpose(`${rootPosition.note}${rootPosition.octave}`, thirdInterval));
-        const fifthNote = getNote(transpose(`${rootPosition.note}${rootPosition.octave}`, fifthInterval));
+        const [firstInterval, secondInterval] = TriadIntervals[type][inversion];
 
-        const thirdString = rootPosition.string + positions[1].string;
-        const fifthString = rootPosition.string + positions[2].string;
+        const firstNotePosition = { degree: chord[0].degree, ...this.getPositionForNote(chord[0].note, string) };
+        const secondNoteInfo = getNote(
+            transpose(`${firstNotePosition.note}${firstNotePosition.octave}`, firstInterval)
+        );
+        const thirdNoteInfo = getNote(
+            transpose(`${firstNotePosition.note}${firstNotePosition.octave}`, addInterval(firstInterval, secondInterval))
+        );
 
-        const thirdStringOffset = (thirdString !== rootPosition.string && thirdString === 2 ? 1 : 0);
-        const fifthStringOffset = (fifthString !== thirdString && fifthString === 2 ? 1 : 0);
+        const secondNote = {
+            note: `${secondNoteInfo.letter}${secondNoteInfo.acc}`,
+            octave: secondNoteInfo.oct,
+            degree: chord[1].degree
+        } as Position;
+        const thirdNote = {
+            note: `${thirdNoteInfo.letter}${thirdNoteInfo.acc}`,
+            octave: thirdNoteInfo.oct,
+            degree: chord[2].degree
+        } as Position;
 
-        const thirdPosition = {
-            string: thirdString,
-            fret: rootPosition.fret + positions[1].fret + thirdStringOffset,
-            note: `${thirdNote.letter}${thirdNote.acc}`,
-            octave: thirdNote.oct,
-            degree: 3
-        };
+        const secondNotePosition = {} as Position;
+        const thirdNotePosition = {} as Position;
 
-        const fifthPosition = {
-            string: fifthString,
-            fret: rootPosition.fret + positions[2].fret + thirdStringOffset + fifthStringOffset,
-            note: `${fifthNote.letter}${fifthNote.acc}`,
-            octave: fifthNote.oct,
-            degree: 5
-        };
-
-        if (thirdPosition.fret < 0 || fifthPosition.fret < 0) {
-            return transposePositionsByOneOctave([
-                rootPosition,
-                thirdPosition,
-                fifthPosition
-            ]);
+        switch (layout) {
+            case TriadLayouts.One: {
+                secondNotePosition.string = firstNotePosition.string - 1;
+                const firstOffset = getStringInterval(firstNotePosition.string, secondNotePosition.string);
+                secondNotePosition.fret = firstNotePosition.fret + semitones(substractInterval(firstInterval, firstOffset));
+                thirdNotePosition.string = secondNotePosition.string - 1;
+                const secondOffset = getStringInterval(secondNotePosition.string, thirdNotePosition.string);
+                thirdNotePosition.fret = secondNotePosition.fret + semitones(substractInterval(secondInterval, secondOffset));
+                break;
+            }
+            case TriadLayouts.Three: {
+                secondNotePosition.string = firstNotePosition.string;
+                secondNotePosition.fret = firstNotePosition.fret + semitones(firstInterval);
+                thirdNotePosition.string = firstNotePosition.string;
+                thirdNotePosition.fret = secondNotePosition.fret + semitones(secondInterval);
+                break;
+            }
+            case TriadLayouts.OnePlusTwo: {
+                secondNotePosition.string = firstNotePosition.string - 1;
+                const firstOffset = getStringInterval(firstNotePosition.string, secondNotePosition.string);
+                secondNotePosition.fret = firstNotePosition.fret + semitones(substractInterval(firstInterval, firstOffset));
+                thirdNotePosition.string = secondNotePosition.string;
+                thirdNotePosition.fret = secondNotePosition.fret + semitones(secondInterval);
+                break;
+            }
+            case TriadLayouts.TwoPlusOne: {
+                secondNotePosition.string = firstNotePosition.string;
+                secondNotePosition.fret = firstNotePosition.fret + semitones(firstInterval);
+                thirdNotePosition.string = secondNotePosition.string - 1;
+                const secondOffset = getStringInterval(secondNotePosition.string, thirdNotePosition.string);
+                thirdNotePosition.fret = secondNotePosition.fret + semitones(substractInterval(secondInterval, secondOffset));
+                break;
+            }
         }
 
-        return [
-            rootPosition,
-            thirdPosition,
-            fifthPosition
+        const triad = [
+            firstNotePosition,
+            { ...secondNotePosition, ...secondNote },
+            { ...thirdNotePosition, ...thirdNote }
         ];
+
+        if (triad.some(x => x.fret < 0)) {
+            return triad.map(transposeByOneOctave);
+        }
+
+        return triad;
     }
     getScale({
         type = 'major',

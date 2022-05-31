@@ -34,6 +34,18 @@ Click to add positions to the fretboard :cool:
 
 Render triads on the fretboard
 
+<!--examples.triads.differentStrings-->
+
+The same triad can be played in many placed all over the fretboard.
+
+<!--examples.triads.harmonisedScale-->
+
+Harmonising a scale in triads along the neck gives a better horizontal understanding of the fretboard.
+
+<!--examples.triads.inversions-->
+
+Triads can be inverted of course!
+
 <!--examples.tetrachords-->
 
 An [heptatonic scale][1] is made up of two adjacent [tetrachords][2], a whole tone apart that is.

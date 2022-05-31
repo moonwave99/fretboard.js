@@ -5,6 +5,8 @@ import {
   BaseType
 } from 'd3-selection';
 
+import { tokenize } from '@tonaljs/chord';
+
 import { throttle } from 'throttle-debounce';
 
 import {
@@ -30,7 +32,7 @@ import {
   DEFAULT_FONT_SIZE
 } from '../constants';
 
-import { FretboardSystem, TriadTypes, TriadLayout, transposePositionsByOneOctave } from '../fretboardSystem/FretboardSystem';
+import { FretboardSystem, TriadTypes, TriadLayouts, TriadInversions, transposePositionsByOneOctave } from '../fretboardSystem/FretboardSystem';
 import { Systems } from '../fretboardSystem/systems/systems';
 
 export type Tuning = string[];
@@ -158,9 +160,17 @@ type MuteStringsParams = {
 
 type GetTriadParams = {
   string: number;
-  layout: TriadLayout;
+  layout: TriadLayouts;
+  inversion?: TriadInversions;
   nextOctave: boolean;
 }
+
+const DEFAULT_GET_TRIAD_PARAMS = {
+  string: 6,
+  layout: TriadLayouts.One,
+  inversion: TriadInversions.Root,
+  nextOctave: false
+};
 
 function getDotCoords({
   fret,
@@ -221,15 +231,10 @@ function parseTriadName(name: string): {
   root: string;
   type: TriadTypes;
 } {
-  if (name.includes('#') || name.includes('b')) {
-    return {
-      root: name.slice(0, 2),
-      type: TriadTypesMap[name.slice(2)] || TriadTypes.Major
-    }
-  }
+  const [root, type] = tokenize(name);
   return {
-    root: name.slice(0, 1),
-    type: TriadTypesMap[name.slice(1)] || TriadTypes.Major
+    root,
+    type: TriadTypesMap[type] || TriadTypes.Major
   };
 }
 
@@ -308,6 +313,7 @@ export class Fretboard {
       dotStrokeWidth,
       dotSize,
       dotText,
+      dotFill,
       dotTextSize,
       disabledOpacity
     } = this.options;
@@ -342,7 +348,8 @@ export class Fretboard {
       .attr('cy', ({ string, fret }) => positions[string - 1][fret - dotOffset].y)
       .attr('r', dotSize * 0.5)
       .attr('stroke', dotStrokeColor)
-      .attr('stroke-width', dotStrokeWidth);
+      .attr('stroke-width', dotStrokeWidth)
+      .attr('fill', dotFill);
 
     dotsNodes.append('text')
       .attr('class', 'dot-text')
@@ -455,25 +462,20 @@ export class Fretboard {
     return this;
   }
 
-  renderTriad(
-    name: string,
-    { string, layout, nextOctave }: GetTriadParams = { string: 6, layout: TriadLayout.One, nextOctave: false }
-  ): Fretboard {
-    const triad = this.getTriad(name, { string, layout, nextOctave });
+  renderTriad(name: string, options = DEFAULT_GET_TRIAD_PARAMS): Fretboard {
+    const triad = this.getTriad(name, options);
     this.setDots(triad);
     this.render();
     return this;
   }
 
-  getTriad(
-    name: string,
-    { string, layout, nextOctave }: GetTriadParams = { string: 6, layout: TriadLayout.One, nextOctave: false }
-  ): Position[] {
+  getTriad(name: string, options: GetTriadParams): Position[] {
     if (this.options.tuning.toString() !== GUITAR_TUNINGS.default.toString()) {
       console.warn('Selected scale system works for standard tuning. Wrong notes may be highlighted.');
     }
+    const { string, layout, inversion, nextOctave } = Object.assign({}, DEFAULT_GET_TRIAD_PARAMS, options);
     const { root, type } = parseTriadName(name);
-    const triad = this.system.getTriad({ root, type, string, layout });
+    const triad = this.system.getTriad({ root, type, string, layout, inversion });
     return nextOctave ? transposePositionsByOneOctave(triad) : triad;
   }
 

@@ -41,7 +41,6 @@
     },
     "devDependencies": {
         "@rollup/plugin-node-resolve": "^11.0.1",
-        "@tonaljs/chord": "^4.5.1",
         "@types/d3-selection": "^1.4.1",
         "@types/throttle-debounce": "^2.1.0",
         "@typescript-eslint/eslint-plugin": "^2.34.0",
@@ -81,6 +80,7 @@
         "@tonaljs/mode": "^4.5.1",
         "@tonaljs/note": "^4.6.0",
         "@tonaljs/scale": "^4.6.0",
+        "@tonaljs/chord": "^4.5.1",
         "change-case": "^4.1.2",
         "d3-selection": "^1.4.1",
         "throttle-debounce": "^2.2.1"

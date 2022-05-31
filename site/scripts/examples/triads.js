@@ -1,5 +1,5 @@
 import { get as getScale } from "@tonaljs/scale";
-import { Fretboard, TriadLayout } from "../../../dist/fretboard.esm.js";
+import { Fretboard, TriadLayouts } from "../../../dist/fretboard.esm.js";
 import { fretboardConfiguration, colors } from "../config.js";
 
 const fills = {
@@ -12,24 +12,40 @@ const fills = {
     7: "#00CCB1",
 };
 
+function getHarmonisedScale(root) {
+    const { notes } = getScale(root + " major");
+    return ["M", "m", "m", "M", "M", "m", "dim"].map((type, i) => ({
+        chord: `${notes[i]}${type}`,
+        type,
+    }));
+}
+
 export default function triads() {
+    triadsMain(document.querySelector(".triads-different-strings"));
+    triadsHarmonised(document.querySelector(".triads-harmonised-scale"));
+    triadsInversion(document.querySelector(".triads-inversions"));
+}
+
+function triadsMain(wrapper) {
     const fretboard = new Fretboard({
         ...fretboardConfiguration,
         dotText: ({ note }) => note,
+        el: wrapper.querySelector("figure"),
     });
 
-    const $form = document.querySelector(".api-actions");
+    const $form = wrapper.querySelector(".api-actions");
 
-    $form.triadsStrings.addEventListener("change", (event) =>
-        renderTriadOverStrings(event.target.value)
+    $form.querySelectorAll("select").forEach((el) =>
+        el.addEventListener("change", () => {
+            renderTriadOverStrings(
+                Object.fromEntries(new FormData($form).entries())
+            );
+        })
     );
-    $form.harmonised.addEventListener("change", (event) =>
-        renderHarmonised(event.target.value, 6, true)
-    );
 
-    renderTriadOverStrings("C");
+    renderTriadOverStrings({ root: "C" });
 
-    function renderTriadOverStrings(root) {
+    function renderTriadOverStrings({ root }) {
         fretboard
             .clear()
             .setDots(
@@ -41,8 +57,8 @@ export default function triads() {
                                 string,
                                 layout:
                                     string > 2
-                                        ? TriadLayout.One
-                                        : TriadLayout.OnePlusTwo,
+                                        ? TriadLayouts.One
+                                        : TriadLayouts.OnePlusTwo,
                                 nextOctave: string === 2 && root === "C",
                             })
                             .map((x) => ({ ...x, triad: string })),
@@ -55,49 +71,84 @@ export default function triads() {
                 fill: ({ triad }) => fills[triad],
             });
     }
+}
 
-    function getHarmonisedScale(root) {
-        const { notes } = getScale(root + " major");
-        return ["", "m", "m", "", "", "m", "dim"].map(
-            (x, i) => `${notes[i]}${x}`
-        );
-    }
+function triadsHarmonised(wrapper) {
+    const fretboard = new Fretboard({
+        ...fretboardConfiguration,
+        dotText: ({ note }) => note,
+        el: wrapper.querySelector("figure"),
+    });
 
-    function renderHarmonised(root, string = 6, clear) {
-        if (clear) {
-            fretboard.clear();
-        }
+    const $form = wrapper.querySelector(".api-actions");
+
+    $form.querySelectorAll("select").forEach((el) =>
+        el.addEventListener("change", () => {
+            renderHarmonised(Object.fromEntries(new FormData($form).entries()));
+        })
+    );
+
+    renderHarmonised({
+        root: "C",
+        string: 6,
+    });
+    function renderHarmonised({ root, string }) {
         const scale = getHarmonisedScale(root);
         fretboard
             .setDots([
                 ...scale.reduce(
-                    (memo, chord, index) => [
+                    (memo, { chord, type }, index) => [
                         ...memo,
                         ...fretboard
                             .getTriad(chord, {
-                                string,
-                                layout: TriadLayout.One,
+                                string: +string,
+                                layout: TriadLayouts.One,
                             })
-                            .map((x) => ({ ...x, triad: index + 1 })),
-                    ],
-                    []
-                ),
-                ...scale.reduce(
-                    (memo, note, index) => [
-                        ...memo,
-                        ...fretboard
-                            .getTriad(note, {
-                                string: 3,
-                                layout: TriadLayout.One,
-                            })
-                            .map((x) => ({ ...x, triad: index + 1 })),
+                            .map((x) => ({
+                                ...x,
+                                triad: index + 1,
+                                type,
+                            })),
                     ],
                     []
                 ),
             ])
             .render()
             .style({
-                fill: ({ triad }) => fills[triad],
+                fill: ({ type }) => colors.triads[type],
             });
     }
+}
+
+function triadsInversion(wrapper) {
+    const fretboard = new Fretboard({
+        ...fretboardConfiguration,
+        dotText: ({ note }) => note,
+        el: wrapper.querySelector("figure"),
+    });
+
+    const $form = wrapper.querySelector(".api-actions");
+    $form
+        .querySelectorAll("select")
+        .forEach((el) =>
+            el.addEventListener("change", () =>
+                renderTriad(Object.fromEntries(new FormData($form).entries()))
+            )
+        );
+
+    function renderTriad({ root, type, inversion, string, layout }) {
+        fretboard.renderTriad(`${root}${type}`, {
+            string: +string,
+            inversion,
+            layout,
+        });
+    }
+
+    renderTriad({
+        root: "C",
+        type: "Major",
+        inversion: "Root",
+        string: 6,
+        layout: "One",
+    });
 }

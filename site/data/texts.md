@@ -32,15 +32,11 @@ Click to add positions to the fretboard :cool:
 
 <!--examples.triads-->
 
-Render triads on the fretboard
-
-<!--examples.triads.differentStrings-->
-
 The same triad can be played in many placed all over the fretboard.
 
 <!--examples.triads.harmonisedScale-->
 
-Harmonising a scale in triads along the neck gives a better horizontal understanding of the fretboard.
+Harmonising a scale in triads along the neck gives a better horizontal understanding of the fretboard. Here we have the diatonic triads of C major highlighted by triad type.
 
 <!--examples.triads.inversions-->
 

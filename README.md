@@ -4,9 +4,9 @@
 
 [Fretboard.js][homepage] is:
 
-- a guitar/bass fretboard SVG visualisation;
-- a set of music oriented tools - as scale boxes, arpeggios and chord shapes;
-- an API for user interaction.
+-   a guitar/bass fretboard SVG visualisation;
+-   a set of music oriented tools - as scale boxes, arpeggios and chord shapes;
+-   an API for user interaction.
 
 ## Usage and installation
 
@@ -16,7 +16,7 @@
 
 ## [ISC License](https://spdx.org/licenses/ISC)
 
-Copyright (c) 2020, Diego Caponera <hello@diegocaponera.com>
+Copyright (c) 2022, Diego Caponera <hello@diegocaponera.com>
 
 Permission to use, copy, modify, and/or distribute this software for any purpose with or without fee is hereby granted, provided that the above copyright notice and this permission notice appear in all copies.
 

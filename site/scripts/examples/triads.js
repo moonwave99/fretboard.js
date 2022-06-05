@@ -21,20 +21,26 @@ function getHarmonisedScale(root) {
 }
 
 export default function triads() {
-    triadsMain(document.querySelector(".triads-different-strings"));
-    triadsHarmonised(document.querySelector(".triads-harmonised-scale"));
-    triadsInversion(document.querySelector(".triads-inversions"));
+    const initialisers = {
+        differentStrings,
+        harmonised,
+        inversions,
+    };
+    document
+        .querySelectorAll("[data-example]")
+        .forEach((el) => initialisers[el.dataset.example](el));
 }
 
-function triadsMain(wrapper) {
+function differentStrings(wrapper) {
     const fretboard = new Fretboard({
         ...fretboardConfiguration,
         dotText: ({ note }) => note,
         el: wrapper.querySelector("figure"),
     });
 
-    const $form = wrapper.querySelector(".api-actions");
+    renderTriadOverStrings({ root: "C" });
 
+    const $form = wrapper.querySelector(".api-actions");
     $form.querySelectorAll("select").forEach((el) =>
         el.addEventListener("change", () => {
             renderTriadOverStrings(
@@ -42,8 +48,6 @@ function triadsMain(wrapper) {
             );
         })
     );
-
-    renderTriadOverStrings({ root: "C" });
 
     function renderTriadOverStrings({ root }) {
         fretboard
@@ -73,25 +77,25 @@ function triadsMain(wrapper) {
     }
 }
 
-function triadsHarmonised(wrapper) {
+function harmonised(wrapper) {
     const fretboard = new Fretboard({
         ...fretboardConfiguration,
         dotText: ({ note }) => note,
         el: wrapper.querySelector("figure"),
     });
 
-    const $form = wrapper.querySelector(".api-actions");
+    renderHarmonised({
+        root: "C",
+        string: 5,
+    });
 
+    const $form = wrapper.querySelector(".api-actions");
     $form.querySelectorAll("select").forEach((el) =>
         el.addEventListener("change", () => {
             renderHarmonised(Object.fromEntries(new FormData($form).entries()));
         })
     );
 
-    renderHarmonised({
-        root: "C",
-        string: 6,
-    });
     function renderHarmonised({ root, string }) {
         const scale = getHarmonisedScale(root);
         fretboard
@@ -120,11 +124,19 @@ function triadsHarmonised(wrapper) {
     }
 }
 
-function triadsInversion(wrapper) {
+function inversions(wrapper) {
     const fretboard = new Fretboard({
         ...fretboardConfiguration,
         dotText: ({ note }) => note,
         el: wrapper.querySelector("figure"),
+    });
+
+    renderTriad({
+        root: "C",
+        type: "Major",
+        inversion: "Root",
+        string: 6,
+        layout: "One",
     });
 
     const $form = wrapper.querySelector(".api-actions");
@@ -143,12 +155,4 @@ function triadsInversion(wrapper) {
             layout,
         });
     }
-
-    renderTriad({
-        root: "C",
-        type: "Major",
-        inversion: "Root",
-        string: 6,
-        layout: "One",
-    });
 }

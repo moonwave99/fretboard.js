@@ -53,7 +53,7 @@ const partials = {
     footer: (footerClass = "") => {
         return `
       <footer class="container ${footerClass}">
-        <p>&copy; 2020 <a href="${labels.links.author}">mwlabs</a>. | <a href="${labels.links.github}">github</a></p>
+        <p>&copy; 2022 <a href="${labels.links.author}">mwlabs</a>. | <a href="${labels.links.github}">github</a></p>
       </footer>`;
     },
     nav: (section) => {

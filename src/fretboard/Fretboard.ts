@@ -253,7 +253,7 @@ export class Fretboard {
         : select<BaseType, unknown>(el)
     )
       .append('div')
-      .attr('class', 'fretbard-html-wrapper')
+      .attr('class', 'fretboard-html-wrapper')
       .attr('style', 'position: relative')
       .append('svg')
       .attr('viewBox', `0 0 ${totalWidth} ${totalHeight}`);

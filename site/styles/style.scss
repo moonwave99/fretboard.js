@@ -194,6 +194,10 @@ footer.container {
     }
   }
 
+  &.start {
+    justify-content: start;
+  }
+
   p {
     margin-bottom: 2rem;
   }

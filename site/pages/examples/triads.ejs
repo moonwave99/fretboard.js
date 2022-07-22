@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" class="has-navbar-fixed-top" data-section="triads">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+        <%= htmlWebpackPlugin.options.title %>
+    </title>
+    <%= htmlWebpackPlugin .tags .headTags .filter((tag)=>
+        tag.attributes.href.startsWith('index')) .join('') %>
+</head>
+
+<body>
+    <%= partials.nav('triads') %>
+        <main>
+            <section class="container">
+                <header>
+                    <h1>
+                        <%= examples.triads.title %>
+                    </h1>
+                    <p>
+                        <a href="<%= getExampleLink('triads') %>">See example source</a>
+                    </p>
+                    <%= texts['examples.triads'] %>
+                </header>
+                <section data-example="differentStrings">
+                    <div class="columns">
+                        <figure class="column is-three-quarters"></figure>
+                        <aside class="column aside start form-wrapper">
+                            <form class="api-actions">
+                                <label class="label" for="triad-different-strings-root">Root</label>
+                                <div class="field">
+                                    <div class="control">
+                                        <div class="select is-small">
+                                            <select name="root" id="triad-different-strings-root">
+                                                <option value="C">C</option>
+                                                <option value="D">D</option>
+                                                <option value="E">E</option>
+                                                <option value="F">F</option>
+                                                <option value="G">G</option>
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </aside>
+                    </div>
+                </section>
+
+                <section data-example="harmonised">
+                    <header>
+                        <h2>
+                            <%= examples.triads.harmonisedScale %>
+                        </h2>
+                        <%= texts['examples.triads.harmonisedScale'] %>
+                    </header>
+                    <div class="columns">
+                        <figure class="column is-three-quarters"></figure>
+                        <aside class="column aside start form-wrapper">
+                            <form class="api-actions">
+                                <label class="label" for="triad-harmonised-scale-root">Root</label>
+                                <div class="field">
+                                    <div class="control">
+                                        <div class="select is-small">
+                                            <select name="root" id="triads-harmonised-scale-root">
+                                                <option value="C">C</option>
+                                                <option value="D">D</option>
+                                                <option value="E">E</option>
+                                                <option value="F">F</option>
+                                                <option value="G">G</option>
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="label" for="triad-harmonised-string">String</label>
+                                <div class="field">
+                                    <div class="control">
+                                        <div class="select is-small">
+                                            <select name="string" id="triad-harmonised-string">
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5" selected>5</option>
+                                                <option value="6">6</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </aside>
+                    </div>
+                </section>
+
+                <section data-example="inversions">
+                    <header>
+                        <h2>
+                            <%= examples.triads.inversions %>
+                        </h2>
+                        <%= texts['examples.triads.inversions'] %>
+                    </header>
+                    <div class="columns">
+                        <figure class="column is-three-quarters"></figure>
+                        <aside class="column aside start form-wrapper">
+                            <form class="api-actions">
+                                <label class="label" for="triad-inversions-root">Root</label>
+                                <div class="field">
+                                    <div class="control">
+                                        <div class="select is-small">
+                                            <select name="root" id="triad-inversions-root">
+                                                <option value="C" selected>C</option>
+                                                <option value="D">D</option>
+                                                <option value="E">E</option>
+                                                <option value="F">F</option>
+                                                <option value="G">G</option>
+                                                <option value="A">A</option>
+                                                <option value="B">B</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="label" for="triad-inversions-type">Type</label>
+                                <div class="field">
+                                    <div class="control">
+                                        <div class="select is-small">
+                                            <select name="type" id="triad-inversions-type">
+                                                <option value="Major" selected>Major</option>
+                                                <option value="m">Minor</option>
+                                                <option value="dim">Diminished</option>
+                                                <option value="aug">Augmented</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="label" for="triad-inversions-inversion">Inversion</label>
+                                <div class="field">
+                                    <div class="control">
+                                        <div class="select is-small">
+                                            <select name="inversion" id="triad-inversions-inversion">
+                                                <option value="Root" selected>Root</option>
+                                                <option value="First">First</option>
+                                                <option value="Second">Second</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="label" for="triad-inversions-string">String</label>
+                                <div class="field">
+                                    <div class="control">
+                                        <div class="select is-small">
+                                            <select name="string" id="triad-inversions-string">
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                                <option value="6" selected>6</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <label class="label" for="triad-inversions-layout">Layout</label>
+                                <div class="field">
+                                    <div class="control">
+                                        <div class="select is-small">
+                                            <select name="layout" id="triad-inversions-layout">
+                                                <option value="One" selected>One</option>
+                                                <option value="OnePlusTwo">OnePlusTwo</option>
+                                                <option value="TwoPlusOne">TwoPlusOne</option>
+                                                <option value="Three">Three</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </aside>
+                    </div>
+                </section>
+            </section>
+        </main>
+        <%= partials.footer() %>
+            <%= htmlWebpackPlugin .tags .bodyTags .filter((tag)=> tag.attributes.src.startsWith('index')) .join('') %>
+</body>
+
+</html>

@@ -1,35 +1,41 @@
 {
-  "links" : {
-    "github": "https://github.com/moonwave99/fretboard.js",
-    "homepage": "https://github.com/moonwave99/fretboard.js",
-    "author": "https://www.diegocaponera.com"
-  },
-  "examples": {
-    "systems": {
-      "title": "Examples / Systems and Boxes",
-      "pentatonic": "Pentatonic system",
-      "caged": "CAGED System",
-      "tnps": "Three Notes per String",
-      "boxes": "Connected Boxes"
+    "links": {
+        "github": "https://github.com/moonwave99/fretboard.js",
+        "homepage": "https://github.com/moonwave99/fretboard.js",
+        "author": "https://www.diegocaponera.com"
     },
-    "modes": {
-      "title": "Examples / Modes"
-    },
-    "tetrachords": {
-      "title": "Examples / Tetrachords"
-    },
-    "events": {
-      "title": "Examples / Events",
-      "buttons": {
-        "clear": "Clear Fretboard"
-      }
-    },
-    "chords": {
-      "title": "Examples / Chords"
-    },
-    "playback": {
-      "title": "Examples / Playback"
-    },
-    "code": "Code Examples"
-  }
+    "examples": {
+        "systems": {
+            "title": "Examples / Systems and Boxes",
+            "pentatonic": "Pentatonic system",
+            "caged": "CAGED System",
+            "tnps": "Three Notes per String",
+            "boxes": "Connected Boxes"
+        },
+        "modes": {
+            "title": "Examples / Modes"
+        },
+        "tetrachords": {
+            "title": "Examples / Tetrachords"
+        },
+        "triads": {
+            "title": "Examples / Triads",
+            "differentStrings": "Same triad on different strings",
+            "harmonisedScale": "Harmonise a scale in triads horizontally",
+            "inversions": "Triad inversions"
+        },
+        "events": {
+            "title": "Examples / Events",
+            "buttons": {
+                "clear": "Clear Fretboard"
+            }
+        },
+        "chords": {
+            "title": "Examples / Chords"
+        },
+        "playback": {
+            "title": "Examples / Playback"
+        },
+        "code": "Code Examples"
+    }
 }

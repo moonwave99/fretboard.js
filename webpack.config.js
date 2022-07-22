@@ -1,63 +1,85 @@
-const path = require('path');
-const fs = require('fs-extra');
-const { chunk } = require('lodash');
-const marked = require('marked');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const jsonImporter = require('node-sass-json-importer');
-const CopyPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const path = require("path");
+const fs = require("fs-extra");
+const { chunk } = require("lodash");
+const marked = require("marked");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const jsonImporter = require("node-sass-json-importer");
+const CopyPlugin = require("copy-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const targetPath = path.resolve(__dirname, '_site');
+const targetPath = path.resolve(__dirname, "_site");
 
-const documentation = ['fretboard', 'musicTools'];
-const examples = ['systems', 'modes', 'chords', 'tetrachords', 'events'];
+const documentation = ["fretboard", "musicTools"];
+const examples = [
+    "systems",
+    "modes",
+    "chords",
+    "triads",
+    "tetrachords",
+    "events",
+];
 
-const labels = require('./site/data/labels.json');
-const textsFile = fs.readFileSync('./site/data/texts.md', 'utf8');
-const snippetsFile = fs.readFileSync('./site/data/snippets.md', 'utf8');
-const docs = documentation.reduce((memo, key) => ({
-  ...memo,
-  [key]: marked(fs.readFileSync(`./site/data/documentation/${key}.md`, 'utf8'))
-}), {});
+const labels = require("./site/data/labels.json");
+const textsFile = fs.readFileSync("./site/data/texts.md", "utf8");
+const snippetsFile = fs.readFileSync("./site/data/snippets.md", "utf8");
+const docs = documentation.reduce(
+    (memo, key) => ({
+        ...memo,
+        [key]: marked(
+            fs.readFileSync(`./site/data/documentation/${key}.md`, "utf8")
+        ),
+    }),
+    {}
+);
 
 const getTexts = (file) => {
-  const tokens = file.split(/<!--([\s\S]*?)-->/g);
-  tokens.shift();
-  return chunk(tokens, 2).reduce(
-    (memo, [key, value]) => ({ ...memo, [key]: marked(value) }), {}
-  );
+    const tokens = file.split(/<!--([\s\S]*?)-->/g);
+    tokens.shift();
+    return chunk(tokens, 2).reduce(
+        (memo, [key, value]) => ({ ...memo, [key]: marked(value) }),
+        {}
+    );
 };
 
-const { version, repository } = require('./package.json');
+const { version, repository } = require("./package.json");
 
-const getExampleLink = (example) => `${repository.url}/tree/master/site/scripts/examples/${example}.js`;
+const getExampleLink = (example) =>
+    `${repository.url}/tree/master/site/scripts/examples/${example}.js`;
 
-const capitalize = (string) => `${string[0].toUpperCase()}${string.substring(1)}`;
+const capitalize = (string) =>
+    `${string[0].toUpperCase()}${string.substring(1)}`;
 
 const partials = {
-  footer: (footerClass = '') => {
-    return `
+    footer: (footerClass = "") => {
+        return `
       <footer class="container ${footerClass}">
-        <p>&copy; 2020 <a href="${labels.links.author}">mwlabs</a>. | <a href="${labels.links.github}">github</a></p>
+        <p>&copy; 2022 <a href="${labels.links.author}">mwlabs</a>. | <a href="${labels.links.github}">github</a></p>
       </footer>`;
-  },
-  nav: (section) => {
-    const isCurrent = (item) => {
-      switch (item) {
-        case 'examples':
-          return examples.indexOf(section) > -1 ? 'is-current' : '';
-        case 'documentation':
-          return documentation.indexOf(section) > -1 ? 'is-current' : '';
-        default:
-          return section === item ? 'is-current' : '';
-      }
-    }
+    },
+    nav: (section) => {
+        const isCurrent = (item) => {
+            switch (item) {
+                case "examples":
+                    return examples.indexOf(section) > -1 ? "is-current" : "";
+                case "documentation":
+                    return documentation.indexOf(section) > -1
+                        ? "is-current"
+                        : "";
+                default:
+                    return section === item ? "is-current" : "";
+            }
+        };
 
-    const examplesEntries = [...examples, 'playback'].map(
-      e =>`<a class="navbar-item ${isCurrent(e)}" href="examples-${e}.html">${capitalize(e)}</a>`
-    ).join('\n');
+        const examplesEntries = [...examples, "playback"]
+            .map(
+                (e) =>
+                    `<a class="navbar-item ${isCurrent(
+                        e
+                    )}" href="examples-${e}.html">${capitalize(e)}</a>`
+            )
+            .join("\n");
 
-    return `
+        return `
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <a class="navbar-item" href="index.html">
@@ -75,22 +97,22 @@ const partials = {
       <div id="navbar" class="navbar-menu">
         <div class="navbar-start">
           <div class="navbar-item has-dropdown is-hoverable">
-            <span class="navbar-link ${isCurrent('documentation')}">
+            <span class="navbar-link ${isCurrent("documentation")}">
               Documentation <span class="version">(v${version})</span>
             </span>
 
             <div class="navbar-dropdown">
               <a class="navbar-item ${isCurrent(
-                'fretboard'
+                  "fretboard"
               )}" href="documentation-fretboard.html">Fretboard class</a>
               <a class="navbar-item ${isCurrent(
-                'musicTools'
+                  "musicTools"
               )}" href="documentation-music-tools.html">Music Tools</a>
             </div>
           </div>
 
           <div class="navbar-item has-dropdown is-hoverable">
-            <span class="navbar-link ${isCurrent('examples')}">
+            <span class="navbar-link ${isCurrent("examples")}">
               Examples
             </span>
             <div class="navbar-dropdown">${examplesEntries}</div>
@@ -105,102 +127,104 @@ const partials = {
       </div>
     </nav>
     `;
-  }
+    },
 };
 
 const templateParameters = {
-  ...labels,
-  partials,
-  texts: getTexts(textsFile),
-  snippets: getTexts(snippetsFile),
-  getExampleLink,
-  docs
+    ...labels,
+    partials,
+    texts: getTexts(textsFile),
+    snippets: getTexts(snippetsFile),
+    getExampleLink,
+    docs,
 };
 const exampleEntries = examples.reduce(
-  (memo, e) => ({ ...memo, [e]: `./site/scripts/${e}.js`})
-  , {}
+    (memo, e) => ({ ...memo, [e]: `./site/scripts/${e}.js` }),
+    {}
 );
 
-const examplePages = examples.map(e => {
-  return new HtmlWebpackPlugin({
-    title: `Fretboard.js | Examples | ${e[0].toUpperCase()}${e.substring(1)}`,
-    filename: `examples-${e}.html`,
-    template: `site/pages/examples/${e}.ejs`,
-    inject: false,
-    templateParameters
-  });
+const examplePages = examples.map((e) => {
+    return new HtmlWebpackPlugin({
+        title: `Fretboard.js | Examples | ${e[0].toUpperCase()}${e.substring(
+            1
+        )}`,
+        filename: `examples-${e}.html`,
+        template: `site/pages/examples/${e}.ejs`,
+        inject: false,
+        templateParameters,
+    });
 });
 
 module.exports = {
-  module: {
-    rules: [
-      {
-        test: /\.(sa|sc|c)ss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          "css-loader",
-          {
-            loader: "sass-loader",
-            options: {
-              implementation: require("sass"),
-              sassOptions: {
-                importer: jsonImporter(),
-              },
+    module: {
+        rules: [
+            {
+                test: /\.(sa|sc|c)ss$/,
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    "css-loader",
+                    {
+                        loader: "sass-loader",
+                        options: {
+                            implementation: require("sass"),
+                            sassOptions: {
+                                importer: jsonImporter(),
+                            },
+                        },
+                    },
+                ],
             },
-          },
         ],
-      },
+    },
+    entry: {
+        index: "./site/scripts/index.js",
+        playback: "./site/scripts/examples/playback.js",
+    },
+    output: {
+        filename: "[name]-bundle.js",
+        path: targetPath,
+    },
+    plugins: [
+        new CopyPlugin({
+            patterns: [{ from: "site/assets", to: "assets" }],
+        }),
+        new MiniCssExtractPlugin({
+            filename: "[name].css",
+            chunkFilename: "[id].css",
+        }),
+        new HtmlWebpackPlugin({
+            title: "Fretboard.js",
+            filename: "index.html",
+            template: "site/pages/index.ejs",
+            inject: false,
+            templateParameters,
+        }),
+        new HtmlWebpackPlugin({
+            title: "Fretboard.js | Documentation | Fretboard",
+            filename: "documentation-fretboard.html",
+            template: "site/pages/documentation/fretboard.ejs",
+            inject: false,
+            templateParameters,
+        }),
+        new HtmlWebpackPlugin({
+            title: "Fretboard.js | Documentation | Music Tools",
+            filename: "documentation-music-tools.html",
+            template: "site/pages/documentation/music-tools.ejs",
+            inject: false,
+            templateParameters,
+        }),
+        ...examplePages,
+        new HtmlWebpackPlugin({
+            title: "Fretboard.js | Examples | Playback",
+            filename: "examples-playback.html",
+            template: "site/pages/examples/playback.ejs",
+            inject: false,
+            templateParameters,
+        }),
     ],
-  },
-  entry: {
-    index: "./site/scripts/index.js",
-    playback: "./site/scripts/examples/playback.js",
-  },
-  output: {
-    filename: "[name]-bundle.js",
-    path: targetPath,
-  },
-  plugins: [
-    new CopyPlugin({
-      patterns: [{ from: "site/assets", to: "assets" }],
-    }),
-    new MiniCssExtractPlugin({
-      filename: "[name].css",
-      chunkFilename: "[id].css",
-    }),
-    new HtmlWebpackPlugin({
-      title: "Fretboard.js",
-      filename: "index.html",
-      template: "site/pages/index.ejs",
-      inject: false,
-      templateParameters,
-    }),
-    new HtmlWebpackPlugin({
-      title: "Fretboard.js | Documentation | Fretboard",
-      filename: "documentation-fretboard.html",
-      template: "site/pages/documentation/fretboard.ejs",
-      inject: false,
-      templateParameters,
-    }),
-    new HtmlWebpackPlugin({
-      title: "Fretboard.js | Documentation | Music Tools",
-      filename: "documentation-music-tools.html",
-      template: "site/pages/documentation/music-tools.ejs",
-      inject: false,
-      templateParameters,
-    }),
-    ...examplePages,
-    new HtmlWebpackPlugin({
-      title: "Fretboard.js | Examples | Playback",
-      filename: "examples-playback.html",
-      template: "site/pages/examples/playback.ejs",
-      inject: false,
-      templateParameters,
-    }),
-  ],
-  devServer: {
-    contentBase: targetPath,
-    compress: true,
-    port: 9000,
-  },
+    devServer: {
+        contentBase: targetPath,
+        compress: true,
+        port: 9000,
+    },
 };

@@ -453,7 +453,7 @@ test('Fretboard renderScale() - custom tuning warning', t => {
 test('Fretboard event handlers', t => {
   new Fretboard()
     .render()
-    .on('click', (position: Position) => t.deepEqual(position, { string: 1, fret: 0, note: 'E' }));
+    .on('click', (position: Position) => t.deepEqual(position, { string: 1, fret: 0, note: 'E', chroma: 4 }));
   const hoverDiv = document.querySelector('#fretboard .hoverDiv');
   t.truthy(hoverDiv);
   hoverDiv.dispatchEvent(new MouseEvent('click'));
@@ -501,7 +501,7 @@ test('Fretboard event handlers - click on dot', t => {
   new Fretboard()
     .setDots([{ string: 1, fret: 0 }])
     .render()
-    .on('click', (position: Position) => t.deepEqual(position, { string: 1, fret: 0, note: 'E' }));
+    .on('click', (position: Position) => t.deepEqual(position, { string: 1, fret: 0, note: 'E', chroma: 4 }));
   const hoverDiv = document.querySelector('#fretboard .hoverDiv');
   t.truthy(hoverDiv);
   hoverDiv.dispatchEvent(new MouseEvent('click'));

@@ -502,8 +502,8 @@ export class Fretboard {
           dots,
           ...options
         });
-        const note = system.getNoteAtPosition(position);
-        handler({ ...position, note }, event);
+        const { note, chroma } = system.getNoteAtPosition(position);
+        handler({ ...position, note, chroma }, event);
       });
 
     this.hoverDiv.addEventListener(eventName, this.handlers[eventName]);

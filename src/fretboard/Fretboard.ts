@@ -50,7 +50,7 @@ export type Position = {
 
 type MouseEventNames = keyof Pick<
   HTMLElementEventMap,
-  ({[P in keyof HTMLElementEventMap]: HTMLElementEventMap[P] extends MouseEvent ? P : never })[keyof HTMLElementEventMap]
+  ({ [P in keyof HTMLElementEventMap]: HTMLElementEventMap[P] extends MouseEvent ? P : never })[keyof HTMLElementEventMap]
 >;
 
 type FretboardHandler = (position: Position, event: MouseEvent) => void;
@@ -286,7 +286,7 @@ export class Fretboard {
     } = this.options;
 
     const dotOffset = this.getDotOffset();
-    
+
     this.baseRender(dotOffset);
 
     wrapper.select('.dots').remove();
@@ -420,9 +420,6 @@ export class Fretboard {
 
   renderChord(chord: string, barres?: Barre | Barre[]): Fretboard {
     const { positions, mutedStrings: strings } = parseChord(chord);
-
-    // console.log(positions, this.options.crop);
-
     this.setDots(positions);
     if (barres) {
       this.renderBarres([].concat(barres));

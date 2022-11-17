@@ -216,15 +216,15 @@ function validateOptions(options: Options): void {
   }
 }
 
-function getBounds(area: [Position, Position]): {
+function getBounds(area: Position[]): {
   bottomLeft: Position;
   bottomRight: Position;
   topRight: Position;
   topLeft: Position;
 } {
   const getMinMax = (what: 'string' | 'fret'): [number, number] => [
-    Math.min(area[0][what], area[1][what]),
-    Math.max(area[0][what], area[1][what]),
+    Math.min(...area.map(x => x[what])),
+    Math.max(...area.map(x => x[what])),
   ];
 
   const [minString, maxString] = getMinMax('string');

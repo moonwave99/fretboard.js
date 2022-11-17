@@ -100,11 +100,18 @@ export class FretboardSystem {
     getNoteAtPosition(position: Position): {
         chroma: number;
         note: string;
+        octave: number;
     } {
         const { chroma } = this.positions.find(
             x => x.string === position.string && x.fret === position.fret
         );
-        return { chroma, note: CHROMATIC_SCALE[chroma] };
+        const note = CHROMATIC_SCALE[chroma];
+        const octave = this.getOctave({
+            ...position,
+            chroma,
+            note
+        })
+        return { chroma, note, octave };
     }
     getScale({
         type = 'major',

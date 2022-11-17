@@ -10,7 +10,9 @@ export const DEFAULT_COLORS = {
     fretNumber: '#00000099',
     mutedString: '#333',
     dotText: '#111',
-    barres: '#666'
+    barres: '#666',
+    highlightStroke: 'transparent',
+    highlightFill: 'dodgerblue'
 };
 
 export const DEFAULT_DIMENSIONS = {
@@ -31,3 +33,5 @@ export const GUITAR_TUNINGS = {
     openG: ["D2", "G2", "D3", "G3", "B3", "D4"],
     DADGAD: ["D2", "A2", "D3", "G3", "A3", "D4"]
 };
+
+export const DEFAULT_HIGHLIGHT_BLEND_MODE = 'color-burn';

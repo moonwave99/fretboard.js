@@ -562,3 +562,49 @@ test('Fretboard with custom classes (array)', t => {
   t.is(svg.querySelectorAll('.dots .dot-custom-1').length, 2);
   t.is(svg.querySelectorAll('.dots .dot-custom-2').length, 2);
 });
+
+test('Fretboard - highlightAreas', t => {
+  const fretboard = new Fretboard();
+  fretboard
+    .renderScale({
+      type: 'major',
+      root: 'G',
+    })
+    .highlightAreas(
+      [
+        { string: 1, fret: 5 },
+        { string: 6, fret: 2 },
+      ],
+      [
+        { string: 1, fret: 13 },
+        { string: 6, fret: 9 },
+      ]
+    );
+  const svg = document.querySelector('#fretboard svg');
+
+  t.truthy(svg);
+  t.is(svg.querySelectorAll('.highlight-areas .area').length, 2);
+});
+
+test('Fretboard - clearHighlightAreas', t => {
+  const fretboard = new Fretboard();
+  fretboard
+    .renderScale({
+      type: 'major',
+      root: 'G',
+    })
+    .highlightAreas(
+      [
+        { string: 1, fret: 5 },
+        { string: 6, fret: 2 },
+      ],
+      [
+        { string: 1, fret: 13 },
+        { string: 6, fret: 9 },
+      ]
+    ).clearHighlightAreas()
+  const svg = document.querySelector('#fretboard svg');
+
+  t.truthy(svg);
+  t.is(svg.querySelectorAll('.highlight-areas .area').length, 0);
+});

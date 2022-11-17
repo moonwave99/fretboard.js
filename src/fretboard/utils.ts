@@ -103,8 +103,9 @@ function classRenderer(prefix: string, key: string, value: string | number | boo
 export function dotClasses(dot: Position, prefix = ''): string {
   return [
     prefix ? `dot-${prefix}` : null,
+    `dot-id-s${dot.string}:f${dot.fret}`,
     ...Object.entries(dot)
-      .map(([key, value]: [string, string|Array<string>]) => {
+      .map(([key, value]: [string, string | Array<string>]) => {
         let valArray: string[];
         if (!(value instanceof Array)) {
           valArray = [value];
@@ -179,10 +180,10 @@ export const getPositionFromMouseCoords = ({
   const stringDistance = stringsGroupHeight / (strings.length - 1);
 
   for (let i = 0; i < strings.length; i++) {
-     if (y < stringDistance * (i + 1)) {
-       foundString = i;
-       break;
-     }
+    if (y < stringDistance * (i + 1)) {
+      foundString = i;
+      break;
+    }
   }
 
   let foundFret = -1;

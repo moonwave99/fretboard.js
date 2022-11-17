@@ -27,7 +27,8 @@ import {
   DEFAULT_DIMENSIONS,
   DEFAULT_FRET_COUNT,
   DEFAULT_FONT_FAMILY,
-  DEFAULT_FONT_SIZE
+  DEFAULT_FONT_SIZE,
+  DEFAULT_HIGHLIGHT_BLEND_MODE
 } from '../constants';
 
 import { FretboardSystem } from '../fretboardSystem/FretboardSystem';
@@ -50,7 +51,7 @@ export type Position = {
 
 type MouseEventNames = keyof Pick<
   HTMLElementEventMap,
-  ({[P in keyof HTMLElementEventMap]: HTMLElementEventMap[P] extends MouseEvent ? P : never })[keyof HTMLElementEventMap]
+  ({ [P in keyof HTMLElementEventMap]: HTMLElementEventMap[P] extends MouseEvent ? P : never })[keyof HTMLElementEventMap]
 >;
 
 type FretboardHandler = (position: Position, event: MouseEvent) => void;
@@ -95,7 +96,12 @@ export const defaultOptions = {
   fretNumbersMargin: DEFAULT_DIMENSIONS.unit,
   fretNumbersColor: DEFAULT_COLORS.line,
   font: DEFAULT_FONT_FAMILY,
-  barresColor: DEFAULT_COLORS.barres
+  barresColor: DEFAULT_COLORS.barres,
+  highlightPadding: DEFAULT_DIMENSIONS.unit * .5,
+  highlightRadius: DEFAULT_DIMENSIONS.unit * .5,
+  highlightStroke: DEFAULT_COLORS.highlightStroke,
+  highlightFill: DEFAULT_COLORS.highlightFill,
+  highlightBlendMode: DEFAULT_HIGHLIGHT_BLEND_MODE
 };
 
 export const defaultMuteStringsParams = {
@@ -140,6 +146,11 @@ export type Options = {
   fretLeftPadding: number;
   font: string;
   barresColor: string;
+  highlightPadding: number;
+  highlightRadius: number;
+  highlightStroke: string;
+  highlightFill: string;
+  highlightBlendMode: string;
 }
 
 type Rec = Record<string, string | number | boolean>;
@@ -202,6 +213,28 @@ function validateOptions(options: Options): void {
   const { stringCount, tuning } = options;
   if (stringCount !== tuning.length) {
     throw new Error(`stringCount (${stringCount}) and tuning size (${tuning.length}) do not match`);
+  }
+}
+
+function getBounds(area: [Position, Position]): {
+  bottomLeft: Position;
+  bottomRight: Position;
+  topRight: Position;
+  topLeft: Position;
+} {
+  const getMinMax = (what: 'string' | 'fret'): [number, number] => [
+    Math.min(area[0][what], area[1][what]),
+    Math.max(area[0][what], area[1][what]),
+  ];
+
+  const [minString, maxString] = getMinMax('string');
+  const [minFret, maxFret] = getMinMax('fret');
+
+  return {
+    bottomLeft: { string: maxString, fret: minFret },
+    bottomRight: { string: maxString, fret: maxFret },
+    topRight: { string: minString, fret: maxFret },
+    topLeft: { string: minString, fret: minFret }
   }
 }
 
@@ -286,7 +319,7 @@ export class Fretboard {
     } = this.options;
 
     const dotOffset = this.getDotOffset();
-    
+
     this.baseRender(dotOffset);
 
     wrapper.select('.dots').remove();
@@ -420,9 +453,6 @@ export class Fretboard {
 
   renderChord(chord: string, barres?: Barre | Barre[]): Fretboard {
     const { positions, mutedStrings: strings } = parseChord(chord);
-
-    // console.log(positions, this.options.crop);
-
     this.setDots(positions);
     if (barres) {
       this.renderBarres([].concat(barres));
@@ -469,6 +499,53 @@ export class Fretboard {
 
     const dots = this.system.getScale({ type, root, box }).filter(({ inBox }) => inBox);
     return this.setDots(dots).render();
+  }
+
+  highlightAreas(...areas: [Position, Position][]): Fretboard {
+    const { wrapper, options, positions } = this;
+    const { width, dotSize, highlightPadding, highlightFill, highlightStroke, highlightBlendMode, highlightRadius } = options;
+
+    const highlightGroup = wrapper
+      .append('g')
+      .attr('class', 'highlight-areas');
+
+    const dotPercentSize = dotSize / width * 100;
+    const highlightPaddingPercentSize = highlightPadding / width * 100;
+    const dotOffset = this.getDotOffset();
+
+    const bounds = areas.map(getBounds);
+
+    highlightGroup
+      .selectAll('rect')
+      .data(bounds)
+      .enter()
+      .append('rect')
+      .attr('class', 'area')
+      .attr('y', ({ topLeft }) =>
+        positions[topLeft.string - 1][topLeft.fret - dotOffset].y - dotSize * 0.5 - highlightPadding)
+      .attr('x', ({ topLeft }) =>
+        `${positions[topLeft.string - 1][topLeft.fret - dotOffset].x - dotPercentSize / 2 - highlightPaddingPercentSize}%`)
+      .attr('rx', highlightRadius)
+      .attr('width', ({ topLeft, topRight }) => {
+        const from = positions[topLeft.string - 1][topLeft.fret].x;
+        const to = positions[topRight.string - 1][topRight.fret].x;
+        return `${to - from + dotPercentSize + 2 * highlightPaddingPercentSize}%`;
+      })
+      .attr('height', ({ topLeft, bottomLeft }) => {
+        const from = positions[topLeft.string - 1][topLeft.fret].y;
+        const to = positions[bottomLeft.string - 1][bottomLeft.fret].y;
+        return to - from + dotSize + 2 * highlightPadding;
+      })
+      .attr('stroke', highlightStroke)
+      .attr('fill', highlightFill)
+      .attr('style', `mix-blend-mode: ${highlightBlendMode}`)
+
+    return this;
+  }
+
+  clearHighlightAreas(): Fretboard {
+    this.wrapper.select('.highlight-areas').remove();
+    return this;
   }
 
   on(eventName: MouseEventNames, handler: FretboardHandler): Fretboard {

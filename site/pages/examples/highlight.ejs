@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" class="has-navbar-fixed-top" data-section="highlight">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= htmlWebpackPlugin.options.title %></title>
+	<%= htmlWebpackPlugin
+	  .tags
+	  .headTags
+		.filter((tag) => tag.attributes.href.startsWith('index'))
+	  .join('')
+	%>
+  </head>
+
+  <body>
+    <%= partials.nav('highlight') %>
+    <main>
+      <section class="container">
+        <header>
+          <h1><%= examples.highlight.title %></h1>
+          <p>
+            <a href="<%= getExampleLink('highlight') %>">See example source</a>
+          </p>
+          <%= texts['examples.highlight'] %>
+        </header>
+        <div class="columns">
+          <figure class="column is-three-quarters" id="fretboard"></figure>
+        </div>
+      </section>
+    </main>
+	<%= partials.footer() %>
+	<%= htmlWebpackPlugin
+		.tags
+		.bodyTags
+		.filter((tag) => tag.attributes.src.startsWith('index'))
+		.join('')
+	%>
+  </body>
+</html>

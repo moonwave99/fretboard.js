@@ -1,5 +1,5 @@
 {
-  "links" : {
+  "links": {
     "github": "https://github.com/moonwave99/fretboard.js",
     "homepage": "https://github.com/moonwave99/fretboard.js",
     "author": "https://www.diegocaponera.com"
@@ -17,6 +17,9 @@
     },
     "tetrachords": {
       "title": "Examples / Tetrachords"
+    },
+    "highlight": {
+      "title": "Examples / Highlight Areas"
     },
     "events": {
       "title": "Examples / Events",

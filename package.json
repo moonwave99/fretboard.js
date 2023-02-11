@@ -47,7 +47,7 @@
         "@typescript-eslint/eslint-plugin": "^2.34.0",
         "@typescript-eslint/parser": "^2.34.0",
         "abcjs": "^6.0.0-beta.24",
-        "ava": "^3.8.2",
+        "ava": "^5.2.0",
         "ava-ts": "^0.25.2",
         "browser-env": "^3.3.0",
         "bulma": "^0.8.2",
